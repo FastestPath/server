@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: fastestpath-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fastestpath
+    spec:
+      containers:
+      - name: fastestpath-container
+        image: us.gcr.io/fastestpath-148019/fastestpath-image:53ed533d2f35923449553b37256dcd47ca133192
+        ports:
+        - containerPort: 9000
