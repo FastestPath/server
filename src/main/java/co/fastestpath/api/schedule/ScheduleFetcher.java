@@ -39,6 +39,7 @@ class ScheduleFetcher {
   private static final String STOP_TIMES = "stop_times.txt";
   private static final String ELEMENT_SELECTOR = "tr > td:eq(2)";
 
+  private static final Path RESOURCES_PATH = Paths.get(RESOURCES);
   private static final Path ZIP_PATH = Paths.get(RESOURCES + "/" + ZIP_FILENAME);
   private static final Path CSV_STOP_IDS = Paths.get(RESOURCES + "/" + STOP_IDS);
   private static final Path CSV_STOP_TIMES = Paths.get(RESOURCES + "/" + STOP_TIMES);
@@ -66,6 +67,16 @@ class ScheduleFetcher {
     if (currentModifiedOn != null && !modifiedOn.isAfter(currentModifiedOn)) {
       LOG.info("Schedule is already update to date.");
       return Optional.empty();
+    }
+
+    if (!Files.isDirectory(RESOURCES_PATH)) {
+      LOG.info("Resources directory does not exist. Creating...");
+      try {
+        Files.createDirectory(RESOURCES_PATH);
+      } catch (IOException e) {
+        throw new ScheduleFetcherException("Unable to create resources directory.");
+      }
+      LOG.info("Created resources directory at {}", RESOURCES);
     }
 
     LOG.info("Fetching schedule...");
