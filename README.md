@@ -1,4 +1,5 @@
-# FastestPath Server
+
+# FastestPath - Server [![Circle CI](https://circleci.com/gh/FastestPath/server/tree/master.svg?style=svg&circle-token=ab3aecc444dcadadac13a3f5d1f7fb814bcf0a89)](https://circleci.com/gh/FastestPath/server/tree/master)
 Fetches, parses and serves the latest schedules.
 
 ## Getting Started
