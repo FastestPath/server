@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
@@ -32,27 +33,30 @@ class ScheduleFetcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(ScheduleFetcher.class);
 
-  private static final String RESOURCES = "src/main/resources";
   private static final String PATH_DIRECTORY = "http://data.trilliumtransit.com/gtfs/path-nj-us/";
   private static final String ZIP_FILENAME = "path-nj-us.zip";
   private static final String STOP_IDS = "stops.txt";
   private static final String STOP_TIMES = "stop_times.txt";
   private static final String ELEMENT_SELECTOR = "tr > td:eq(2)";
-
-  private static final Path RESOURCES_PATH = Paths.get(RESOURCES);
-  private static final Path ZIP_PATH = Paths.get(RESOURCES + "/" + ZIP_FILENAME);
-  private static final Path CSV_STOP_IDS = Paths.get(RESOURCES + "/" + STOP_IDS);
-  private static final Path CSV_STOP_TIMES = Paths.get(RESOURCES + "/" + STOP_TIMES);
-
+  
   private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd mm:ss", Locale.ENGLISH);
-
+  
   private static final URL ZIP_URL = createUrl();
 
   private final ScheduleFactory scheduleFactory;
 
+  private final Path resourcesPath;
+  private final Path zipPath;
+  private final Path csvStopIds;
+  private final Path csvStopTimes;
+
   @Inject
-  public ScheduleFetcher(ScheduleFactory scheduleFactory) {
+  public ScheduleFetcher(@Named("resources") Path resourcesPath, ScheduleFactory scheduleFactory) {
     this.scheduleFactory = scheduleFactory;
+    this.resourcesPath = resourcesPath;
+    this.zipPath = Paths.get(resourcesPath + "/" + ZIP_FILENAME);
+    this.csvStopIds = Paths.get(resourcesPath + "/" + STOP_IDS);
+    this.csvStopTimes = Paths.get(resourcesPath + "/" + STOP_TIMES);
   }
 
   public Optional<Schedule> fetch() throws ScheduleFetcherException {
@@ -69,14 +73,14 @@ class ScheduleFetcher {
       return Optional.empty();
     }
 
-    if (!Files.isDirectory(RESOURCES_PATH)) {
+    if (!Files.isDirectory(resourcesPath)) {
       LOG.info("Resources directory does not exist. Creating...");
       try {
-        Files.createDirectory(RESOURCES_PATH);
+        Files.createDirectory(resourcesPath);
       } catch (IOException e) {
-        throw new ScheduleFetcherException("Unable to create resources directory.");
+        throw new ScheduleFetcherException("Unable to create resources directory.", e);
       }
-      LOG.info("Created resources directory at {}", RESOURCES);
+      LOG.info("Created resources directory at {}", resourcesPath.toAbsolutePath());
     }
 
     LOG.info("Fetching schedule...");
@@ -88,31 +92,31 @@ class ScheduleFetcher {
       }
 
       try (InputStream inputStream = connection.getInputStream()) {
-        Files.copy(inputStream, ZIP_PATH);
+        Files.copy(inputStream, zipPath);
       }
     } catch (IOException e) {
       throw new ScheduleFetcherException("Unable to open a connection to " + ZIP_URL.toString(), e);
     }
 
     try {
-      ZipFile zipFile = new ZipFile(ZIP_PATH.toString());
-      zipFile.extractFile(STOP_IDS, RESOURCES);
-      zipFile.extractFile(STOP_TIMES, RESOURCES);
+      ZipFile zipFile = new ZipFile(zipPath.toString());
+      zipFile.extractFile(STOP_IDS, resourcesPath.toString());
+      zipFile.extractFile(STOP_TIMES, resourcesPath.toString());
     } catch (ZipException e) {
       throw new ScheduleFetcherException("Failed to unzip stop times.", e);
     }
 
     try {
-      Files.delete(ZIP_PATH);
+      Files.delete(zipPath);
     } catch (IOException e) {
       throw new ScheduleFetcherException("Failed to delete zip.", e);
     }
 
     Schedule schedule;
     try {
-      schedule = scheduleFactory.createFromCSV(CSV_STOP_IDS, CSV_STOP_TIMES, modifiedOn);
-      Files.delete(CSV_STOP_IDS);
-      Files.delete(CSV_STOP_TIMES);
+      schedule = scheduleFactory.createFromCSV(csvStopIds, csvStopTimes, modifiedOn);
+      Files.delete(csvStopIds);
+      Files.delete(csvStopTimes);
     } catch (IOException e) {
       throw new ScheduleFetcherException("Failed to read csv.", e);
     }

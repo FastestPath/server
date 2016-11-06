@@ -9,4 +9,4 @@ server:
     port: 9000
 logging:
   level: INFO
-fetchIntervalHours: 12
+resourceDirectory: "src/main/resources"

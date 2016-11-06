@@ -22,9 +22,9 @@ public class FastestPathApplication extends Application<FastestPathConfiguration
 	public void initialize(Bootstrap<FastestPathConfiguration> bootstrap) {
 
 		GuiceBundle<FastestPathConfiguration> guiceBundle = GuiceBundle.<FastestPathConfiguration>newBuilder()
+				.setConfigClass(FastestPathConfiguration.class)
 				.addModule(new FastestPathModule())
 				.enableAutoConfig(getClass().getPackage().getName())
-				.setConfigClass(FastestPathConfiguration.class)
 				.build();
 
 		bootstrap.addBundle(guiceBundle);

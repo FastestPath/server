@@ -1,27 +1,29 @@
 package co.fastestpath.api;
 
+import co.fastestpath.api.scheduler.SchedulerProvider;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.name.Named;
-import co.fastestpath.api.scheduler.SchedulerProvider;
-import org.joda.time.Duration;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 class FastestPathModule extends AbstractModule {
 
   private final CsvMapper CSV_MAPPER = new CsvMapper();
 
   @Provides
-  @Named("fetchInterval")
-  public Duration fetchInterval(FastestPathConfiguration configuration) {
-    return Duration.standardHours(configuration.getFetchIntervalHours());
+  @Named("resources")
+  public Path getResourceDirectory(FastestPathConfiguration configuration) {
+    return configuration.getEnvironment().equals("production")
+        ? Paths.get("/tmp/data") : Paths.get("src/main/resources");
   }
 
   @Override

@@ -11,6 +11,13 @@ spec:
     spec:
       containers:
       - name: fastestpath-container
-        image: us.gcr.io/fastestpath-148019/fastestpath-image:53ed533d2f35923449553b37256dcd47ca133192
+        image: us.gcr.io/fastestpath-148019/fastestpath-image:5dcdd9f17d92424f401b48acb29b41e09ce3d174
         ports:
         - containerPort: 9000
+        volumeMounts:
+        - mountPath: "/tmp/data"
+          name: fastestpath-mount
+      volumes:
+        - name: fastestpath-mount
+          persistentVolumeClaim:
+           claimName: fastestpath-volume-claim
