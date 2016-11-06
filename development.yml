@@ -1,7 +1,7 @@
 environment: development
 server:
   type: simple
-  rootPath: /api/*
+  rootPath: /*
   applicationContextPath: /
   adminContextPath: /admin
   connector:
