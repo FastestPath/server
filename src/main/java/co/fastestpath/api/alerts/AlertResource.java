@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import java.util.List;
 
 @Path("/alerts")
@@ -28,16 +29,17 @@ public class AlertResource {
   }
 
   @POST
-  @Consumes(MediaType.APPLICATION_JSON)
+  @Consumes(MediaType.MULTIPART_FORM_DATA)
   public Response newAlert(AlertEmail email) {
     LOG.info("Received new alert email.");
     if (AlertEmailValidator.isValid(email)) {
       Alert alert = AlertFactory.from(email);
       alertManager.addAlert(alert);
       LOG.info("Added alert email.");
-    } else {
-      LOG.info("Alert email is not valid, discarding.");
+      return Response.ok().build();
     }
-    return Response.ok().build();
+
+    LOG.info("Alert email is not valid, discarding.");
+    return Response.status(Status.BAD_REQUEST).build();
   }
 }

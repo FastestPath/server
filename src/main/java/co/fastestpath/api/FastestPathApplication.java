@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import io.dropwizard.Application;
+import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -27,6 +28,7 @@ public class FastestPathApplication extends Application<FastestPathConfiguration
 				.enableAutoConfig(getClass().getPackage().getName())
 				.build();
 
+    bootstrap.addBundle(new MultiPartBundle());
 		bootstrap.addBundle(guiceBundle);
 	}
 

@@ -1,6 +1,6 @@
 package co.fastestpath.api.alerts;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 class AlertEmail {
 
@@ -8,19 +8,21 @@ class AlertEmail {
 
   private String dkim;
 
-  @JsonProperty("content-ids")
+  @FormDataParam("content-ids")
   private String contentIds;
 
   private String to;
 
-  private String html;
-
   private String from;
 
-  @JsonProperty("sender_ip")
+  private String html;
+
+  private String text;
+
+  @FormDataParam("sender_ip")
   private String senderIp;
 
-  @JsonProperty("spam_report")
+  @FormDataParam("spam_report")
   private String spamReport;
 
   private String envelope;
@@ -29,15 +31,15 @@ class AlertEmail {
 
   private String subject;
 
-  @JsonProperty("spam_score")
+  @FormDataParam("spam_score")
   private String spamScore;
 
-  @JsonProperty("attachment-info")
+  @FormDataParam("attachment-info")
   private String attachmentInfo;
 
   private String charsets;
 
-  @JsonProperty("SPF")
+  @FormDataParam("SPF")
   private String spf;
 
   public String getHeaders() {
@@ -56,12 +58,16 @@ class AlertEmail {
     return to;
   }
 
+  public String getFrom() {
+    return from;
+  }
+
   public String getHtml() {
     return html;
   }
 
-  public String getFrom() {
-    return from;
+  public String getText() {
+    return text;
   }
 
   public String getSenderIp() {
