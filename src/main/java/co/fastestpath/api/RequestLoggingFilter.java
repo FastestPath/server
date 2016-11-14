@@ -25,6 +25,7 @@ public class RequestLoggingFilter implements ContainerRequestFilter {
 
   @Override
   public void filter(ContainerRequestContext requestContext) throws IOException {
+    LOG.info("Intercepted request.");
     final ByteSource byteSource = new ByteSource() {
       @Override
       public InputStream openStream() throws IOException {
@@ -32,7 +33,6 @@ public class RequestLoggingFilter implements ContainerRequestFilter {
       }
     };
     final String contents = byteSource.asCharSource(Charset.forName(webRequest.getCharacterEncoding())).read();
-    LOG.info("Intercepted request.");
     LOG.info(contents);
   }
 }
