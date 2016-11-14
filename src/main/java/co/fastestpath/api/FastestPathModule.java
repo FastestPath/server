@@ -1,5 +1,6 @@
 package co.fastestpath.api;
 
+import co.fastestpath.api.scheduler.Environment;
 import co.fastestpath.api.scheduler.SchedulerProvider;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature;
@@ -24,6 +25,12 @@ class FastestPathModule extends AbstractModule {
   public Path getResourceDirectory(FastestPathConfiguration configuration) {
     return configuration.getEnvironment().equals("production")
         ? Paths.get("/tmp/data") : Paths.get("src/main/resources");
+  }
+
+  @Provides
+  public Environment getEnvironment(FastestPathConfiguration configuration) {
+    return configuration.getEnvironment().equals("production")
+        ? Environment.PRODUCTION : Environment.DEVELOPMENT;
   }
 
   @Override
