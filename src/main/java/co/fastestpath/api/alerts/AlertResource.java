@@ -24,7 +24,9 @@ public class AlertResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   public void newAlert(AlertEmail email) {
-    Alert alert = AlertFactory.from(email);
-    alertManager.addAlert(alert);
+    if (AlertEmailValidator.isValid(email)) {
+      Alert alert = AlertFactory.from(email);
+      alertManager.addAlert(alert);
+    }
   }
 }
