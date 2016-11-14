@@ -40,8 +40,6 @@ class AlertEmail {
   @JsonProperty("SPF")
   private String spf;
 
-  public AlertEmail() {}
-
   public String getHeaders() {
     return headers;
   }
