@@ -40,11 +40,10 @@ public class AlertResource {
     AlertEmail email = new AlertEmail();
     email.setFrom(from);
     email.setTo(to);
-    email.setHtml(html);
-    email.setText(text);
     email.setSubject(subject);
+    email.setText(text);
 
-    LOG.info("Received new alert email.");
+    LOG.info("Received new alert email. from={}, to={}, subject={}, text={},", from, to, subject, text);
     if (AlertEmailValidator.isValid(email)) {
       Alert alert = AlertFactory.from(email);
       alertManager.addAlert(alert);
