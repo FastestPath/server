@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import java.util.List;
 
 @Path("/alerts")
@@ -48,10 +47,9 @@ public class AlertResource {
       Alert alert = AlertFactory.from(email);
       alertManager.addAlert(alert);
       LOG.info("Added alert email.");
-      return Response.ok().build();
+    } else {
+      LOG.info("Alert email is not valid, discarding.");
     }
-
-    LOG.info("Alert email is not valid, discarding.");
-    return Response.status(Status.BAD_REQUEST).build();
+    return Response.ok().build();
   }
 }
