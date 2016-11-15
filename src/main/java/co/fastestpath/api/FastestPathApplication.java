@@ -34,7 +34,6 @@ public class FastestPathApplication extends Application<FastestPathConfiguration
 
   @Override
   public void run(FastestPathConfiguration configuration, Environment environment) throws Exception {
-//		environment.jersey().register(new RequestLoggingFilter());
 		SimpleModule module = new SimpleModule("FastestPathModule", new Version(1, 0, 0, null, null, null));
     ObjectMapper mapper = environment.getObjectMapper();
 		mapper.enable(SerializationFeature.INDENT_OUTPUT);

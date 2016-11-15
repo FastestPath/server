@@ -1,5 +1,6 @@
 package co.fastestpath.api.alerts;
 
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,19 @@ public class AlertResource {
 
   @POST
   @Consumes(MediaType.MULTIPART_FORM_DATA)
-  public Response newAlert(AlertEmail email) {
+  public Response newAlert(@FormDataParam("to") String to,
+      @FormDataParam("from") String from,
+      @FormDataParam("html") String html,
+      @FormDataParam("text") String text,
+      @FormDataParam("subject") String subject) {
+
+    AlertEmail email = new AlertEmail();
+    email.setFrom(from);
+    email.setTo(to);
+    email.setHtml(html);
+    email.setText(text);
+    email.setSubject(subject);
+
     LOG.info("Received new alert email.");
     if (AlertEmailValidator.isValid(email)) {
       Alert alert = AlertFactory.from(email);

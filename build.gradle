@@ -11,18 +11,23 @@ repositories {
 }
 
 dependencies {
-    compile 'com.google.inject:guice:4.0'
-    compile 'commons-io:commons-io:2.4'
-    compile 'com.google.inject.extensions:guice-multibindings:4.0'
-    compile 'io.dropwizard:dropwizard-core:0.8.2'
+    def dropwizardVersion = '1.0.0'
+
+    compile 'io.dropwizard:dropwizard-core:' + dropwizardVersion
+    compile 'io.dropwizard:dropwizard-forms:' + dropwizardVersion
+    compile 'com.hubspot.dropwizard:dropwizard-guice:1.0.0.2'
+    testCompile 'io.dropwizard:dropwizard-testing:' + dropwizardVersion
+
+    compile 'commons-io:commons-io:2.5'
+
     compile 'org.quartz-scheduler:quartz:2.1.0'
-    compile 'com.hubspot.dropwizard:dropwizard-guice:0.8.1.1'
+
     compile 'org.jsoup:jsoup:1.9.1'
-    testCompile 'io.dropwizard:dropwizard-testing:0.8.2'
+
     compile 'net.lingala.zip4j:zip4j:1.2.9'
+
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.8.1'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.0'
-    compile 'io.dropwizard:dropwizard-forms:0.8.2'
 }
 
 run {
