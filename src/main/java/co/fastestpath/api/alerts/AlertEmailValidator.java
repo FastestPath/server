@@ -2,9 +2,9 @@ package co.fastestpath.api.alerts;
 
 class AlertEmailValidator {
 
-  private static final String DEV_SENDER = "john.pucciarelli@gmail.com";
+  private static final String DEV_SENDER = "John Pucciarelli <john.pucciarelli@gmail.com>";
 
-  private static final String SENDER = "alerts@paalerts.com";
+  private static final String SENDER = "PAalerts <alerts@paalerts.com>";
 
   private static final String SUBJECT = "PATHAlert";
 
