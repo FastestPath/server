@@ -23,7 +23,7 @@ public class Schedule {
   public Optional<Sequence> getSequence(StationName from, StationName to, Instant departAt) {
     Collection<Sequence> departures = departureMap.get(from.getValue());
     Optional<Sequence> sequenceOptional = departures.stream()
-        .filter((departure) -> isBeforeDeparture(departure, departAt))
+        .filter((departure) -> isAfterDesiredDeparture(departure, departAt))
         .filter((departure) -> isDestinationPresent(departure, to))
         .findFirst();
 
@@ -46,8 +46,8 @@ public class Schedule {
     return modifiedOn;
   }
 
-  private static boolean isBeforeDeparture(Sequence departure, Instant departAt) {
-    return departure.getArrivals().get(0).getDepartureTime().isBefore(departAt);
+  private static boolean isAfterDesiredDeparture(Sequence departure, Instant departAt) {
+    return departure.getArrivals().get(0).getDepartureTime().isAfter(departAt);
   }
 
   private static boolean isDestinationPresent(Sequence origin, StationName destination) {
