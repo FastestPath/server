@@ -59,9 +59,7 @@ public class Schedule {
   private static boolean isDestinationPresent(Sequence origin, StationName destination) {
     return origin.getArrivals().stream()
         .map((arrival) -> arrival.getStation().getName())
-        .filter((stationName) -> stationName.equals(destination.getValue()))
-        .findFirst()
-        .isPresent();
+        .anyMatch((stationName) -> stationName.equals(destination.getValue()));
   }
 }
 
