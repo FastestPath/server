@@ -3,10 +3,7 @@ package co.fastestpath.api.schedule.models;
 import com.google.common.collect.Multimap;
 
 import java.time.Instant;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Schedule {
@@ -23,7 +20,7 @@ public class Schedule {
   public Optional<Sequence> getSequence(StationName from, StationName to, Instant departAt) {
     Collection<Sequence> departures = departureMap.get(from.getValue());
     Optional<Sequence> sequenceOptional = departures.stream()
-        .filter((departure) -> isAfterDesiredDeparture(departure, departAt))
+        .filter((departure) -> isAfterDesiredDepartureTime(departure, departAt))
         .filter((departure) -> isDestinationPresent(departure, to))
         .findFirst();
 
@@ -46,8 +43,17 @@ public class Schedule {
     return modifiedOn;
   }
 
-  private static boolean isAfterDesiredDeparture(Sequence departure, Instant departAt) {
-    return departure.getArrivals().get(0).getDepartureTime().isAfter(departAt);
+  /**
+   * The provided schedules don't include dates, only hours, minutes, seconds.
+   */
+  private static boolean isAfterDesiredDepartureTime(Sequence departure, Instant desiredDeparture) {
+    Date departureDate = Date.from(departure.getArrivals().get(0).getDepartureTime());
+    departureDate.setDate(1);
+
+    Date desiredDepartureDate = Date.from(desiredDeparture);
+    desiredDepartureDate.setDate(1);
+
+    return departureDate.toInstant().isAfter(desiredDepartureDate.toInstant());
   }
 
   private static boolean isDestinationPresent(Sequence origin, StationName destination) {
