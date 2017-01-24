@@ -22,6 +22,7 @@ public class Schedule {
     Optional<Sequence> sequenceOptional = departures.stream()
         .filter((departure) -> isAfterDesiredDepartureTime(departure, departAt))
         .filter((departure) -> isDestinationPresent(departure, to))
+        .sorted(Schedule::compareDepartureTimes)
         .findFirst();
 
     if (!sequenceOptional.isPresent()) {
@@ -60,6 +61,12 @@ public class Schedule {
     return origin.getArrivals().stream()
         .map((arrival) -> arrival.getStation().getName())
         .anyMatch((stationName) -> stationName.equals(destination.getValue()));
+  }
+
+  private static int compareDepartureTimes(Sequence left, Sequence right) {
+    Instant leftDeparture = left.getArrivals().get(0).getDepartureTime();
+    Instant rightDeparture = right.getArrivals().get(0).getDepartureTime();
+    return leftDeparture.compareTo(rightDeparture);
   }
 }
 

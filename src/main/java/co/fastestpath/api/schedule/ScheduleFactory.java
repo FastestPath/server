@@ -46,9 +46,19 @@ class ScheduleFactory {
     return new Schedule(departureMap, modifiedOn);
   }
 
+  /**
+   * Creates a map of station names and sequences.
+   */
   private Multimap<String, Sequence> createDepartureMap(List<Sequence> sequences) {
     Multimap<String, Sequence> departureMap = LinkedListMultimap.create();
     sequences.forEach((sequence) -> {
+
+      // For each sequence, adds the following entries:
+      // [ Hob ]  - Hob, 9th, 14th, 23rd, 33rd
+      // [ 9th ]  - 9th, 14th, 23rd, 33rd
+      // [ 14th ] - 14th, 23rd, 33rd
+      // [ 23rd ] - 23rd, 33rd
+
       LinkedList<Arrival> sequenceArrivals = sequence.getArrivals();
       while (sequenceArrivals.size() > 1) {
         Arrival arrival = sequenceArrivals.peek();
