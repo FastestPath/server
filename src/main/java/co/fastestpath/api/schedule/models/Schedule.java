@@ -22,7 +22,7 @@ public class Schedule {
     Optional<Sequence> sequenceOptional = departures.stream()
         .filter((departure) -> isAfterDesiredDepartureTime(departure, departAt))
         .filter((departure) -> isDestinationPresent(departure, to))
-        .sorted(Schedule::compareDepartureTimes)
+        .sorted(Schedule::compareDepartureTimes) // TODO: this should be pre-sorted.
         .findFirst();
 
     if (!sequenceOptional.isPresent()) {

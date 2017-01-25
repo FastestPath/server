@@ -28,6 +28,8 @@ dependencies {
 
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.8.1'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.0'
+
+    compile 'org.springframework.data:spring-data-mongodb:1.9.6.RELEASE'
 }
 
 run {

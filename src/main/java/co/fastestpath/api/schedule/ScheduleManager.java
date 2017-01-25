@@ -60,9 +60,7 @@ public class ScheduleManager {
     }
 
     // latest will be empty if up-to-date
-    if (latest.isPresent()) {
-      this.schedule = latest.get();
-    }
+    latest.ifPresent(schedule -> this.schedule = schedule);
   }
 
   public Departure getDeparture(StationName from, StationName to, Instant departAt) {
