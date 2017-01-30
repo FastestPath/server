@@ -1,8 +1,15 @@
 package co.fastestpath.api.alerts;
 
-import java.time.Instant;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.*;
+
+@Document(collection = "alerts")
 class Alert {
+
+  @Id
+  private String id;
 
   private Instant createdOn;
 

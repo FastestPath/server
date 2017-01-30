@@ -4,6 +4,8 @@ class AlertEmailValidator {
 
   private static final String DEV_SENDER = "John Pucciarelli <john.pucciarelli@gmail.com>";
 
+  private static final String ANDREW = "Andrew Allison <andrewrobertallison@gmail.com>";
+
   private static final String SENDER = "\"PAalerts\" <alerts@paalerts.com>";
 
   private static final String SUBJECT = "PATHAlert";
@@ -14,7 +16,7 @@ class AlertEmailValidator {
     String body = alertEmail.getText();
 
     // allow emails to be tested in development
-    if (sender.equals(DEV_SENDER)) {
+    if (sender.equals(DEV_SENDER) || sender.equals(ANDREW)) {
       return true;
     }
 
