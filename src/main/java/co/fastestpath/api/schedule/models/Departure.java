@@ -1,9 +1,12 @@
 package co.fastestpath.api.schedule.models;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+
 public class Departure {
 
   private static final Departure EMPTY = new Departure();
 
+  @JsonUnwrapped
   private final Sequence sequence;
 
   public static Departure empty() {
