@@ -20,7 +20,7 @@ import java.util.List;
 class AlertManager {
 
   private static final Logger LOG = LoggerFactory.getLogger(AlertManager.class);
-
+  private static final Instant THIRTY_DAYS_OLD = Instant.now().minus(30, ChronoUnit.DAYS);
   // springdata mongodb
   ApplicationContext ctx;
   MongoOperations mongoOperation;
@@ -44,8 +44,8 @@ class AlertManager {
   public void addAlert(Alert alert) {
     mongoOperation.save(alert);
     // remove old alerts
-    Instant thirtyDaysOld = Instant.now().minus(30, ChronoUnit.DAYS);
-    Query searchQuery = new Query(Criteria.where("createdOn").lt(thirtyDaysOld));
+
+    Query searchQuery = new Query(Criteria.where("createdOn").lt(THIRTY_DAYS_OLD));
     LOG.debug("Removing alerts older than 30 days");
     mongoOperation.remove(searchQuery, Alert.class);
   }

@@ -1,10 +1,10 @@
 package co.fastestpath.api.alerts;
 
+import com.google.common.collect.ImmutableList;
+
 class AlertEmailValidator {
 
-  private static final String DEV_SENDER = "John Pucciarelli <john.pucciarelli@gmail.com>";
-
-  private static final String ANDREW = "Andrew Allison <andrewrobertallison@gmail.com>";
+  private static final ImmutableList<String> DEV_SENDERS = ImmutableList.of("John Pucciarelli <john.pucciarelli@gmail.com>", "Andrew Allison <andrewrobertallison@gmail.com>");
 
   private static final String SENDER = "\"PAalerts\" <alerts@paalerts.com>";
 
@@ -16,7 +16,7 @@ class AlertEmailValidator {
     String body = alertEmail.getText();
 
     // allow emails to be tested in development
-    if (sender.equals(DEV_SENDER) || sender.equals(ANDREW)) {
+    if (DEV_SENDERS.contains(sender)) {
       return true;
     }
 
