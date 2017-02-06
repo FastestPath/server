@@ -28,7 +28,7 @@ public class FeedbackResource {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response newAlert(@FormDataParam("email") String email, @FormDataParam("body") String body) {
-        if(FeedbackValidator.IS_VALID_FEEDBACK(email, body)){
+        if(FeedbackValidator.isValidFeedback(email, body)){
             Feedback feedback = new Feedback(email, body);
             feedbackManager.addFeedback(feedback);
             LOG.info("Added feedback.");
