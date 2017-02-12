@@ -5,7 +5,7 @@ import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Trip implements Comparable<Instant> {
+public class Trip implements Comparable<Trip> {
 
   private final LinkedList<StopTime> stopTimes;
 
@@ -40,8 +40,9 @@ public class Trip implements Comparable<Instant> {
   }
 
   @Override
-  public int compareTo(@Nonnull Instant other) {
-    Instant firstStopLeavesAt = getStopTimes().getFirst().getDepartureTime();
-    return firstStopLeavesAt.compareTo(other);
+  public int compareTo(@Nonnull Trip other) {
+    Instant departureTime = getDepartureTime();
+    Instant otherDepartureTime = other.getDepartureTime();
+    return departureTime.compareTo(otherDepartureTime);
   }
 }
