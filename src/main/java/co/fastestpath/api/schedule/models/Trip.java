@@ -1,7 +1,5 @@
 package co.fastestpath.api.schedule.models;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-
 import javax.annotation.Nonnull;
 import java.time.Instant;
 import java.util.LinkedList;
@@ -21,12 +19,10 @@ public class Trip implements Comparable<Trip> {
     this.arrival = this.stopTimes.getLast();
   }
 
-  @JsonUnwrapped
   public Station getDepartureStation() {
     return departure.getStation();
   }
 
-  @JsonUnwrapped
   public Station getArrivalStation() {
     return arrival.getStation();
   }

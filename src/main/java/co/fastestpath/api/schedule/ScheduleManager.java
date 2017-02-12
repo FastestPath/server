@@ -62,6 +62,6 @@ public class ScheduleManager {
       return Departure.empty();
     }
 
-    return new Departure(sequence.get());
+    return Departure.create(sequence.get());
   }
 }

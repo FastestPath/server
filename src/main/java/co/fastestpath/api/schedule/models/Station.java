@@ -1,11 +1,13 @@
 package co.fastestpath.api.schedule.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import java.util.Map;
 
 public class Station {
 
+  @JsonUnwrapped
   private final StationName name;
 
   @JsonIgnore
