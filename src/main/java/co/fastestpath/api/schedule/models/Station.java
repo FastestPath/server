@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Station {
 
-  private final String name;
+  private final StationName name;
 
   @JsonIgnore
   private final Map<String, Stop> stopIdMap;
@@ -16,7 +16,7 @@ public class Station {
     stopIdMap = builder.stopIdMap;
   }
 
-  public String getName() {
+  public StationName getName() {
     return name;
   }
 
@@ -25,19 +25,19 @@ public class Station {
   }
 
   public static final class Builder {
-    private String name;
+    private StationName name;
     private Map<String, Stop> stopIdMap;
 
     public Builder() {
     }
 
-    public Builder name(String val) {
-      name = val;
+    public Builder name(StationName name) {
+      this.name = name;
       return this;
     }
 
-    public Builder stopIdMap(Map<String, Stop> val) {
-      stopIdMap = val;
+    public Builder stopIdMap(Map<String, Stop> stopIdMap) {
+      this.stopIdMap = stopIdMap;
       return this;
     }
 

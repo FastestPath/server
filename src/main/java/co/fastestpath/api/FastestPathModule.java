@@ -15,22 +15,39 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 
-class FastestPathModule extends AbstractModule {
+import static co.fastestpath.api.scheduler.Environment.PRODUCTION;
+
+public class FastestPathModule extends AbstractModule {
+
+  public static final String ENVIRONMENT = "environment";
+
+  public static final String RESOURCES = "resources";
+
+  public static final String FETCH_INTERVAL = "fetchSchedule-interval";
 
   private final CsvMapper CSV_MAPPER = new CsvMapper();
 
   @Provides
-  @Named("resources")
-  public Path getResourceDirectory(FastestPathConfiguration configuration) {
+  @Named(ENVIRONMENT)
+  public Environment getEnvironment(FastestPathConfiguration configuration) {
     return configuration.getEnvironment().equals("production")
-        ? Paths.get("/tmp/data") : Paths.get("src/main/resources");
+        ? PRODUCTION : Environment.DEVELOPMENT;
   }
 
   @Provides
-  public Environment getEnvironment(FastestPathConfiguration configuration) {
-    return configuration.getEnvironment().equals("production")
-        ? Environment.PRODUCTION : Environment.DEVELOPMENT;
+  @Named(FETCH_INTERVAL)
+  public Duration getFetchInterval(FastestPathConfiguration configuration) {
+    return Duration.ofHours(configuration.getFetchIntervalHours());
+  }
+
+  @Provides
+  @Named(RESOURCES)
+  public Path getResourceDirectory(FastestPathConfiguration configuration) {
+    return getEnvironment(configuration) == PRODUCTION
+        ? Paths.get("/tmp/data")
+        : Paths.get("src/main/resources");
   }
 
   @Override

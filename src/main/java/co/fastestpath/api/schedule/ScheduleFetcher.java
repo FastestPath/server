@@ -1,11 +1,10 @@
 package co.fastestpath.api.schedule;
 
 import co.fastestpath.api.schedule.models.Schedule;
+import co.fastestpath.api.schedule.models.Stop;
+import co.fastestpath.api.schedule.models.StopTime;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,54 +20,50 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.Locale;
+import java.util.List;
 import java.util.Optional;
 
 @Singleton
 class ScheduleFetcher {
 
+  public static final String SCHEDULE_ADDRESS = "http://data.trilliumtransit.com/gtfs/path-nj-us/";
+
   private static final Logger LOG = LoggerFactory.getLogger(ScheduleFetcher.class);
 
-  private static final String PATH_DIRECTORY = "http://data.trilliumtransit.com/gtfs/path-nj-us/";
-  private static final String ZIP_FILENAME = "path-nj-us.zip";
-  private static final String STOP_IDS = "stops.txt";
-  private static final String STOP_TIMES = "stop_times.txt";
-  private static final String ELEMENT_SELECTOR = "tr > td:eq(2)";
-  
-  private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd mm:ss", Locale.ENGLISH);
-  
+  private static final String SCHEDULE_ZIP = "path-nj-us.zip";
+
+  private static final String STOP_IDS_CSV = "stops.txt";
+  private static final String STOP_TIMES_CSV = "stop_times.txt";
+
   private static final URL ZIP_URL = createUrl();
 
-  private final ScheduleFactory scheduleFactory;
+  private final ScheduleCsvParser csvParser;
 
   private final Path resourcesPath;
   private final Path zipPath;
-  private final Path csvStopIds;
-  private final Path csvStopTimes;
+
+  private final Path stopIdsCsvPath;
+  private final Path stopTimesCsvPath;
 
   @Inject
-  public ScheduleFetcher(@Named("resources") Path resourcesPath, ScheduleFactory scheduleFactory) {
-    this.scheduleFactory = scheduleFactory;
+  public ScheduleFetcher(@Named("resources") Path resourcesPath, ScheduleCsvParser csvParser) {
     this.resourcesPath = resourcesPath;
-    this.zipPath = Paths.get(resourcesPath + "/" + ZIP_FILENAME);
-    this.csvStopIds = Paths.get(resourcesPath + "/" + STOP_IDS);
-    this.csvStopTimes = Paths.get(resourcesPath + "/" + STOP_TIMES);
+    this.zipPath = Paths.get(resourcesPath + "/" + SCHEDULE_ZIP);
+    this.stopIdsCsvPath = Paths.get(resourcesPath + "/" + STOP_IDS_CSV);
+    this.stopTimesCsvPath = Paths.get(resourcesPath + "/" + STOP_TIMES_CSV);
+    this.csvParser = csvParser;
   }
 
-  public Optional<Schedule> fetch() throws ScheduleFetcherException {
-    return fetch(null);
+  public Optional<Schedule> fetchSchedule() throws ScheduleFetcherException, ScheduleParseException {
+    return fetchSchedule(null);
   }
 
-  public Optional<Schedule> fetch(Instant currentModifiedOn) throws ScheduleFetcherException {
-    LOG.info("Fetching schedule modifiedOn date...");
-    Instant modifiedOn = fetchModifiedOn();
-    LOG.info("Schedule last updated {}.", modifiedOn);
+  public Optional<Schedule> fetchSchedule(Instant modifiedAfter) throws ScheduleFetcherException,
+      ScheduleParseException {
+    Instant modifiedOn = ScheduleDateFetcher.fetchModifiedOn();
 
-    if (currentModifiedOn != null && !modifiedOn.isAfter(currentModifiedOn)) {
+    if (modifiedAfter != null && !modifiedOn.isAfter(modifiedAfter)) {
       LOG.info("Schedule is already update to date.");
       return Optional.empty();
     }
@@ -84,24 +79,14 @@ class ScheduleFetcher {
     }
 
     LOG.info("Fetching schedule...");
-    try {
-      HttpURLConnection connection = (HttpURLConnection) ZIP_URL.openConnection();
-      int responseCode = connection.getResponseCode();
-      if (responseCode != HttpsURLConnection.HTTP_OK) {
-        throw new ScheduleFetcherException("Bad response code when fetching zip, " + responseCode);
-      }
-
-      try (InputStream inputStream = connection.getInputStream()) {
-        Files.copy(inputStream, zipPath);
-      }
+    try (InputStream inputStream = fetchScheduleZip()) {
+      Files.copy(inputStream, zipPath);
     } catch (IOException e) {
-      throw new ScheduleFetcherException("Unable to open a connection to " + ZIP_URL.toString(), e);
+      throw new ScheduleFetcherException("Failed to download schedule zip from " + ZIP_URL, e);
     }
 
     try {
-      ZipFile zipFile = new ZipFile(zipPath.toString());
-      zipFile.extractFile(STOP_IDS, resourcesPath.toString());
-      zipFile.extractFile(STOP_TIMES, resourcesPath.toString());
+      extractCsvsFromZip(zipPath, resourcesPath);
     } catch (ZipException e) {
       throw new ScheduleFetcherException("Failed to unzip stop times.", e);
     }
@@ -112,41 +97,43 @@ class ScheduleFetcher {
       throw new ScheduleFetcherException("Failed to delete zip.", e);
     }
 
-    Schedule schedule;
+    List<Stop> stops = csvParser.parseCsv(stopIdsCsvPath, Stop.class);
+    List<StopTime> stopTimes = csvParser.parseCsv(stopTimesCsvPath, StopTime.class);
+
+    Schedule schedule = ScheduleFactory.create(stops, stopTimes, modifiedOn);
+
     try {
-      schedule = scheduleFactory.createFromCSV(csvStopIds, csvStopTimes, modifiedOn);
-      Files.delete(csvStopIds);
-      Files.delete(csvStopTimes);
+      Files.delete(stopIdsCsvPath);
+      Files.delete(stopTimesCsvPath);
     } catch (IOException e) {
-      throw new ScheduleFetcherException("Failed to read csv.", e);
+      throw new ScheduleFetcherException("Failed to delete stop Ids and/or stop times CSVs.");
     }
 
     LOG.info("Successfully fetched latest schedule.");
     return Optional.of(schedule);
   }
 
-  public static Instant fetchModifiedOn() throws ScheduleFetcherException {
-    Document document;
+  private static void extractCsvsFromZip(Path zipPath, Path resourcesPath) throws ZipException {
+    ZipFile zipFile = new ZipFile(zipPath.toString());
+    zipFile.extractFile(STOP_IDS_CSV, resourcesPath.toString());
+    zipFile.extractFile(STOP_TIMES_CSV, resourcesPath.toString());
+  }
+
+  private static InputStream fetchScheduleZip() throws ScheduleFetcherException {
     try {
-      document = Jsoup.connect(PATH_DIRECTORY).get();
+      HttpURLConnection connection = (HttpURLConnection) ZIP_URL.openConnection();
+      int responseCode = connection.getResponseCode();
+      if (responseCode != HttpsURLConnection.HTTP_OK) {
+        throw new ScheduleFetcherException("Bad response code when fetching zip, " + responseCode);
+      }
+      return connection.getInputStream();
     } catch (IOException e) {
-      throw new ScheduleFetcherException("Failed to read PATH directory at " + PATH_DIRECTORY, e);
+      throw new ScheduleFetcherException("Unable to open a connection to " + ZIP_URL.toString(), e);
     }
-
-    Element element = document.select(ELEMENT_SELECTOR).get(1);
-    String modifiedOnString = element.text();
-    Instant modifiedOn;
-    try {
-      modifiedOn = DATE_FORMAT.parse(modifiedOnString).toInstant();
-    } catch (ParseException e) {
-      throw new ScheduleFetcherException("Unable to parse date, " +  modifiedOnString, e);
-    }
-
-    return modifiedOn;
   }
 
   private static URL createUrl() {
-    String url = PATH_DIRECTORY + "/" + ZIP_FILENAME;
+    String url = SCHEDULE_ADDRESS + "/" + SCHEDULE_ZIP;
     try {
       return new URL(url);
     } catch (MalformedURLException e) {

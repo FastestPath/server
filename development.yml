@@ -10,3 +10,4 @@ server:
 logging:
   level: DEBUG
 resourceDirectory: "src/main/resources"
+fetchIntervalHours: 6

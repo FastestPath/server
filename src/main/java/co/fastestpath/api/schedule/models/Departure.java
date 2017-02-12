@@ -4,20 +4,16 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 public class Departure {
 
-  private static final Departure EMPTY = new Departure();
+  private static final Departure EMPTY = new Departure(null);
 
   @JsonUnwrapped
-  private final Sequence sequence;
+  private final Trip trip;
 
   public static Departure empty() {
     return EMPTY;
   }
 
-  private Departure() {
-    this.sequence = new Sequence();
-  }
-
-  public Departure(Sequence sequence) {
-    this.sequence = sequence;
+  public Departure(Trip trip) {
+    this.trip = trip;
   }
 }

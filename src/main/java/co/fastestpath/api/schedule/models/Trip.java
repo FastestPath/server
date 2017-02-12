@@ -1,0 +1,47 @@
+package co.fastestpath.api.schedule.models;
+
+import javax.annotation.Nonnull;
+import java.time.Instant;
+import java.util.LinkedList;
+import java.util.List;
+
+public class Trip implements Comparable<Instant> {
+
+  private final LinkedList<StopTime> stopTimes;
+
+  private final StopTime departure;
+
+  private final StopTime arrival;
+
+  public Trip(List<StopTime> stopTimes) {
+    this.stopTimes = new LinkedList<>(stopTimes);
+    this.departure = this.stopTimes.getFirst();
+    this.arrival = this.stopTimes.getLast();
+  }
+
+  public Station getDepartureStation() {
+    return departure.getStation();
+  }
+
+  public Station getArrivalStation() {
+    return arrival.getStation();
+  }
+
+  public Instant getDepartureTime() {
+    return departure.getDepartureTime();
+  }
+
+  public Instant getArrivalTime() {
+    return arrival.getArrivalTime();
+  }
+
+  public LinkedList<StopTime> getStopTimes() {
+    return stopTimes;
+  }
+
+  @Override
+  public int compareTo(@Nonnull Instant other) {
+    Instant firstStopLeavesAt = getStopTimes().getFirst().getDepartureTime();
+    return firstStopLeavesAt.compareTo(other);
+  }
+}
