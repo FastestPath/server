@@ -39,6 +39,10 @@ public class StopTime {
 
   private Station station;
 
+  public static Builder builder() {
+    return new Builder();
+  }
+
   private StopTime(Builder builder) {
     tripId = builder.tripId;
     arrivalTime = builder.arrivalTime;

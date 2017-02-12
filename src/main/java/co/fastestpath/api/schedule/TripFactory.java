@@ -11,7 +11,7 @@ class TripFactory {
 
   public static List<Trip> createTrips(List<StopTime> stopTimes, List<Station> stations) {
     populateStopTimeStations(stopTimes, stations);
-    List<Trip> trips = groupTripsByTripId(stopTimes);
+    List<Trip> trips = createTripsGroupedByTripId(stopTimes);
     return createSubTrips(trips);
   }
 
@@ -39,15 +39,15 @@ class TripFactory {
     return stationMap;
   }
 
-  private static List<Trip> groupTripsByTripId(List<StopTime> stopTimes) {
+  private static List<Trip> createTripsGroupedByTripId(List<StopTime> stopTimes) {
     Map<String, List<StopTime>> tripIdMap = stopTimes.stream()
-        .collect(Collectors.groupingBy(StopTime::getStopId));
+        .collect(Collectors.groupingBy(StopTime::getTripId));
 
-    Set<String> stopIds = tripIdMap.keySet();
+    Set<String> tripIds = tripIdMap.keySet();
 
-    List<Trip> trips = new ArrayList<>(stopIds.size());
-    stopIds.forEach((stopId) -> {
-      List<StopTime> tripTimes = tripIdMap.get(stopId);
+    List<Trip> trips = new ArrayList<>(stopTimes.size());
+    tripIds.forEach((tripId) -> {
+      List<StopTime> tripTimes = tripIdMap.get(tripId);
       Trip trip = new Trip(tripTimes);
       trips.add(trip);
     });
