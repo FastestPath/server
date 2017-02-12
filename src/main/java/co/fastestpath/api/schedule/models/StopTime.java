@@ -2,6 +2,7 @@ package co.fastestpath.api.schedule.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import co.fastestpath.api.schedule.models.StopTime.Builder;
@@ -37,6 +38,7 @@ public class StopTime {
 
   private final String shapeDistTraveled;
 
+  @JsonUnwrapped
   private Station station;
 
   public static Builder builder() {
