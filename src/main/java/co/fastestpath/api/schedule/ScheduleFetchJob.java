@@ -33,19 +33,22 @@ public class ScheduleFetchJob implements Job {
     scheduleManager.fetchLatest();
   }
 
-
   public static JobDetail createDetail() {
-    return newJob(ScheduleFetchJob.class).build();
+    return newJob(ScheduleFetchJob.class)
+        .build();
   }
 
   public static Trigger createTrigger(int repeatIntervalHours, Instant startTime) {
-    Date start = new Date(startTime.toEpochMilli());
+    Date start = Date.from(startTime);
+
+    ScheduleBuilder<SimpleTrigger> scheduleBuilder = simpleSchedule()
+        .withIntervalInHours(repeatIntervalHours)
+        .repeatForever();
+
     return newTrigger()
         .withIdentity(JOB_NAME, GROUP_NAME)
         .startAt(start)
-        .withSchedule(simpleSchedule()
-            .withIntervalInHours(repeatIntervalHours)
-            .repeatForever())
+        .withSchedule(scheduleBuilder)
         .build();
   }
 }

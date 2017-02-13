@@ -13,33 +13,34 @@ import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public class FastestPathApplication extends Application<FastestPathConfiguration> {
+class FastestPathApplication extends Application<FastestPathConfiguration> {
 
-	public static void main(String[] args) throws Exception {
-		new FastestPathApplication().run(args);
-	}
+  public static void main(String[] args) throws Exception {
+    new FastestPathApplication().run(args);
+  }
 
-	@Override
-	public void initialize(Bootstrap<FastestPathConfiguration> bootstrap) {
-
-		GuiceBundle<FastestPathConfiguration> guiceBundle = GuiceBundle.<FastestPathConfiguration>newBuilder()
-				.setConfigClass(FastestPathConfiguration.class)
-				.addModule(new FastestPathModule())
-				.enableAutoConfig(getClass().getPackage().getName())
-				.build();
+  @Override
+  public void initialize(Bootstrap<FastestPathConfiguration> bootstrap) {
+    GuiceBundle<FastestPathConfiguration> guiceBundle = GuiceBundle.<FastestPathConfiguration>newBuilder()
+        .setConfigClass(FastestPathConfiguration.class)
+        .addModule(new FastestPathModule())
+        .enableAutoConfig(getClass().getPackage().getName())
+        .build();
 
     bootstrap.addBundle(new MultiPartBundle());
-		bootstrap.addBundle(guiceBundle);
-	}
+    bootstrap.addBundle(guiceBundle);
+  }
 
   @Override
   public void run(FastestPathConfiguration configuration, Environment environment) throws Exception {
-		SimpleModule module = new SimpleModule("FastestPathModule", new Version(1, 0, 0, null, null, null));
     ObjectMapper mapper = environment.getObjectMapper();
-		mapper.enable(SerializationFeature.INDENT_OUTPUT);
-		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-		mapper.registerModule(module);
+
+    SimpleModule module = new SimpleModule("FastestPathModule", new Version(1, 0, 0, null, null, null));
+    mapper.registerModule(module);
+
     mapper.registerModule(new JavaTimeModule());
   }
 }

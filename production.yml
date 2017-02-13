@@ -10,3 +10,4 @@ server:
 logging:
   level: INFO
 resourceDirectory: "/tmp/data"
+fetchIntervalHours: 6

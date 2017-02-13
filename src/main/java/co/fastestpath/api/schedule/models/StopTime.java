@@ -1,10 +1,10 @@
 package co.fastestpath.api.schedule.models;
 
+import co.fastestpath.api.schedule.models.StopTime.Builder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import co.fastestpath.api.schedule.models.Arrival.Builder;
 import org.joda.time.DateTime;
 
 import java.text.ParseException;
@@ -14,7 +14,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @JsonDeserialize(builder = Builder.class)
-public class Arrival {
+public class StopTime {
 
   private final String tripId;
 
@@ -39,7 +39,11 @@ public class Arrival {
 
   private Station station;
 
-  private Arrival(Builder builder) {
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  private StopTime(Builder builder) {
     tripId = builder.tripId;
     arrivalTime = builder.arrivalTime;
     departureTime = builder.departureTime;
@@ -192,8 +196,8 @@ public class Arrival {
       return this;
     }
 
-    public Arrival build() {
-      return new Arrival(this);
+    public StopTime build() {
+      return new StopTime(this);
     }
   }
 }

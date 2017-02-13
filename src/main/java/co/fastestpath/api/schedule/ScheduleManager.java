@@ -1,6 +1,6 @@
 package co.fastestpath.api.schedule;
 
-import co.fastestpath.api.schedule.models.Sequence;
+import co.fastestpath.api.schedule.models.Trip;
 import co.fastestpath.api.schedule.models.Departure;
 import co.fastestpath.api.schedule.models.Schedule;
 import co.fastestpath.api.schedule.models.StationName;
@@ -18,27 +18,15 @@ public class ScheduleManager {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ScheduleManager.class);
 
-  private final ScheduleFetcher fetcher;
+  private final ScheduleFetcher scheduleFetcher;
 
 	private Schedule schedule; // storing the latest schedule in memory for now
 
   private boolean isFetching;
 
 	@Inject
-	public ScheduleManager(ScheduleFetcher fetcher) {
-		this.fetcher = fetcher;
-	}
-
-	public void start() {
-    LOG.info("Starting scheduler...");
-    this.isFetching = true;
-		try {
-      this.schedule = fetcher.fetch().get();
-		} catch (ScheduleFetcherException e) {
-      LOG.error("Unable to fetch schedule.", e);
-		} finally {
-      this.isFetching = false;
-    }
+	public ScheduleManager(ScheduleFetcher scheduleFetcher) {
+		this.scheduleFetcher = scheduleFetcher;
 	}
 
 	public void fetchLatest() {
@@ -51,9 +39,12 @@ public class ScheduleManager {
     Instant currentModifiedOn = schedule == null ? null : schedule.getModifiedOn();
     Optional<Schedule> latest;
     try {
-      latest = fetcher.fetch(currentModifiedOn);
+      latest = scheduleFetcher.fetchSchedule(currentModifiedOn);
     } catch (ScheduleFetcherException e) {
       LOG.error("Unable to fetch schedule.", e);
+      return;
+    } catch (ScheduleParseException e) {
+      LOG.error("Unable to parse schedule.", e);
       return;
     } finally {
       this.isFetching = false;
@@ -65,12 +56,12 @@ public class ScheduleManager {
 
   public Departure getDeparture(StationName from, StationName to, Instant departAt) {
     departAt = ObjectUtils.defaultIfNull(departAt, Instant.now());
-    Optional<Sequence> sequence = schedule.getSequence(from, to, departAt);
+    Optional<Trip> sequence = schedule.getTripForDepartureTime(from, to, departAt);
 
     if (!sequence.isPresent()) {
       return Departure.empty();
     }
 
-    return new Departure(sequence.get());
+    return Departure.create(sequence.get());
   }
 }
