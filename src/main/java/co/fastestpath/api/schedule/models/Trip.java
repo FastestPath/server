@@ -35,14 +35,22 @@ public class Trip implements Comparable<Trip> {
     return arrival.getArrivalTime();
   }
 
-  public LinkedList<StopTime> getStopTimes() {
+  public List<StopTime> getStopTimes() {
     return stopTimes;
   }
 
   @Override
   public int compareTo(@Nonnull Trip other) {
+    // TODO: test for this comparator
     Instant departureTime = getDepartureTime();
     Instant otherDepartureTime = other.getDepartureTime();
-    return departureTime.compareTo(otherDepartureTime);
+    int departureComparison = departureTime.compareTo(otherDepartureTime);
+    if (departureComparison != 0) {
+      return departureComparison;
+    }
+
+    Instant arrivalTime = getArrivalTime();
+    Instant otherArrivalTime = other.getArrivalTime();
+    return arrivalTime.compareTo(otherArrivalTime);
   }
 }
