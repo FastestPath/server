@@ -19,13 +19,14 @@ dependencies:
     # Retrieve our secrets from the CircleCI environment
     - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/client-secret.json
     # Make sure gcloud is up to date
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update kubectl
+    - sudo gcloud --quiet components update --version 120.0.0
+    - sudo gcloud --quiet components update --version 120.0.0 kubectl
     # Authenticate gcloud
-    - gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
+    - sudo gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
     # Replace <your-project-id>
-    - gcloud config set project $GCLOUD_PROJECT
-    - gcloud config set compute/zone us-east1-c
-    - sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials cluster-1
+    - sudo gcloud config set project $GCLOUD_PROJECT
+    - sudo gcloud config set compute/zone us-east1-c
+    - sudo gcloud container clusters get-credentials cluster-1
 
 test:
   post:
@@ -36,7 +37,7 @@ deployment:
     branch: master
     commands:
       - docker build -t us.gcr.io/$GCLOUD_PROJECT/$FASTEST_PATH_IMAGE:$CIRCLE_SHA1 .
-      - sudo /opt/google-cloud-sdk/bin/gcloud docker push us.gcr.io/$GCLOUD_PROJECT/$FASTEST_PATH_IMAGE:$CIRCLE_SHA1
+      - sudo gcloud docker push us.gcr.io/$GCLOUD_PROJECT/$FASTEST_PATH_IMAGE:$CIRCLE_SHA1
       - sudo chown -R ubuntu:ubuntu /home/ubuntu/.kube
       - export GOOGLE_APPLICATION_CREDENTIALS=${HOME}/client-secret.json; kubectl patch deployment fastestpath-deployment -p '{"spec":{"replicas":1,"template":{"spec":{"containers":[{"name":"fastestpath-container","image":"us.gcr.io/'"$GCLOUD_PROJECT"'/'"$FASTEST_PATH_IMAGE"':'"$CIRCLE_SHA1"'"}]}}}}'
       #  -kubectl expose deployment fastestpath-deployment --type="LoadBalancer" --port=80 --target-port=9000
