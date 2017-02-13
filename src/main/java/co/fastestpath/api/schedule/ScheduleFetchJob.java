@@ -29,7 +29,7 @@ public class ScheduleFetchJob implements Job {
 
   @Override
   public void execute(JobExecutionContext context) throws JobExecutionException {
-    LOG.info("Schedule fetchSchedule job triggered.");
+    LOG.info("Schedule fetch job triggered.");
     scheduleManager.fetchLatest();
   }
 

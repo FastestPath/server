@@ -31,7 +31,7 @@ public class ScheduleManager {
 
 	public void fetchLatest() {
     if (isFetching) {
-      LOG.info("Unable to fetchSchedule schedule, a fetchSchedule is already in progress.");
+      LOG.info("Unable to fetch schedule, a fetch is already in progress.");
       return;
     }
 
@@ -41,7 +41,7 @@ public class ScheduleManager {
     try {
       latest = scheduleFetcher.fetchSchedule(currentModifiedOn);
     } catch (ScheduleFetcherException e) {
-      LOG.error("Unable to fetchSchedule schedule.", e);
+      LOG.error("Unable to fetch schedule.", e);
       return;
     } catch (ScheduleParseException e) {
       LOG.error("Unable to parse schedule.", e);
