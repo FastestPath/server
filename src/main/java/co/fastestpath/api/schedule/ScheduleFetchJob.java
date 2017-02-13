@@ -16,9 +16,9 @@ public class ScheduleFetchJob implements Job {
 
   private static final Logger LOG = LoggerFactory.getLogger(ScheduleFetchJob.class);
 
-  private static final String JOB_NAME = "schedule-fetchSchedule-job";
+  private static final String JOB_NAME = "schedule-fetch-job";
 
-  private static final String GROUP_NAME = "fetchSchedule-job";
+  private static final String GROUP_NAME = "fetch-job";
 
   private final ScheduleManager scheduleManager;
 

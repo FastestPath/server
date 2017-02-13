@@ -25,7 +25,7 @@ public class FastestPathModule extends AbstractModule {
 
   public static final String RESOURCES = "resources";
 
-  public static final String FETCH_INTERVAL = "fetchSchedule-interval";
+  public static final String FETCH_INTERVAL = "fetch-interval";
 
   private final CsvMapper CSV_MAPPER = new CsvMapper();
 
