@@ -3,7 +3,7 @@
 !.idea/runConfigurations/
 .gradle
 build/
-src/main/resources/stop-times.txt
+keys/
 !gradle-wrapper.jar
 fastestpath.iml
 fastestpath.ipr

@@ -1,5 +1,6 @@
 package co.fastestpath.api;
 
+import co.fastestpath.api.persistence.firebase.FirebaseConfiguration;
 import co.fastestpath.api.scheduler.Environment;
 import co.fastestpath.api.scheduler.SchedulerProvider;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -27,27 +28,33 @@ public class FastestPathModule extends AbstractModule {
 
   public static final String FETCH_INTERVAL = "fetch-interval";
 
+  public static final String FIREBASE_CONFIG = "firebase-config";
+
   private final CsvMapper CSV_MAPPER = new CsvMapper();
 
   @Provides
   @Named(ENVIRONMENT)
   public Environment getEnvironment(FastestPathConfiguration configuration) {
-    return configuration.getEnvironment().equals("production")
+    return configuration.environment.equals("production")
         ? PRODUCTION : Environment.DEVELOPMENT;
   }
 
   @Provides
   @Named(FETCH_INTERVAL)
   public Duration getFetchInterval(FastestPathConfiguration configuration) {
-    return Duration.ofHours(configuration.getFetchIntervalHours());
+    return Duration.ofHours(configuration.fetchIntervalHours);
   }
 
   @Provides
   @Named(RESOURCES)
   public Path getResourceDirectory(FastestPathConfiguration configuration) {
-    return getEnvironment(configuration) == PRODUCTION
-        ? Paths.get("/tmp/data")
-        : Paths.get("src/main/resources");
+    return Paths.get(configuration.resourceDirectory);
+  }
+
+  @Provides
+  @Named(FIREBASE_CONFIG)
+  public FirebaseConfiguration getFirebaseConfiguration(FastestPathConfiguration configuration) {
+    return new FirebaseConfiguration(configuration.firebaseKeyPath, configuration.firebaseDatabaseUrl);
   }
 
   @Override

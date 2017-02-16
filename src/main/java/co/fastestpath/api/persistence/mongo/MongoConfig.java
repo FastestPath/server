@@ -1,4 +1,4 @@
-package co.fastestpath.api.persistence;
+package co.fastestpath.api.persistence.mongo;
 
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;

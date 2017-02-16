@@ -10,4 +10,6 @@ server:
 logging:
   level: DEBUG
 resourceDirectory: "src/main/resources"
+firebaseKeyPath: "keys/firebase.json"
+firebaseDatabaseUrl: "https://fastestpath-148019.firebaseio.com/"
 fetchIntervalHours: 6

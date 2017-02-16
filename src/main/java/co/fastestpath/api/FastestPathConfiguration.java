@@ -8,23 +8,18 @@ import javax.validation.constraints.NotNull;
 class FastestPathConfiguration extends Configuration {
 
   @NotEmpty
-  private String environment;
+  public String environment;
 
   @NotNull
-  private Integer fetchIntervalHours;
+  public Integer fetchIntervalHours;
 
   @NotEmpty
-  private String resourceDirectory;
+  public String resourceDirectory;
 
-  public String getEnvironment() {
-    return environment;
-  }
+  @NotEmpty
+  public String firebaseKeyPath;
 
-  public int getFetchIntervalHours() {
-    return fetchIntervalHours;
-  }
+  @NotEmpty
+  public String firebaseDatabaseUrl;
 
-  public String getResourceDirectory() {
-    return resourceDirectory;
-  }
 }

@@ -1,6 +1,6 @@
 package co.fastestpath.api.alerts;
 
-import co.fastestpath.api.persistence.MongoConfig;
+import co.fastestpath.api.persistence.mongo.MongoConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
