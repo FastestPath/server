@@ -1,5 +1,7 @@
 package co.fastestpath.api;
 
+import co.fastestpath.api.firebase.FirebaseConfiguration;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -8,18 +10,18 @@ import javax.validation.constraints.NotNull;
 class FastestPathConfiguration extends Configuration {
 
   @NotEmpty
-  public String environment;
+  @JsonProperty("environment")
+  String environment;
 
   @NotNull
-  public Integer fetchIntervalHours;
+  @JsonProperty("fetchIntervalHours")
+  Integer fetchIntervalHours;
 
   @NotEmpty
-  public String resourceDirectory;
+  @JsonProperty("resourceDirectory")
+  String resourceDirectory;
 
-  @NotEmpty
-  public String firebaseKeyPath;
-
-  @NotEmpty
-  public String firebaseDatabaseUrl;
-
+  @NotNull
+  @JsonProperty("firebase")
+  FirebaseConfiguration firebase;
 }

@@ -1,11 +1,12 @@
 package co.fastestpath.api;
 
-import co.fastestpath.api.persistence.firebase.FirebaseConfiguration;
+import co.fastestpath.api.firebase.FirebaseConnection;
 import co.fastestpath.api.scheduler.Environment;
 import co.fastestpath.api.scheduler.SchedulerProvider;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import org.quartz.Scheduler;
@@ -28,7 +29,7 @@ public class FastestPathModule extends AbstractModule {
 
   public static final String FETCH_INTERVAL = "fetch-interval";
 
-  public static final String FIREBASE_CONFIG = "firebase-config";
+  public static final String DATABASE_ROOT = "database-root";
 
   private final CsvMapper CSV_MAPPER = new CsvMapper();
 
@@ -52,9 +53,15 @@ public class FastestPathModule extends AbstractModule {
   }
 
   @Provides
-  @Named(FIREBASE_CONFIG)
-  public FirebaseConfiguration getFirebaseConfiguration(FastestPathConfiguration configuration) {
-    return new FirebaseConfiguration(configuration.firebaseKeyPath, configuration.firebaseDatabaseUrl);
+  @Named(DATABASE_ROOT)
+  public String getDatabaseRoot(FastestPathConfiguration configuration) {
+    return configuration.firebase.databaseRoot;
+  }
+
+  @Provides
+  public FirebaseDatabase getFirebaseConnection(FastestPathConfiguration configuration) {
+    FirebaseConnection.connect(configuration.firebase);
+    return FirebaseDatabase.getInstance();
   }
 
   @Override

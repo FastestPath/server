@@ -1,5 +1,6 @@
 package co.fastestpath.api.schedule;
 
+import co.fastestpath.api.alerts.AlertStore;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,9 @@ public class ScheduleFetchJob implements Job {
   private static final String GROUP_NAME = "fetch-job";
 
   private final ScheduleManager scheduleManager;
+
+  @Inject
+  private AlertStore alertStore;
 
   @Inject
   public ScheduleFetchJob(ScheduleManager scheduleManager) {

@@ -28,6 +28,7 @@ public class AlertResource {
     return alertManager.getAlerts();
   }
 
+  // TODO: look into using @BeanParam here
   @POST
   @Consumes(MediaType.MULTIPART_FORM_DATA)
   public Response newAlert(@FormDataParam("to") String to,
