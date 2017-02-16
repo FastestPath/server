@@ -28,16 +28,10 @@ public class FeedbackResource {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response newAlert(@FormDataParam("email") String email, @FormDataParam("body") String body) {
-        if(FeedbackValidator.isValidFeedback(email, body)){
-            Feedback feedback = new Feedback(email, body);
-            feedbackManager.addFeedback(feedback);
-            LOG.info("Added feedback.");
-            return Response.ok().build();
-        } else {
-            LOG.info("Invalid feedback.");
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-
+        Feedback feedback = new Feedback(email, body);
+        feedbackManager.addFeedback(feedback);
+        LOG.info("Added feedback.");
+        return Response.ok().build();
     }
 
 }
