@@ -14,8 +14,4 @@ public class FirebaseConfiguration extends Configuration {
   @JsonProperty("databaseUrl")
   public String databaseUrl;
 
-  @NotEmpty
-  @JsonProperty("databaseRoot")
-  public String databaseRoot;
-
 }

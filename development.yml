@@ -13,5 +13,4 @@ resourceDirectory: "src/main/resources"
 firebase:
   keyPath: "keys/firebase.json"
   databaseUrl: "https://fastestpath-148019.firebaseio.com/"
-  databaseRoot: "fastestpath-148019"
 fetchIntervalHours: 6
