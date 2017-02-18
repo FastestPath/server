@@ -52,7 +52,7 @@ public class FirebaseConnection {
 
   private static FirebaseCredential getCredentials(FirebaseConfiguration configuration, Environment environment)
       throws FileNotFoundException {
-    if (environment != PRODUCTION) {
+    if (environment == PRODUCTION) {
       LOG.info("Using production credentials.");
       return FirebaseCredentials.applicationDefault();
     }
