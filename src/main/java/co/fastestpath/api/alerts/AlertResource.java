@@ -47,7 +47,6 @@ public class AlertResource {
     if (AlertEmailValidator.isValid(email)) {
       Alert alert = AlertFactory.from(email);
       alertManager.addAlert(alert);
-      LOG.info("Added alert email.");
     } else {
       LOG.info("Alert email is not valid, discarding.");
     }
