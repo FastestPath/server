@@ -23,8 +23,7 @@ public class AlertStore {
   }
 
   public void saveAlert(Alert alert) {
-    databaseReference.setValue(alert, (databaseError, databaseReference) -> {
-      LOG.info("CALLBACK!");
-    });
+    databaseReference.push()
+        .setValue(alert, (databaseError, databaseReference) -> LOG.info("Saved new alert."));
   }
 }

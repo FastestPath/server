@@ -1,12 +1,10 @@
 package co.fastestpath.api.alerts;
 
-import com.sun.corba.se.spi.ior.ObjectId;
-
 import java.time.Instant;
 
 class Alert {
 
-  private ObjectId id;
+  private String id;
 
   private Instant createdOn;
 
