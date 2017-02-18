@@ -1,5 +1,6 @@
 package co.fastestpath.api.alerts;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,16 +18,19 @@ class AlertManager {
   private static final Instant THIRTY_DAYS = Instant.now()
       .minus(30, ChronoUnit.DAYS);
 
-  @Inject
-  public AlertManager() {
+  private final AlertStore alertStore;
 
+  @Inject
+  public AlertManager(AlertStore alertStore) {
+    this.alertStore = alertStore;
   }
 
+
   public List<Alert> getAlerts() {
-    return null;
+    throw new NotImplementedException("Get alerts not yet implemented.");
   }
 
   public void addAlert(Alert alert) {
-    LOG.debug("Removing alerts older than 30 days");
+    alertStore.saveAlert(alert);
   }
 }
