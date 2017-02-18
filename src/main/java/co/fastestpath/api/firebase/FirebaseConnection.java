@@ -53,9 +53,11 @@ public class FirebaseConnection {
   private static FirebaseCredential getCredentials(FirebaseConfiguration configuration, Environment environment)
       throws FileNotFoundException {
     if (environment == PRODUCTION) {
+      LOG.info("Using production credentials.");
       return FirebaseCredentials.applicationDefault();
     }
 
+    LOG.info("Using development credentials.");
     FileInputStream serviceAccount = new FileInputStream(configuration.keyPath);
     return FirebaseCredentials.fromCertificate(serviceAccount);
   }
