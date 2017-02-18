@@ -29,8 +29,6 @@ public class FastestPathModule extends AbstractModule {
 
   public static final String FETCH_INTERVAL = "fetch-interval";
 
-  public static final String DATABASE_ROOT = "database-root";
-
   private final CsvMapper CSV_MAPPER = new CsvMapper();
 
   @Provides
@@ -50,12 +48,6 @@ public class FastestPathModule extends AbstractModule {
   @Named(RESOURCES)
   public Path getResourceDirectory(FastestPathConfiguration configuration) {
     return Paths.get(configuration.resourceDirectory);
-  }
-
-  @Provides
-  @Named(DATABASE_ROOT)
-  public String getDatabaseRoot(FastestPathConfiguration configuration) {
-    return configuration.firebase.databaseRoot;
   }
 
   @Provides
