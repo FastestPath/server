@@ -26,7 +26,8 @@ dependencies:
     # Replace <your-project-id>
     - sudo /opt/google-cloud-sdk/bin/gcloud config set project $GCLOUD_PROJECT
     - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone us-east1-c
-    - sudo /opt/google-cloud-sdk/bin/gcloud auth application-default login --scopes=https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/firebase.database
+    # Add Firebase to application-default scope
+    # sudo /opt/google-cloud-sdk/bin/gcloud auth application-default login --scopes=https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/firebase.database
     - sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials cluster-1
 
 test:
