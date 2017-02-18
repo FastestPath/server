@@ -32,16 +32,16 @@ public class FirebaseConnection {
     Map<String, Object> auth = new HashMap<>();
     auth.put("uid", configuration.uid);
 
-    FirebaseCredential credentials;
+    FirebaseCredential credential;
     try {
-      credentials = getCredentials(configuration, environment);
+      credential = getCredentials(configuration, environment);
     } catch (FileNotFoundException e) {
       LOG.error("Unable to open Firebase key.", e);
       return;
     }
 
     FirebaseOptions options = new FirebaseOptions.Builder()
-        .setCredential(credentials)
+        .setCredential(credential)
         .setDatabaseAuthVariableOverride(auth)
         .setDatabaseUrl(configuration.databaseUrl)
         .build();
@@ -52,7 +52,7 @@ public class FirebaseConnection {
 
   private static FirebaseCredential getCredentials(FirebaseConfiguration configuration, Environment environment)
       throws FileNotFoundException {
-    if (environment == PRODUCTION) {
+    if (environment != PRODUCTION) {
       LOG.info("Using production credentials.");
       return FirebaseCredentials.applicationDefault();
     }
