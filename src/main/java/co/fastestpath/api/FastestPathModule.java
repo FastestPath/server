@@ -1,7 +1,6 @@
 package co.fastestpath.api;
 
 import co.fastestpath.api.firebase.FirebaseConnection;
-import co.fastestpath.api.scheduler.Environment;
 import co.fastestpath.api.scheduler.SchedulerProvider;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature;
@@ -19,7 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 
-import static co.fastestpath.api.scheduler.Environment.PRODUCTION;
+import static co.fastestpath.api.Environment.PRODUCTION;
 
 public class FastestPathModule extends AbstractModule {
 
@@ -52,7 +51,7 @@ public class FastestPathModule extends AbstractModule {
 
   @Provides
   public FirebaseDatabase getFirebaseConnection(FastestPathConfiguration configuration) {
-    FirebaseConnection.connect(configuration.firebase);
+    FirebaseConnection.connect(configuration.firebase, getEnvironment(configuration));
     return FirebaseDatabase.getInstance();
   }
 

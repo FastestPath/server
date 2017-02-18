@@ -1,4 +1,4 @@
-package co.fastestpath.api.scheduler;
+package co.fastestpath.api;
 
 public enum Environment {
   DEVELOPMENT,

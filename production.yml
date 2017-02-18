@@ -11,6 +11,6 @@ logging:
   level: INFO
 resourceDirectory: "/tmp/data"
 firebase:
-  keyPath: "keys/firebase.json"
   databaseUrl: "https://fastestpath-148019.firebaseio.com/"
+  uid: local
 fetchIntervalHours: 6

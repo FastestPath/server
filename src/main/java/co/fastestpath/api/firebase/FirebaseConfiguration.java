@@ -6,7 +6,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class FirebaseConfiguration extends Configuration {
 
-  @NotEmpty
   @JsonProperty("keyPath")
   public String keyPath;
 
@@ -14,4 +13,7 @@ public class FirebaseConfiguration extends Configuration {
   @JsonProperty("databaseUrl")
   public String databaseUrl;
 
+  @NotEmpty
+  @JsonProperty("uid")
+  public String uid;
 }

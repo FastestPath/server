@@ -15,6 +15,7 @@ class AlertManager {
 
   private static final Logger LOG = LoggerFactory.getLogger(AlertManager.class);
 
+  // TODO: remove old alerts
   private static final Instant THIRTY_DAYS = Instant.now()
       .minus(30, ChronoUnit.DAYS);
 
