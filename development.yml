@@ -9,9 +9,9 @@ server:
     port: 9000
 logging:
   level: DEBUG
-resourceDirectory: "src/main/resources"
+resourceDirectory: src/main/resources
 firebase:
-  keyPath: "keys/firebase.json"
+  keyPath: keys/firebase.json
   databaseUrl: "https://fastestpath-148019.firebaseio.com/"
   uid: local
 fetchIntervalHours: 6

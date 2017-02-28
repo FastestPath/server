@@ -1,6 +1,5 @@
 package co.fastestpath.api.firebase;
 
-import co.fastestpath.api.Environment;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseCredential;
@@ -13,28 +12,26 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static co.fastestpath.api.Environment.PRODUCTION;
-
 public class FirebaseConnection {
 
   private static final Logger LOG = LoggerFactory.getLogger(FirebaseConnection.class);
 
   private static FirebaseConnection connection;
 
-  public static FirebaseConnection connect(FirebaseConfiguration configuration, Environment environment) {
+  public static FirebaseConnection connect(FirebaseConfiguration configuration) {
     if (connection == null) {
-      connection = new FirebaseConnection(configuration, environment);
+      connection = new FirebaseConnection(configuration);
     }
     return connection;
   }
 
-  private FirebaseConnection(FirebaseConfiguration configuration, Environment environment) {
+  private FirebaseConnection(FirebaseConfiguration configuration) {
     Map<String, Object> auth = new HashMap<>();
     auth.put("uid", configuration.uid);
 
     FirebaseCredential credential;
     try {
-      credential = getCredentials(configuration, environment);
+      credential = getCredentials(configuration);
     } catch (FileNotFoundException e) {
       LOG.error("Unable to open Firebase key.", e);
       return;
@@ -50,14 +47,8 @@ public class FirebaseConnection {
     FirebaseApp.initializeApp(options);
   }
 
-  private static FirebaseCredential getCredentials(FirebaseConfiguration configuration, Environment environment)
+  private static FirebaseCredential getCredentials(FirebaseConfiguration configuration)
       throws FileNotFoundException {
-    if (environment == PRODUCTION) {
-      LOG.info("Using production credentials.");
-      return FirebaseCredentials.applicationDefault();
-    }
-
-    LOG.info("Using development credentials.");
     FileInputStream serviceAccount = new FileInputStream(configuration.keyPath);
     return FirebaseCredentials.fromCertificate(serviceAccount);
   }

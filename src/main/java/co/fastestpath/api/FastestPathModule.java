@@ -51,7 +51,7 @@ public class FastestPathModule extends AbstractModule {
 
   @Provides
   public FirebaseDatabase getFirebaseConnection(FastestPathConfiguration configuration) {
-    FirebaseConnection.connect(configuration.firebase, getEnvironment(configuration));
+    FirebaseConnection.connect(configuration.firebase);
     return FirebaseDatabase.getInstance();
   }
 
