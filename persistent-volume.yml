@@ -6,8 +6,11 @@ metadata:
     type: local
 spec:
   capacity:
-    storage: 1Gi
+    storage: 50Gi
   accessModes:
     - ReadWriteMany
-  hostPath:
-    path: "/tmp/data"
+  gcePersistentDisk:
+    # This disk must already exist.
+    # gcloud compute disks create --size 50GB fastestpath-disk
+    pdName: fastestpath-disk
+    fsType: ext4

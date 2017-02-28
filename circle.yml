@@ -26,8 +26,6 @@ dependencies:
     # Replace <your-project-id>
     - sudo /opt/google-cloud-sdk/bin/gcloud config set project $GCLOUD_PROJECT
     - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone us-east1-c
-    # Add Firebase to application-default scope
-    # sudo /opt/google-cloud-sdk/bin/gcloud auth application-default login --scopes=https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/firebase.database
     - sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials cluster-1
 
 test:
@@ -42,5 +40,4 @@ deployment:
       - sudo /opt/google-cloud-sdk/bin/gcloud docker push us.gcr.io/$GCLOUD_PROJECT/$FASTEST_PATH_IMAGE:$CIRCLE_SHA1
       - sudo chown -R ubuntu:ubuntu /home/ubuntu/.kube
       - export GOOGLE_APPLICATION_CREDENTIALS=${HOME}/client-secret.json; kubectl patch deployment fastestpath-deployment -p '{"spec":{"replicas":1,"template":{"spec":{"containers":[{"name":"fastestpath-container","image":"us.gcr.io/'"$GCLOUD_PROJECT"'/'"$FASTEST_PATH_IMAGE"':'"$CIRCLE_SHA1"'"}]}}}}'
-      #  -kubectl expose deployment fastestpath-deployment --type="LoadBalancer" --port=80 --target-port=9000
 

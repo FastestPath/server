@@ -3,8 +3,9 @@ apiVersion: v1
 metadata:
   name: fastestpath-volume-claim
 spec:
+  volumeName: fastestpath-volume
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 50Gi

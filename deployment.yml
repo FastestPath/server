@@ -15,9 +15,9 @@ spec:
         ports:
         - containerPort: 9000
         volumeMounts:
-        - mountPath: "/tmp/data"
+        - mountPath: /tmp/data
           name: fastestpath-mount
       volumes:
         - name: fastestpath-mount
           persistentVolumeClaim:
-           claimName: fastestpath-volume-claim
+            claimName: fastestpath-volume-claim

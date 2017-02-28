@@ -35,3 +35,40 @@ GROVE_STREET
 WORLD_TRADE_CENTER
 HARRISON
 ```
+
+## Deployment Notes
+
+Create a cluster using the gcloud dashboard.
+
+Create a persistent disk.
+```
+gcloud compute disks create --size 50GB fastestpath-disk
+```
+
+Use gcloud to pull down kubernetes credentials for a cluster.
+```
+gcloud container clusters get-credentials cluster-1
+```
+
+Start the kubernetes dashboard
+```
+kubectl proxy
+```
+
+Go to `localhost:8001/ui` to view any existing deployments.
+
+Use kubernetes to create a persistent volume and volume claim.
+```
+kubectl create -f persistent-volume.yml 
+kubectl create -f persistent-volume-claim.yml 
+```
+
+Use kubernetes to create a deployment.
+```
+kubectl create -f deployment.yml
+```
+
+Expose the deployment.
+```
+kubectl expose deployment fastestpath-deployment --type="LoadBalancer" --port=80 --target-port=9000
+```
