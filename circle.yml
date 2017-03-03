@@ -17,6 +17,7 @@ machine:
 dependencies:
   override:
     # Retrieve our secrets from the CircleCI environment
+    - echo $FIREBASE_KEY | base64 --decode > ${HOME}/firebase.json
     - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/client-secret.json
     # Make sure gcloud is up to date
     - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
