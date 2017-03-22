@@ -1,5 +1,7 @@
 package co.fastestpath.api.schedule.models;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,11 +12,13 @@ public class Departure {
 
   private StationName departureStation;
 
-  private Instant departureTime;
+  @VisibleForTesting
+  public Instant departureTime;
 
   private StationName arrivalStation;
 
-  private Instant arrivalTime;
+  @VisibleForTesting
+  public Instant arrivalTime;
 
   private List<Stop> stops;
 

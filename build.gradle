@@ -16,6 +16,7 @@ dependencies {
     compile 'io.dropwizard:dropwizard-core:' + dropwizardVersion
     compile 'io.dropwizard:dropwizard-forms:' + dropwizardVersion
     compile 'com.hubspot.dropwizard:dropwizard-guice:1.0.0.2'
+    compile 'com.google.maps:google-maps-services:0.1.17'
 
     compile 'commons-io:commons-io:2.5'
 
