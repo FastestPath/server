@@ -16,7 +16,6 @@ dependencies {
     compile 'io.dropwizard:dropwizard-core:' + dropwizardVersion
     compile 'io.dropwizard:dropwizard-forms:' + dropwizardVersion
     compile 'com.hubspot.dropwizard:dropwizard-guice:1.0.0.2'
-    compile 'com.google.maps:google-maps-services:0.1.17'
 
     compile 'commons-io:commons-io:2.5'
 
@@ -32,6 +31,7 @@ dependencies {
     compile 'com.google.firebase:firebase-admin:4.1.2'
 
     testCompile 'io.dropwizard:dropwizard-testing:' + dropwizardVersion
+    testCompile 'com.google.maps:google-maps-services:0.1.17'
     testCompile 'org.testng:testng:6.10'
 }
 

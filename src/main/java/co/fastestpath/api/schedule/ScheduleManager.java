@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Instant;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Singleton
 public class ScheduleManager {
@@ -30,6 +31,10 @@ public class ScheduleManager {
 	}
 
 	public void fetchLatest() {
+	  fetchLatest(null);
+  }
+
+	public void fetchLatest(ScheduleFetchCallback callback) {
     if (isFetching) {
       LOG.info("Unable to fetch schedule, a fetch is already in progress.");
       return;
@@ -52,16 +57,20 @@ public class ScheduleManager {
 
     // latest will be empty if up-to-date
     latest.ifPresent(schedule -> this.schedule = schedule);
+
+    if (callback != null) {
+      callback.onFetch();
+    }
   }
 
-  public Departure getDeparture(StationName from, StationName to, Instant departAt) {
+  public Optional<Departure> getDeparture(StationName from, StationName to, Instant departAt) {
     departAt = ObjectUtils.defaultIfNull(departAt, Instant.now());
     Optional<Trip> sequence = schedule.getTripForDepartureTime(from, to, departAt);
 
     if (!sequence.isPresent()) {
-      return Departure.empty();
+      return Optional.empty();
     }
 
-    return Departure.create(sequence.get());
+    return Optional.of(Departure.create(sequence.get()));
   }
 }
