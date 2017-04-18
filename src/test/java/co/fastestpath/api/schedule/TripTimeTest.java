@@ -32,8 +32,16 @@ public class TripTimeTest {
 
   private Instant now;
 
+  private boolean isSetup;
+
   @Before
   public void setup() throws Exception {
+
+    if (isSetup) {
+      return;
+    }
+
+    isSetup = true;
     FastestPathApplication application = RULE.getApplication();
     Injector injector = application.guiceBundle.getInjector();
 
@@ -41,7 +49,10 @@ public class TripTimeTest {
     while (scheduleManager.isFetching()) {
       Thread.sleep(1000);
     }
+  }
 
+  @Before
+  public void beforeEachTest() {
     now = Instant.now();
   }
 
