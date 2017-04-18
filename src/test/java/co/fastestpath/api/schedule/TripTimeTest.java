@@ -10,18 +10,15 @@ import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.LatLng;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.testng.annotations.BeforeMethod;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.fail;
+import static org.testng.Assert.*;
 
 public class TripTimeTest {
 
@@ -41,14 +38,10 @@ public class TripTimeTest {
     Injector injector = application.guiceBundle.getInjector();
 
     scheduleManager = injector.getInstance(ScheduleManager.class);
-
     while (scheduleManager.isFetching()) {
       Thread.sleep(1000);
     }
-  }
 
-  @BeforeMethod
-  public void beforeMethod() {
     now = Instant.now();
   }
 
@@ -62,11 +55,13 @@ public class TripTimeTest {
     LatLng originLatLng = StationLocation.fromStationName(origin).getLatLng();
     LatLng destinationLatLng = StationLocation.fromStationName(destination).getLatLng();
 
-    DirectionsResult directions = GoogleDirectionsApi.fetch(originLatLng, destinationLatLng, Instant.now());
-    DirectionsLeg leg = directions.routes[0].legs[0];
+    DirectionsResult directions = GoogleDirectionsApi.fetch(originLatLng, destinationLatLng, now);
 
+    assertNotNull(directions);
     assertEquals(directions.routes.length, 1);
     assertEquals(directions.routes[0].legs.length, 1);
+
+    DirectionsLeg leg = directions.routes[0].legs[0];
 
     scheduleManager.fetchLatest(() -> {
       Optional<Departure> departureOptional = scheduleManager.getDeparture(origin, destination, now);
@@ -78,7 +73,7 @@ public class TripTimeTest {
       Departure departure = departureOptional.get();
       Duration tripDuration = Duration.between(departure.getDepartureTime(), departure.getArrivalTime());
 
-      Assert.assertEquals(leg.duration.humanReadable, tripDuration.toMinutes() + " mins");
+      assertEquals(leg.duration.humanReadable, tripDuration.toMinutes() + " mins");
     });
   }
 }
