@@ -7,21 +7,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.google.common.annotations.VisibleForTesting;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import io.dropwizard.Application;
 import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-class FastestPathApplication extends Application<FastestPathConfiguration> {
+@VisibleForTesting
+public class FastestPathApplication extends Application<FastestPathConfiguration> {
 
   public static void main(String[] args) throws Exception {
     new FastestPathApplication().run(args);
   }
 
+  public GuiceBundle<FastestPathConfiguration> guiceBundle;
+
   @Override
   public void initialize(Bootstrap<FastestPathConfiguration> bootstrap) {
-    GuiceBundle<FastestPathConfiguration> guiceBundle = GuiceBundle.<FastestPathConfiguration>newBuilder()
+    guiceBundle = GuiceBundle.<FastestPathConfiguration>newBuilder()
         .setConfigClass(FastestPathConfiguration.class)
         .addModule(new FastestPathModule())
         .enableAutoConfig(getClass().getPackage().getName())

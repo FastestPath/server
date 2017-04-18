@@ -11,9 +11,9 @@ import javax.inject.Singleton;
 @Singleton
 public class AlertStore {
 
-  private static final Logger LOG = LoggerFactory.getLogger(AlertStore.class);
+  public final String ALERTS_REF = "/alerts";
 
-  private final String ALERTS_REF = "/alerts";
+  private static final Logger LOG = LoggerFactory.getLogger(AlertStore.class);
 
   private final DatabaseReference databaseReference;
 

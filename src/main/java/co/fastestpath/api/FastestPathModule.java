@@ -33,8 +33,14 @@ public class FastestPathModule extends AbstractModule {
   @Provides
   @Named(ENVIRONMENT)
   public Environment getEnvironment(FastestPathConfiguration configuration) {
-    return configuration.environment.equals("production")
-        ? PRODUCTION : Environment.DEVELOPMENT;
+    switch (configuration.environment) {
+      case "production":
+        return Environment.PRODUCTION;
+      case "test":
+        return Environment.TEST;
+      default:
+        return Environment.DEVELOPMENT;
+    }
   }
 
   @Provides

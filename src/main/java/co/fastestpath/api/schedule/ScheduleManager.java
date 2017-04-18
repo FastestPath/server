@@ -1,9 +1,9 @@
 package co.fastestpath.api.schedule;
 
-import co.fastestpath.api.schedule.models.Trip;
 import co.fastestpath.api.schedule.models.Departure;
 import co.fastestpath.api.schedule.models.Schedule;
 import co.fastestpath.api.schedule.models.StationName;
+import co.fastestpath.api.schedule.models.Trip;
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,15 @@ public class ScheduleManager {
 		this.scheduleFetcher = scheduleFetcher;
 	}
 
-	public void fetchLatest() {
+  public boolean isFetching() {
+    return isFetching;
+  }
+
+  public void fetchLatest() {
+	  fetchLatest(null);
+  }
+
+	public synchronized void fetchLatest(ScheduleFetchCallback callback) {
     if (isFetching) {
       LOG.info("Unable to fetch schedule, a fetch is already in progress.");
       return;
@@ -52,16 +60,20 @@ public class ScheduleManager {
 
     // latest will be empty if up-to-date
     latest.ifPresent(schedule -> this.schedule = schedule);
+
+    if (callback != null) {
+      callback.onFetch();
+    }
   }
 
-  public Departure getDeparture(StationName from, StationName to, Instant departAt) {
+  public Optional<Departure> getDeparture(StationName from, StationName to, Instant departAt) {
     departAt = ObjectUtils.defaultIfNull(departAt, Instant.now());
     Optional<Trip> sequence = schedule.getTripForDepartureTime(from, to, departAt);
 
     if (!sequence.isPresent()) {
-      return Departure.empty();
+      return Optional.empty();
     }
 
-    return Departure.create(sequence.get());
+    return Optional.of(Departure.create(sequence.get()));
   }
 }

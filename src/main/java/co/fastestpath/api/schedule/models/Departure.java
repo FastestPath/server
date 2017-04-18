@@ -1,12 +1,12 @@
 package co.fastestpath.api.schedule.models;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Departure {
-
-  private static final Departure EMPTY = new Departure();
 
   private StationName departureStation;
 
@@ -17,10 +17,6 @@ public class Departure {
   private Instant arrivalTime;
 
   private List<Stop> stops;
-
-  public static Departure empty() {
-    return EMPTY;
-  }
 
   private Departure() {
   }
@@ -35,6 +31,26 @@ public class Departure {
         .map(Stop::create)
         .collect(Collectors.toList());
     return departure;
+  }
+
+  public StationName getDepartureStation() {
+    return departureStation;
+  }
+
+  public Instant getDepartureTime() {
+    return departureTime;
+  }
+
+  public StationName getArrivalStation() {
+    return arrivalStation;
+  }
+
+  public Instant getArrivalTime() {
+    return arrivalTime;
+  }
+
+  public List<Stop> getStops() {
+    return stops;
   }
 
   private static class Stop {

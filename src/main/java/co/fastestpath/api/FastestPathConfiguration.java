@@ -2,12 +2,14 @@ package co.fastestpath.api;
 
 import co.fastestpath.api.firebase.FirebaseConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.annotations.VisibleForTesting;
 import io.dropwizard.Configuration;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 
-class FastestPathConfiguration extends Configuration {
+@VisibleForTesting
+public class FastestPathConfiguration extends Configuration {
 
   @NotEmpty
   @JsonProperty("environment")

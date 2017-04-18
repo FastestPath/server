@@ -1,6 +1,9 @@
 package co.fastestpath.api.schedule;
 
+import ch.qos.logback.core.status.Status;
+import co.fastestpath.api.schedule.models.Departure;
 import co.fastestpath.api.schedule.models.StationName;
+import org.apache.http.HttpStatus;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -10,6 +13,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.Instant;
+import java.util.Optional;
 
 @Path("/schedule")
 @Produces(MediaType.APPLICATION_JSON)
@@ -25,6 +29,14 @@ public class ScheduleResource {
   @GET
   public Response getSchedule(@QueryParam("from") StationName from, @QueryParam("to") StationName to,
       @QueryParam("departAt") String departAt) {
+
+    Optional<Departure> departure = scheduleManager.getDeparture(from, to, Instant.parse(departAt));
+
+    if (!departure.isPresent()) {
+      return Response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR)
+          .build();
+    }
+
     return Response.ok()
         .entity(scheduleManager.getDeparture(from, to, Instant.parse(departAt)))
         .build();

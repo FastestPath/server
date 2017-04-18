@@ -1,6 +1,5 @@
 package co.fastestpath.api.alerts;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,7 +7,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 @Singleton
 class AlertManager {
@@ -24,11 +22,6 @@ class AlertManager {
   @Inject
   public AlertManager(AlertStore alertStore) {
     this.alertStore = alertStore;
-  }
-
-
-  public List<Alert> getAlerts() {
-    throw new NotImplementedException("Get alerts not yet implemented.");
   }
 
   public void addAlert(Alert alert) {
