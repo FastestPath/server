@@ -17,9 +17,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -80,7 +78,7 @@ class ScheduleFetcher {
 
     LOG.info("Fetching schedule...");
     try (InputStream inputStream = fetchScheduleZip()) {
-      Files.copy(inputStream, zipPath);
+      Files.copy(inputStream, zipPath, StandardCopyOption.REPLACE_EXISTING);
     } catch (IOException e) {
       throw new ScheduleFetcherException("Failed to download schedule zip from " + ZIP_URL, e);
     }

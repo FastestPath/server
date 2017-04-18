@@ -1,9 +1,9 @@
 package co.fastestpath.api.schedule;
 
-import co.fastestpath.api.schedule.models.Trip;
 import co.fastestpath.api.schedule.models.Departure;
 import co.fastestpath.api.schedule.models.Schedule;
 import co.fastestpath.api.schedule.models.StationName;
+import co.fastestpath.api.schedule.models.Trip;
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Instant;
 import java.util.Optional;
-import java.util.function.Function;
 
 @Singleton
 public class ScheduleManager {
@@ -30,11 +29,15 @@ public class ScheduleManager {
 		this.scheduleFetcher = scheduleFetcher;
 	}
 
-	public void fetchLatest() {
+  public boolean isFetching() {
+    return isFetching;
+  }
+
+  public void fetchLatest() {
 	  fetchLatest(null);
   }
 
-	public void fetchLatest(ScheduleFetchCallback callback) {
+	public synchronized void fetchLatest(ScheduleFetchCallback callback) {
     if (isFetching) {
       LOG.info("Unable to fetch schedule, a fetch is already in progress.");
       return;
