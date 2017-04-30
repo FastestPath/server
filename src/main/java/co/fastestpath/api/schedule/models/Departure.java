@@ -1,8 +1,8 @@
 package co.fastestpath.api.schedule.models;
 
-import com.google.common.annotations.VisibleForTesting;
+import co.fastestpath.api.gtfs.models.GtfsHhMmSs;
+import co.fastestpath.api.gtfs.models.GtfsStopTime;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,11 +10,11 @@ public class Departure {
 
   private StationName departureStation;
 
-  private Instant departureTime;
+  private GtfsHhMmSs departureTime;
 
   private StationName arrivalStation;
 
-  private Instant arrivalTime;
+  private GtfsHhMmSs arrivalTime;
 
   private List<Stop> stops;
 
@@ -23,10 +23,10 @@ public class Departure {
 
   public static Departure create(Trip trip) {
     Departure departure = new Departure();
-    departure.departureStation = trip.getDepartureStation().getName();
-    departure.departureTime = trip.getDepartureTime();
-    departure.arrivalStation = trip.getArrivalStation().getName();
-    departure.arrivalTime = trip.getArrivalTime();
+    departure.departureStation = trip.getDeparture().getStation().getName();
+    departure.departureTime = trip.getDeparture().getDepartureTime();
+    departure.arrivalStation = trip.getArrival().getStation().getName();
+    departure.arrivalTime = trip.getArrival().getArrivalTime();
     departure.stops = trip.getStopTimes().stream()
         .map(Stop::create)
         .collect(Collectors.toList());
@@ -37,7 +37,7 @@ public class Departure {
     return departureStation;
   }
 
-  public Instant getDepartureTime() {
+  public GtfsHhMmSs getDepartureTime() {
     return departureTime;
   }
 
@@ -45,7 +45,7 @@ public class Departure {
     return arrivalStation;
   }
 
-  public Instant getArrivalTime() {
+  public GtfsHhMmSs getArrivalTime() {
     return arrivalTime;
   }
 
@@ -57,13 +57,13 @@ public class Departure {
 
     private StationName station;
 
-    private Instant arrivalTime;
+    private GtfsHhMmSs arrivalTime;
 
-    private Instant departureTime;
+    private GtfsHhMmSs departureTime;
 
     private String stopSequence;
 
-    static Stop create(StopTime stopTime) {
+    static Stop create(GtfsStopTime stopTime) {
       Stop stop = new Stop();
       stop.station = stopTime.getStation().getName();
       stop.arrivalTime = stopTime.getArrivalTime();

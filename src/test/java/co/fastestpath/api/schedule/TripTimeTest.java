@@ -2,6 +2,7 @@ package co.fastestpath.api.schedule;
 
 import co.fastestpath.api.FastestPathApplication;
 import co.fastestpath.api.FastestPathConfiguration;
+import co.fastestpath.api.gtfs.GtfsArchiveManager;
 import co.fastestpath.api.schedule.models.Departure;
 import co.fastestpath.api.schedule.models.StationName;
 import com.google.inject.Injector;
@@ -10,12 +11,16 @@ import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.LatLng;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.Optional;
 
 import static org.testng.Assert.*;
@@ -28,7 +33,7 @@ public class TripTimeTest {
   public DropwizardAppRule<FastestPathConfiguration> RULE = new DropwizardAppRule<>(FastestPathApplication.class,
       ResourceHelpers.resourceFilePath(TEST_CONFIG));
 
-  private ScheduleManager scheduleManager;
+  private GtfsArchiveManager scheduleManager;
 
   private Instant now;
 
@@ -45,7 +50,7 @@ public class TripTimeTest {
     FastestPathApplication application = RULE.getApplication();
     Injector injector = application.guiceBundle.getInjector();
 
-    scheduleManager = injector.getInstance(ScheduleManager.class);
+    scheduleManager = injector.getInstance(GtfsArchiveManager.class);
     while (scheduleManager.isFetching()) {
       Thread.sleep(1000);
     }
@@ -53,7 +58,19 @@ public class TripTimeTest {
 
   @Before
   public void beforeEachTest() {
-    now = Instant.now();
+    now = Instant.now().plus(140, ChronoUnit.MINUTES);
+  }
+
+  @Test
+  public void testTimeZone() {
+
+    Date other = new DateTime().withTimeAtStartOfDay().toDate();
+
+      Date startOfDay = new DateTime(DateTimeZone.forID("America/New_York"))
+          .withTimeAtStartOfDay()
+          .toDate();
+
+      assertEquals(startOfDay.getTime(), other.getTime());
   }
 
   @Test
@@ -82,9 +99,9 @@ public class TripTimeTest {
       }
 
       Departure departure = departureOptional.get();
-      Duration tripDuration = Duration.between(departure.getDepartureTime(), departure.getArrivalTime());
+      Duration tripDuration = Duration.ofSeconds(departure.getDepartureTime().toSeconds() - departure.getArrivalTime().toSeconds());
 
-      assertEquals(leg.duration.humanReadable, tripDuration.toMinutes() + " mins");
+      assertEquals(tripDuration.toMinutes() + " mins", leg.duration.humanReadable);
     });
   }
 }

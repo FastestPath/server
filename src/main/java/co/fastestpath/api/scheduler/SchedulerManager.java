@@ -1,13 +1,14 @@
 package co.fastestpath.api.scheduler;
 
-import io.dropwizard.lifecycle.Managed;
+import co.fastestpath.api.managed.FastestPathManaged;
+import co.fastestpath.api.managed.FastestPathManagedPriority;
 import org.quartz.Scheduler;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class SchedulerManager implements Managed {
+public class SchedulerManager implements FastestPathManaged {
 
   private final Scheduler scheduler;
 
@@ -24,5 +25,10 @@ public class SchedulerManager implements Managed {
   @Override
   public void stop() throws Exception {
     scheduler.shutdown(false);
+  }
+
+  @Override
+  public int getPriority() {
+    return FastestPathManagedPriority.HIGH;
   }
 }

@@ -1,6 +1,6 @@
 package co.fastestpath.api.schedule;
 
-import co.fastestpath.api.schedule.models.StopTime;
+import co.fastestpath.api.gtfs.models.GtfsStopTime;
 import co.fastestpath.api.schedule.models.Trip;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 class TripPartitioner {
 
   public static List<Trip> createSubTrips(Trip trip) {
-    List<StopTime> stopTimes = trip.getStopTimes();
+    List<GtfsStopTime> stopTimes = trip.getStopTimes();
     List<Trip> allTrips = new ArrayList<>();
     int numberOfStopTimes = stopTimes.size();
     for (int fromIndex = 0; numberOfStopTimes - fromIndex >= 2; fromIndex++) {

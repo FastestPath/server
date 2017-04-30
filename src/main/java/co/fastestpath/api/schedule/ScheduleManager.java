@@ -1,79 +1,30 @@
 package co.fastestpath.api.schedule;
 
-import co.fastestpath.api.schedule.models.Departure;
-import co.fastestpath.api.schedule.models.Schedule;
-import co.fastestpath.api.schedule.models.StationName;
-import co.fastestpath.api.schedule.models.Trip;
-import org.apache.commons.lang3.ObjectUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import co.fastestpath.api.managed.FastestPathManaged;
+import co.fastestpath.api.managed.FastestPathManagedPriority;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Instant;
-import java.util.Optional;
 
 @Singleton
-public class ScheduleManager {
+public class ScheduleManager implements FastestPathManaged {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ScheduleManager.class);
+  private Schedule schedule;
 
-  private final ScheduleFetcher scheduleFetcher;
+  private Instant modifiedOn;
 
-	private Schedule schedule; // storing the latest schedule in memory for now
+  @Override
+  public void start() throws Exception {
 
-  private boolean isFetching;
-
-	@Inject
-	public ScheduleManager(ScheduleFetcher scheduleFetcher) {
-		this.scheduleFetcher = scheduleFetcher;
-	}
-
-  public boolean isFetching() {
-    return isFetching;
   }
 
-  public void fetchLatest() {
-	  fetchLatest(null);
+  @Override
+  public void stop() throws Exception {
+
   }
 
-	public synchronized void fetchLatest(ScheduleFetchCallback callback) {
-    if (isFetching) {
-      LOG.info("Unable to fetch schedule, a fetch is already in progress.");
-      return;
-    }
-
-    this.isFetching = true;
-    Instant currentModifiedOn = schedule == null ? null : schedule.getModifiedOn();
-    Optional<Schedule> latest;
-    try {
-      latest = scheduleFetcher.fetchSchedule(currentModifiedOn);
-    } catch (ScheduleFetcherException e) {
-      LOG.error("Unable to fetch schedule.", e);
-      return;
-    } catch (ScheduleParseException e) {
-      LOG.error("Unable to parse schedule.", e);
-      return;
-    } finally {
-      this.isFetching = false;
-    }
-
-    // latest will be empty if up-to-date
-    latest.ifPresent(schedule -> this.schedule = schedule);
-
-    if (callback != null) {
-      callback.onFetch();
-    }
-  }
-
-  public Optional<Departure> getDeparture(StationName from, StationName to, Instant departAt) {
-    departAt = ObjectUtils.defaultIfNull(departAt, Instant.now());
-    Optional<Trip> sequence = schedule.getTripForDepartureTime(from, to, departAt);
-
-    if (!sequence.isPresent()) {
-      return Optional.empty();
-    }
-
-    return Optional.of(Departure.create(sequence.get()));
+  @Override
+  public int getPriority() {
+    return FastestPathManagedPriority.LOW;
   }
 }

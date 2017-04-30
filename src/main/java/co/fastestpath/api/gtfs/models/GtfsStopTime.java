@@ -1,26 +1,20 @@
-package co.fastestpath.api.schedule.models;
+package co.fastestpath.api.gtfs.models;
 
-import co.fastestpath.api.schedule.models.StopTime.Builder;
+import co.fastestpath.api.gtfs.models.GtfsStopTime.Builder;
+import co.fastestpath.api.schedule.models.Station;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import org.joda.time.DateTime;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
 @JsonDeserialize(builder = Builder.class)
-public class StopTime {
+public class GtfsStopTime {
 
   private final String tripId;
 
-  private final Instant arrivalTime;
+  private final GtfsHhMmSs arrivalTime;
 
-  private final Instant departureTime;
+  private final GtfsHhMmSs departureTime;
 
   private final String stopId;
 
@@ -43,7 +37,7 @@ public class StopTime {
     return new Builder();
   }
 
-  private StopTime(Builder builder) {
+  private GtfsStopTime(Builder builder) {
     tripId = builder.tripId;
     arrivalTime = builder.arrivalTime;
     departureTime = builder.departureTime;
@@ -59,11 +53,11 @@ public class StopTime {
     return tripId;
   }
 
-  public Instant getArrivalTime() {
+  public GtfsHhMmSs getArrivalTime() {
     return arrivalTime;
   }
 
-  public Instant getDepartureTime() {
+  public GtfsHhMmSs getDepartureTime() {
     return departureTime;
   }
 
@@ -102,17 +96,14 @@ public class StopTime {
   @JsonPOJOBuilder(withPrefix = "")
   public static final class Builder {
 
-    @JsonIgnore
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
-
     @JsonProperty("trip_id")
     private String tripId;
 
     @JsonProperty("arrival_time")
-    private Instant arrivalTime;
+    private GtfsHhMmSs arrivalTime;
 
     @JsonProperty("departure_time")
-    private Instant departureTime;
+    private GtfsHhMmSs departureTime;
 
     @JsonProperty("stop_id")
     private String stopId;
@@ -132,22 +123,6 @@ public class StopTime {
     @JsonProperty("shape_dist_traveled")
     private String shapeDistTraveled;
 
-    private static Instant timestampToInstant(String timestamp) {
-      Date hms;
-      try {
-        hms = DATE_FORMAT.parse(timestamp);
-      } catch (ParseException e) {
-        throw new RuntimeException("Unable to parse timestamp, " + timestamp, e);
-      }
-
-      Date startOfDay = new DateTime().withTimeAtStartOfDay().toDate();
-
-      return startOfDay.toInstant()
-          .plus(hms.getHours(), ChronoUnit.HOURS)
-          .plus(hms.getMinutes(), ChronoUnit.MINUTES)
-          .plus(hms.getSeconds(), ChronoUnit.SECONDS);
-    }
-
     public Builder() {
     }
 
@@ -157,12 +132,12 @@ public class StopTime {
     }
 
     public Builder arrivalTime(String val) {
-      arrivalTime = timestampToInstant(val);
+      arrivalTime = GtfsHhMmSs.create(val);
       return this;
     }
 
     public Builder departureTime(String val) {
-      departureTime = timestampToInstant(val);
+      departureTime = GtfsHhMmSs.create(val);
       return this;
     }
 
@@ -196,8 +171,8 @@ public class StopTime {
       return this;
     }
 
-    public StopTime build() {
-      return new StopTime(this);
+    public GtfsStopTime build() {
+      return new GtfsStopTime(this);
     }
   }
 }

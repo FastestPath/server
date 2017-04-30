@@ -1,6 +1,6 @@
 package co.fastestpath.api.schedule;
 
-import co.fastestpath.api.schedule.models.StopTime;
+import co.fastestpath.api.gtfs.models.GtfsStopTime;
 import co.fastestpath.api.schedule.models.Trip;
 import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
@@ -11,20 +11,20 @@ import static org.testng.Assert.assertTrue;
 
 public class TripPartitionerTest {
 
-  private static final StopTime STOP_TIME_A = StopTime.builder()
+  private static final GtfsStopTime STOP_TIME_A = GtfsStopTime.builder()
       .tripId("A")
       .build();
-  private static final StopTime STOP_TIME_B = StopTime.builder()
+  private static final GtfsStopTime STOP_TIME_B = GtfsStopTime.builder()
       .tripId("B")
       .build();
-  private static final StopTime STOP_TIME_C = StopTime.builder()
+  private static final GtfsStopTime STOP_TIME_C = GtfsStopTime.builder()
       .tripId("C")
       .build();
-  private static final StopTime STOP_TIME_D = StopTime.builder()
+  private static final GtfsStopTime STOP_TIME_D = GtfsStopTime.builder()
       .tripId("D")
       .build();
 
-  private static final List<StopTime> STOP_TIMES = ImmutableList.of(
+  private static final List<GtfsStopTime> STOP_TIMES = ImmutableList.of(
       STOP_TIME_A,
       STOP_TIME_B,
       STOP_TIME_C,

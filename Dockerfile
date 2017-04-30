@@ -1,4 +1,4 @@
-FROM java:8
+FROM java:9
 ADD build/libs/fastestpath-1.0-all.jar fastestpath.jar
 ADD production.yml production.yml
 ADD firebase.json firebase.json

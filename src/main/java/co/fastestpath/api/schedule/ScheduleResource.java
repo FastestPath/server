@@ -1,6 +1,6 @@
 package co.fastestpath.api.schedule;
 
-import ch.qos.logback.core.status.Status;
+import co.fastestpath.api.gtfs.GtfsArchiveManager;
 import co.fastestpath.api.schedule.models.Departure;
 import co.fastestpath.api.schedule.models.StationName;
 import org.apache.http.HttpStatus;
@@ -19,10 +19,10 @@ import java.util.Optional;
 @Produces(MediaType.APPLICATION_JSON)
 public class ScheduleResource {
 
-  private final ScheduleManager scheduleManager;
+  private final GtfsArchiveManager scheduleManager;
 
   @Inject
-  public ScheduleResource(ScheduleManager scheduleManager) {
+  public ScheduleResource(GtfsArchiveManager scheduleManager) {
     this.scheduleManager = scheduleManager;
   }
 

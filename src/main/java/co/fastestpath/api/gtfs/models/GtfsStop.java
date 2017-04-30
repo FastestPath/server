@@ -1,12 +1,12 @@
-package co.fastestpath.api.schedule.models;
+package co.fastestpath.api.gtfs.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import co.fastestpath.api.schedule.models.Stop.Builder;
+import co.fastestpath.api.gtfs.models.GtfsStop.Builder;
 
 @JsonDeserialize(builder = Builder.class)
-public class Stop {
+public class GtfsStop {
 
   private final String name;
 
@@ -32,7 +32,7 @@ public class Stop {
 
   private final String timeZone;
 
-  private Stop(Builder builder) {
+  private GtfsStop(Builder builder) {
     name = builder.name;
     id = builder.id;
     code = builder.code;
@@ -197,8 +197,8 @@ public class Stop {
       return this;
     }
 
-    public Stop build() {
-      return new Stop(this);
+    public GtfsStop build() {
+      return new GtfsStop(this);
     }
   }
 }

@@ -1,4 +1,4 @@
-package co.fastestpath.api.schedule;
+package co.fastestpath.api.gtfs;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,25 +13,24 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Locale;
 
-import static co.fastestpath.api.schedule.ScheduleFetcher.SCHEDULE_ADDRESS;
+class GtfsArchiveDateFetcher {
 
-class ScheduleDateFetcher {
-
-  private static final Logger LOG = LoggerFactory.getLogger(ScheduleDateFetcher.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GtfsArchiveDateFetcher.class);
 
   private static final DateFormat MODIFIED_ON_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd mm:ss",
       Locale.ENGLISH);
 
   private static final String MODIFIED_ON_ELEMENT_SELECTOR = "tr > td:eq(2)";
 
-  public static Instant fetchModifiedOn() throws ScheduleFetcherException {
-    LOG.info("Fetching schedule modifiedOn date...");
+  public static Instant fetchModifiedOn() throws GtfsArchiveDateFetchingException {
+    LOG.info("Fetching GTFS archive modifiedOn date...");
 
     Document document;
+    String archiveAddress = GtfsArchive.ADDRESS;
     try {
-      document = Jsoup.connect(SCHEDULE_ADDRESS).get();
+      document = Jsoup.connect(archiveAddress).get();
     } catch (IOException e) {
-      throw new ScheduleFetcherException("Failed to read PATH directory at " + SCHEDULE_ADDRESS, e);
+      throw new GtfsArchiveDateFetchingException("Failed to read directory at " + archiveAddress, e);
     }
 
     Element element = document.select(MODIFIED_ON_ELEMENT_SELECTOR).get(1);
@@ -40,13 +39,12 @@ class ScheduleDateFetcher {
     try {
       modifiedOn = MODIFIED_ON_DATE_FORMAT.parse(modifiedOnString).toInstant();
     } catch (ParseException e) {
-      throw new ScheduleFetcherException("Unable to parse date, " +  modifiedOnString, e);
+      throw new GtfsArchiveDateFetchingException("Unable to parse date, " +  modifiedOnString, e);
     }
 
     LOG.info("Schedule last updated {}.", modifiedOn);
-
     return modifiedOn;
   }
 
-  private ScheduleDateFetcher() {}
+  private GtfsArchiveDateFetcher() {}
 }

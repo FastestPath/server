@@ -1,56 +1,48 @@
 package co.fastestpath.api.schedule.models;
 
-import javax.annotation.Nonnull;
-import java.time.Instant;
+import co.fastestpath.api.gtfs.models.GtfsStopTime;
+
+import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Trip implements Comparable<Trip> {
 
-  private final LinkedList<StopTime> stopTimes;
+  private final LinkedList<GtfsStopTime> stopTimes;
 
-  private final StopTime departure;
+  private final GtfsStopTime departure;
 
-  private final StopTime arrival;
+  private final GtfsStopTime arrival;
 
-  public Trip(List<StopTime> stopTimes) {
+  private final Duration duration;
+
+  public Trip(List<GtfsStopTime> stopTimes) {
     this.stopTimes = new LinkedList<>(stopTimes);
     this.departure = this.stopTimes.getFirst();
     this.arrival = this.stopTimes.getLast();
+    this.duration = Duration.ofSeconds(arrival.getArrivalTime().toSeconds() - departure.getDepartureTime().toSeconds());
   }
 
-  public Station getDepartureStation() {
-    return departure.getStation();
+  public GtfsStopTime getDeparture() {
+    return departure;
   }
 
-  public Station getArrivalStation() {
-    return arrival.getStation();
+  public GtfsStopTime getArrival() {
+    return arrival;
   }
 
-  public Instant getDepartureTime() {
-    return departure.getDepartureTime();
-  }
-
-  public Instant getArrivalTime() {
-    return arrival.getArrivalTime();
-  }
-
-  public List<StopTime> getStopTimes() {
+  public List<GtfsStopTime> getStopTimes() {
     return stopTimes;
   }
 
-  @Override
-  public int compareTo(@Nonnull Trip other) {
-    // TODO: test for this comparator
-    Instant departureTime = getDepartureTime();
-    Instant otherDepartureTime = other.getDepartureTime();
-    int departureComparison = departureTime.compareTo(otherDepartureTime);
-    if (departureComparison != 0) {
-      return departureComparison;
-    }
+  public Duration getDuration() {
+    return duration;
+  }
 
-    Instant arrivalTime = getArrivalTime();
-    Instant otherArrivalTime = other.getArrivalTime();
-    return arrivalTime.compareTo(otherArrivalTime);
+  @Override
+  public int compareTo(Trip other) {
+    // TODO: this should be moved to two different comparators
+    // one for departures, one for arrivals
+    return departure.getDepartureTime().compareTo(other.departure.getDepartureTime());
   }
 }

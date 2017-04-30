@@ -1,14 +1,22 @@
-package co.fastestpath.api.schedule.models;
+package co.fastestpath.api.schedule;
 
-import co.fastestpath.api.schedule.StationNotPresentException;
+import co.fastestpath.api.gtfs.models.GtfsHhMmSs;
+import co.fastestpath.api.gtfs.GtfsHhMmSsFactory;
+import co.fastestpath.api.schedule.models.StationName;
+import co.fastestpath.api.schedule.models.Trip;
 import com.google.common.collect.Multimap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.Collection;
-import java.util.Date;
+import java.util.Comparator;
 import java.util.Optional;
 
 public class Schedule {
+
+
+  private static final Logger LOG = LoggerFactory.getLogger(Schedule.class);
 
   private final Multimap<StationName, Trip> departureMap;
 
@@ -33,9 +41,9 @@ public class Schedule {
     }
 
     return trips.stream()
-        .filter((departure) -> isAfterDesiredDepartureTime(departure, departAt))
+        .filter((departure) -> isAfterDesiredDepartureTime(departure, departAt)) // TODO: this comparator should be variable
         .filter((departure) -> isDestinationLastStop(departure, to))
-        .findFirst();
+        .min(Comparator.comparing(Trip::getDuration));
   }
 
   public Instant getModifiedOn() {
@@ -46,19 +54,17 @@ public class Schedule {
    * The provided schedules don't include dates, only hours, minutes, seconds.
    */
   private static boolean isAfterDesiredDepartureTime(Trip departure, Instant desiredDeparture) {
-    Date departureDate = Date.from(departure.getDepartureTime());
-
     // TODO: how does the schedule indicate weekends?
-    // make sure we sync up dates to use the same day
-    Date desiredDepartureDate = Date.from(desiredDeparture);
-    desiredDepartureDate.setDate(departureDate.getDate());
+    GtfsHhMmSs desiredHhMmSs = GtfsHhMmSsFactory.create(desiredDeparture);
+    GtfsHhMmSs departureHhMmSs = departure.getDeparture()
+        .getDepartureTime();
 
-    return departureDate.toInstant()
-        .isAfter(desiredDepartureDate.toInstant());
+    return departureHhMmSs.compareTo(desiredHhMmSs) == 1;
   }
 
   private static boolean isDestinationLastStop(Trip departure, StationName destination) {
-    return departure.getArrivalStation().getName()
+    return departure.getArrival()
+        .getStation().getName()
         .equals(destination);
   }
 
