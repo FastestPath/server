@@ -1,6 +1,5 @@
 package co.fastestpath.api.schedule;
 
-import co.fastestpath.api.schedule.models.StationName;
 import com.google.maps.model.LatLng;
 
 enum StationLocation {

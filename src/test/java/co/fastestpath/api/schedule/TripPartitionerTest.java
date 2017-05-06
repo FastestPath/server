@@ -1,7 +1,6 @@
 package co.fastestpath.api.schedule;
 
-import co.fastestpath.api.gtfs.models.GtfsStopTime;
-import co.fastestpath.api.schedule.models.Trip;
+import co.fastestpath.api.gtfs.GtfsStopTime;
 import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
 

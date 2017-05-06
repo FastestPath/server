@@ -1,20 +1,19 @@
-package co.fastestpath.api.gtfs.models;
+package co.fastestpath.api.gtfs;
 
-import co.fastestpath.api.gtfs.models.GtfsStopTime.Builder;
-import co.fastestpath.api.schedule.models.Station;
+import co.fastestpath.api.gtfs.GtfsStopTime.Builder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 @JsonDeserialize(builder = Builder.class)
-public class GtfsStopTime {
+public class GtfsStopTime implements GtfsEntity {
 
   private final String tripId;
 
-  private final GtfsHhMmSs arrivalTime;
+  private final String arrivalTime;
 
-  private final GtfsHhMmSs departureTime;
+  private final String departureTime;
 
   private final String stopId;
 
@@ -30,8 +29,8 @@ public class GtfsStopTime {
   private final String dropOffType;
 
   private final String shapeDistTraveled;
-
-  private Station station;
+  
+  private final GtfsTimePoint timePoint;
 
   public static Builder builder() {
     return new Builder();
@@ -47,17 +46,18 @@ public class GtfsStopTime {
     pickupType = builder.pickupType;
     dropOffType = builder.dropOffType;
     shapeDistTraveled = builder.shapeDistTraveled;
+    timePoint = builder.timePoint;
   }
 
   public String getTripId() {
     return tripId;
   }
 
-  public GtfsHhMmSs getArrivalTime() {
+  public String getArrivalTime() {
     return arrivalTime;
   }
 
-  public GtfsHhMmSs getDepartureTime() {
+  public String getDepartureTime() {
     return departureTime;
   }
 
@@ -85,12 +85,8 @@ public class GtfsStopTime {
     return shapeDistTraveled;
   }
 
-  public Station getStation() {
-    return station;
-  }
-
-  public void setStation(Station station) {
-    this.station = station;
+  public GtfsTimePoint getTimePoint() {
+    return timePoint;
   }
 
   @JsonPOJOBuilder(withPrefix = "")
@@ -100,10 +96,10 @@ public class GtfsStopTime {
     private String tripId;
 
     @JsonProperty("arrival_time")
-    private GtfsHhMmSs arrivalTime;
+    private String arrivalTime;
 
     @JsonProperty("departure_time")
-    private GtfsHhMmSs departureTime;
+    private String departureTime;
 
     @JsonProperty("stop_id")
     private String stopId;
@@ -123,6 +119,9 @@ public class GtfsStopTime {
     @JsonProperty("shape_dist_traveled")
     private String shapeDistTraveled;
 
+    @JsonProperty("timepoint")
+    private GtfsTimePoint timePoint;
+
     public Builder() {
     }
 
@@ -132,12 +131,12 @@ public class GtfsStopTime {
     }
 
     public Builder arrivalTime(String val) {
-      arrivalTime = GtfsHhMmSs.create(val);
+      arrivalTime = val;
       return this;
     }
 
     public Builder departureTime(String val) {
-      departureTime = GtfsHhMmSs.create(val);
+      departureTime = val;
       return this;
     }
 
@@ -168,6 +167,11 @@ public class GtfsStopTime {
 
     public Builder shapeDistTraveled(String val) {
       shapeDistTraveled = val;
+      return this;
+    }
+
+    public Builder timePoint(GtfsTimePoint val) {
+      timePoint = val;
       return this;
     }
 

@@ -1,12 +1,12 @@
 package co.fastestpath.api.schedule.models;
 
-import co.fastestpath.api.gtfs.models.GtfsHhMmSs;
+import co.fastestpath.api.schedule.HhMmSs;
 import org.testng.annotations.Test;
 
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.fail;
 
-public class GtfsHhMmSsTest {
+public class HhMmSsTest {
 
   private static final int HOURS = 59;
   private static final int MINUTES = 59;
@@ -15,9 +15,9 @@ public class GtfsHhMmSsTest {
   @Test
   public void testValidCreate() throws Exception {
     try {
-      GtfsHhMmSs.create("00:00:00");
-      GtfsHhMmSs.create("01:01:01");
-      GtfsHhMmSs.create("59:59:59");
+      HhMmSs.create("00:00:00");
+      HhMmSs.create("01:01:01");
+      HhMmSs.create("59:59:59");
     } catch (IllegalArgumentException e) {
       fail("Failed to create valid HhMmSs.");
     }
@@ -25,28 +25,28 @@ public class GtfsHhMmSsTest {
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void testNull() {
-    GtfsHhMmSs.create(null);
+    HhMmSs.create(null);
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void testEmpty() {
-    GtfsHhMmSs.create("");
+    HhMmSs.create("");
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void testInvalidFormat() {
-    GtfsHhMmSs.create(":00:00");
+    HhMmSs.create(":00:00");
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void testInvalidRanges() {
-    GtfsHhMmSs.create("99:99:99");
+    HhMmSs.create("99:99:99");
   }
 
   @Test
   public void testEquals() throws Exception {
-    GtfsHhMmSs left = GtfsHhMmSs.create(HOURS + ":" + MINUTES + ":" + SECONDS);
-    GtfsHhMmSs right = GtfsHhMmSs.builder()
+    HhMmSs left = HhMmSs.create(HOURS + ":" + MINUTES + ":" + SECONDS);
+    HhMmSs right = HhMmSs.builder()
         .hours(HOURS)
         .minutes(MINUTES)
         .seconds(SECONDS)
@@ -56,8 +56,8 @@ public class GtfsHhMmSsTest {
 
   @Test
   public void testCompareTo() throws Exception {
-    GtfsHhMmSs left = GtfsHhMmSs.create(HOURS + ":" + MINUTES + ":" + SECONDS);
-    GtfsHhMmSs right = GtfsHhMmSs.builder()
+    HhMmSs left = HhMmSs.create(HOURS + ":" + MINUTES + ":" + SECONDS);
+    HhMmSs right = HhMmSs.builder()
         .hours(HOURS)
         .minutes(MINUTES)
         .seconds(SECONDS)
@@ -65,7 +65,7 @@ public class GtfsHhMmSsTest {
 
     assertEquals(left.compareTo(right), 0);
 
-    GtfsHhMmSs zero = GtfsHhMmSs.create("00:00:00");
+    HhMmSs zero = HhMmSs.create("00:00:00");
     assertEquals(zero.compareTo(left), -1);
     assertEquals(left.compareTo(zero), 1);
   }

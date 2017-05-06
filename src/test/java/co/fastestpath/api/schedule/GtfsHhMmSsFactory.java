@@ -1,6 +1,4 @@
-package co.fastestpath.api.gtfs;
-
-import co.fastestpath.api.gtfs.models.GtfsHhMmSs;
+package co.fastestpath.api.schedule;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -10,13 +8,13 @@ public class GtfsHhMmSsFactory {
 
   public static final ZoneId DEFAULT_ZONE = ZoneId.of("America/New_York");
 
-  public static GtfsHhMmSs create(Instant instant) {
+  public static HhMmSs create(Instant instant) {
     return create(instant, DEFAULT_ZONE);
   }
 
-  public static GtfsHhMmSs create(Instant instant, ZoneId timeZone) {
+  public static HhMmSs create(Instant instant, ZoneId timeZone) {
     ZonedDateTime desiredDate = instant.atZone(timeZone);
-    return GtfsHhMmSs.builder()
+    return HhMmSs.builder()
         .hours(desiredDate.getHour())
         .minutes(desiredDate.getMinute())
         .seconds(desiredDate.getSecond())

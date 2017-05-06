@@ -1,12 +1,11 @@
-package co.fastestpath.api.gtfs.models;
+package co.fastestpath.api.gtfs;
 
-import co.fastestpath.api.gtfs.models.GtfsStop.Builder;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-@JsonDeserialize(builder = Builder.class)
-public class GtfsRoute {
+@JsonDeserialize(builder = GtfsStop.Builder.class)
+public class GtfsRoute implements GtfsEntity {
 
   private final String routeId;
 

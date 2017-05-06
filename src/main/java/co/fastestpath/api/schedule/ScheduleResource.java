@@ -1,8 +1,6 @@
 package co.fastestpath.api.schedule;
 
 import co.fastestpath.api.gtfs.GtfsArchiveManager;
-import co.fastestpath.api.schedule.models.Departure;
-import co.fastestpath.api.schedule.models.StationName;
 import org.apache.http.HttpStatus;
 
 import javax.inject.Inject;

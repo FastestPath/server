@@ -1,8 +1,6 @@
 package co.fastestpath.api.schedule;
 
-import co.fastestpath.api.schedule.models.Station;
-import co.fastestpath.api.gtfs.models.GtfsStopTime;
-import co.fastestpath.api.schedule.models.Trip;
+import co.fastestpath.api.gtfs.GtfsStopTime;
 
 import java.util.*;
 import java.util.stream.Collectors;

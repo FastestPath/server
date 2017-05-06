@@ -1,4 +1,4 @@
-package co.fastestpath.api.gtfs.models;
+package co.fastestpath.api.gtfs;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

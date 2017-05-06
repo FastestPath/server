@@ -1,30 +1,44 @@
 package co.fastestpath.api.gtfs;
 
-import co.fastestpath.api.gtfs.models.*;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public enum GtfsEntityType {
-  STOPS("stops.txt", GtfsStop.class),
-  ROUTES("routes.txt", GtfsRoute.class),
-  TRIPS("trips.txt", GtfsTrip.class),
-  STOP_TIMES("stop_times.txt", GtfsStopTime.class),
-  CALENDAR("calendar.txt", GtfsCalendar.class),
-  CALENDAR_DATES("calendar_dates.txt", GtfsCalendarDate.class);
+public class GtfsEntityType<T extends GtfsEntity> {
+
+  public static GtfsEntityType<GtfsStop> STOPS = new GtfsEntityType("stops.txt", GtfsStop.class);
+  public static GtfsEntityType<GtfsRoute> ROUTES = new GtfsEntityType("routes.txt", GtfsRoute.class);
+  public static GtfsEntityType<GtfsTrip> TRIPS = new GtfsEntityType("trips.txt", GtfsTrip.class);
+  public static GtfsEntityType<GtfsStopTime> STOP_TIMES = new GtfsEntityType("stop_times.txt", GtfsStopTime.class);
+  public static GtfsEntityType<GtfsCalendar> CALENDAR = new GtfsEntityType("calendar.txt", GtfsCalendar.class);
+  public static GtfsEntityType<GtfsCalendarDate> CALENDAR_DATES = new GtfsEntityType("calendar_dates.txt", GtfsCalendarDate.class);
+
+  private static final List<GtfsEntityType> AS_LIST = List.of(
+      STOPS,
+      ROUTES,
+      TRIPS,
+      STOP_TIMES,
+      CALENDAR,
+      CALENDAR_DATES
+  );
+
+  public static void forEach(Consumer<? super GtfsEntityType> consumer) {
+    AS_LIST.stream().forEach(consumer);
+  }
+
+  public static Stream<GtfsEntityType> stream() {
+    return AS_LIST.stream();
+  }
 
   private final String filename;
 
-  private final Class<?> clazz;
+  private final Class<T> clazz;
 
   private final Path path;
 
-  public static Stream<GtfsEntityType> stream() {
-    return Stream.of(values());
-  }
-
-  GtfsEntityType(String filename, Class<?> clazz) {
+  private GtfsEntityType(String filename, Class<T> clazz) {
     this.filename = filename;
     this.clazz = clazz;
     this.path = Paths.get(filename);
@@ -38,7 +52,7 @@ public enum GtfsEntityType {
     return filename;
   }
 
-  public Class<?> getClazz() {
+  public Class<T> getClazz() {
     return clazz;
   }
 }

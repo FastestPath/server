@@ -1,4 +1,4 @@
-package co.fastestpath.api.gtfs.models;
+package co.fastestpath.api.gtfs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GtfsCalendar {
+public class GtfsCalendar implements GtfsEntity {
 
   private final String serviceId;
 

@@ -1,6 +1,6 @@
-package co.fastestpath.api.gtfs.models;
+package co.fastestpath.api.gtfs;
 
-import co.fastestpath.api.gtfs.models.GtfsCalendarDate.Builder;
+import co.fastestpath.api.gtfs.GtfsCalendarDate.Builder;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import java.time.Instant;
 
 @JsonDeserialize(builder = Builder.class)
-public class GtfsCalendarDate {
+public class GtfsCalendarDate implements GtfsEntity {
 
   private final String serviceId;
 

@@ -1,14 +1,14 @@
-package co.fastestpath.api.gtfs.models;
+package co.fastestpath.api.schedule;
 
 import java.util.regex.Pattern;
 
-public class GtfsHhMmSs implements Comparable<GtfsHhMmSs> {
+public class HhMmSs implements Comparable<HhMmSs> {
 
   private static final Pattern PATTERN = Pattern.compile("(?:[012345]\\d):(?:[012345]\\d):(?:[012345]\\d)");
 
   private final int seconds;
 
-  public static GtfsHhMmSs create(String hHmMsS) {
+  public static HhMmSs create(String hHmMsS) {
 
     if (hHmMsS == null || !PATTERN.matcher(hHmMsS).matches()) {
       throw new IllegalArgumentException("Invalid HH:MM:SS format, " + hHmMsS);
@@ -26,11 +26,11 @@ public class GtfsHhMmSs implements Comparable<GtfsHhMmSs> {
     return new Builder();
   }
 
-  public GtfsHhMmSs(int seconds) {
+  public HhMmSs(int seconds) {
     this.seconds = seconds;
   }
 
-  private GtfsHhMmSs(Builder builder) {
+  private HhMmSs(Builder builder) {
     seconds = builder.hours * 3600 + builder.minutes * 60 + builder.seconds;
   }
 
@@ -39,7 +39,7 @@ public class GtfsHhMmSs implements Comparable<GtfsHhMmSs> {
   }
 
   @Override
-  public int compareTo(GtfsHhMmSs other) {
+  public int compareTo(HhMmSs other) {
     return Integer.compare(toSeconds(), other.toSeconds());
   }
 
@@ -66,8 +66,8 @@ public class GtfsHhMmSs implements Comparable<GtfsHhMmSs> {
       return this;
     }
 
-    public GtfsHhMmSs build() {
-      return new GtfsHhMmSs(this);
+    public HhMmSs build() {
+      return new HhMmSs(this);
     }
   }
 
@@ -81,7 +81,7 @@ public class GtfsHhMmSs implements Comparable<GtfsHhMmSs> {
       return false;
     }
 
-    GtfsHhMmSs hhMmSs = (GtfsHhMmSs) o;
+    HhMmSs hhMmSs = (HhMmSs) o;
     return toSeconds() == hhMmSs.toSeconds();
   }
 

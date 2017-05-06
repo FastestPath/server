@@ -3,31 +3,38 @@ package co.fastestpath.api.gtfs;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 @Singleton
 public class GtfsEntityMapper {
 
-  private final Path resourcePath;
   private final CsvMapper mapper;
 
   @Inject
-  public GtfsEntityMapper(@Named("resources") Path resourcePath, CsvMapper mapper) {
-    this.resourcePath = resourcePath;
+  public GtfsEntityMapper(CsvMapper mapper) {
     this.mapper = mapper;
   }
 
-  public <T> List<T> map(GtfsEntity<T> entity) throws GtfsEntityMappingException {
+  public GtfsEntityMap map(Map<GtfsEntityType, File> fileMap) {
+    GtfsEntityMap.Builder builder = GtfsEntityMap.builder();
+    for (GtfsEntityType entityType : fileMap.keySet()) {
+      File entityFile = fileMap.get(entityType);
+      List<GtfsEntity> entities = createEntity(entityFile, entityType.getClazz());
+      builder.put(entityType, entities);
+    }
+    return builder.build();
+  }
+
+  private <T extends GtfsEntity> List<T> createEntity(File entityFile, Class<T> entityClass)
+      throws GtfsEntityMappingException {
     try {
-      Path file = Paths.get(resourcePath + "/" + GtfsArchive.NAME);
-      return (List<T>) mapper.readerFor(entity.getClazz())
+      return (List<T>) mapper.readerFor(entityClass)
           .with(GtfsArchive.SCHEMA)
-          .readValues(file.toFile())
+          .readValues(entityFile)
           .readAll();
     } catch (IOException e) {
       throw new GtfsEntityMappingException("Unable to map csv to class.", e);

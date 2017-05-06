@@ -1,6 +1,6 @@
 package co.fastestpath.api.gtfs;
 
-public class GtfsEntityMappingException extends Exception {
+public class GtfsEntityMappingException extends RuntimeException {
 
   public GtfsEntityMappingException(String message) {
     super(message);

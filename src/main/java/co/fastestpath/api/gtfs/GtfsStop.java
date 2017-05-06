@@ -1,12 +1,12 @@
-package co.fastestpath.api.gtfs.models;
+package co.fastestpath.api.gtfs;
 
+import co.fastestpath.api.gtfs.GtfsStop.Builder;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import co.fastestpath.api.gtfs.models.GtfsStop.Builder;
 
 @JsonDeserialize(builder = Builder.class)
-public class GtfsStop {
+public class GtfsStop implements GtfsEntity {
 
   private final String name;
 
@@ -18,15 +18,15 @@ public class GtfsStop {
 
   private final String desc;
 
-  private final String lat;
+  private final Float lat;
 
-  private final String lon;
+  private final Float lon;
 
   private final String zoneId;
 
   private final String url;
 
-  private final String locationType;
+  private final GtfsLocationType locationType;
 
   private final String parentStation;
 
@@ -67,11 +67,11 @@ public class GtfsStop {
     return desc;
   }
 
-  public String getLat() {
+  public Float getLat() {
     return lat;
   }
 
-  public String getLon() {
+  public Float getLon() {
     return lon;
   }
 
@@ -83,7 +83,7 @@ public class GtfsStop {
     return url;
   }
 
-  public String getLocationType() {
+  public GtfsLocationType getLocationType() {
     return locationType;
   }
 
@@ -114,10 +114,10 @@ public class GtfsStop {
     private String desc;
 
     @JsonProperty("stop_lat")
-    private String lat;
+    private Float lat;
 
     @JsonProperty("stop_lon")
-    private String lon;
+    private Float lon;
 
     @JsonProperty("zone_id")
     private String zoneId;
@@ -126,7 +126,7 @@ public class GtfsStop {
     private String url;
 
     @JsonProperty("location_type")
-    private String locationType;
+    private GtfsLocationType locationType;
 
     @JsonProperty("parent_station")
     private String parentStation;
@@ -162,12 +162,12 @@ public class GtfsStop {
       return this;
     }
 
-    public Builder lat(String val) {
+    public Builder lat(Float val) {
       lat = val;
       return this;
     }
 
-    public Builder lon(String val) {
+    public Builder lon(Float val) {
       lon = val;
       return this;
     }
@@ -182,7 +182,7 @@ public class GtfsStop {
       return this;
     }
 
-    public Builder locationType(String val) {
+    public Builder locationType(GtfsLocationType val) {
       locationType = val;
       return this;
     }

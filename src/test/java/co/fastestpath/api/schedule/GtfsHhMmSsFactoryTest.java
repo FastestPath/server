@@ -1,7 +1,5 @@
 package co.fastestpath.api.schedule;
 
-import co.fastestpath.api.gtfs.models.GtfsHhMmSs;
-import co.fastestpath.api.gtfs.GtfsHhMmSsFactory;
 import org.testng.annotations.Test;
 
 import java.time.Instant;
@@ -11,7 +9,7 @@ import java.time.ZonedDateTime;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
 
-public class GtfsGtfsHhMmSsFactoryTest {
+public class GtfsHhMmSsFactoryTest {
 
   private static final Instant NOW = Instant.now();
 
@@ -22,7 +20,7 @@ public class GtfsGtfsHhMmSsFactoryTest {
         zonedDateTime.getMinute() * 60 +
         zonedDateTime.getSecond();
 
-    GtfsHhMmSs hhMmSs = GtfsHhMmSsFactory.create(NOW);
+    HhMmSs hhMmSs = GtfsHhMmSsFactory.create(NOW);
     assertEquals(hhMmSs.toSeconds(), secondsSinceStartOfDay);
   }
 
@@ -34,7 +32,7 @@ public class GtfsGtfsHhMmSsFactoryTest {
         zonedDateTime.getMinute() * 60 +
         zonedDateTime.getSecond();
 
-    GtfsHhMmSs hhMmSs = GtfsHhMmSsFactory.create(NOW);
+    HhMmSs hhMmSs = GtfsHhMmSsFactory.create(NOW);
     assertNotEquals(hhMmSs.toSeconds(), secondsSinceStartOfDay);
 
     hhMmSs = GtfsHhMmSsFactory.create(NOW, nonDefaultZone);

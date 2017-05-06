@@ -1,11 +1,11 @@
-package co.fastestpath.api.gtfs.models;
+package co.fastestpath.api.gtfs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 @JsonDeserialize(builder = GtfsStopTime.Builder.class)
-public class GtfsTrip {
+public class GtfsTrip implements GtfsEntity {
 
   private final String id;
 

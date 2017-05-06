@@ -3,8 +3,6 @@ package co.fastestpath.api.schedule;
 import co.fastestpath.api.FastestPathApplication;
 import co.fastestpath.api.FastestPathConfiguration;
 import co.fastestpath.api.gtfs.GtfsArchiveManager;
-import co.fastestpath.api.schedule.models.Departure;
-import co.fastestpath.api.schedule.models.StationName;
 import com.google.inject.Injector;
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsResult;
