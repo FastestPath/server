@@ -1,24 +1,22 @@
 package co.fastestpath.api.schedule;
 
-import java.time.Instant;
-
 public class StopTime {
 
   private final TripId tripId;
 
-  private final Instant arrivalTime;
+  private final HhMmSs arrivalTime;
 
-  private final Instant departureTime;
+  private final HhMmSs departureTime;
 
-  private final int sequence;
+  private final Integer sequence;
 
   private final String headsign;
 
-  private final int pickupType;
+  private final Integer pickupType;
 
-  private final int dropOffType;
+  private final Integer dropOffType;
 
-  private final float shapeDistTraveled;
+  private final Float shapeDistTraveled;
 
   private final TimePoint timePoint;
 
@@ -42,15 +40,15 @@ public class StopTime {
     return tripId;
   }
 
-  public Instant getArrivalTime() {
+  public HhMmSs getArrivalTime() {
     return arrivalTime;
   }
 
-  public Instant getDepartureTime() {
+  public HhMmSs getDepartureTime() {
     return departureTime;
   }
 
-  public int getSequence() {
+  public Integer getSequence() {
     return sequence;
   }
 
@@ -58,15 +56,15 @@ public class StopTime {
     return headsign;
   }
 
-  public int getPickupType() {
+  public Integer getPickupType() {
     return pickupType;
   }
 
-  public int getDropOffType() {
+  public Integer getDropOffType() {
     return dropOffType;
   }
 
-  public float getShapeDistTraveled() {
+  public Float getShapeDistTraveled() {
     return shapeDistTraveled;
   }
 
@@ -76,13 +74,13 @@ public class StopTime {
 
   public static final class Builder {
     private TripId tripId;
-    private Instant arrivalTime;
-    private Instant departureTime;
-    private int sequence;
+    private HhMmSs arrivalTime;
+    private HhMmSs departureTime;
+    private Integer sequence;
     private String headsign;
-    private int pickupType;
-    private int dropOffType;
-    private float shapeDistTraveled;
+    private Integer pickupType;
+    private Integer dropOffType;
+    private Float shapeDistTraveled;
     private TimePoint timePoint;
 
     private Builder() {
@@ -93,12 +91,12 @@ public class StopTime {
       return this;
     }
 
-    public Builder arrivalTime(Instant arrivalTime) {
+    public Builder arrivalTime(HhMmSs arrivalTime) {
       this.arrivalTime = arrivalTime;
       return this;
     }
 
-    public Builder departureTime(Instant departureTime) {
+    public Builder departureTime(HhMmSs departureTime) {
       this.departureTime = departureTime;
       return this;
     }
@@ -123,7 +121,7 @@ public class StopTime {
       return this;
     }
 
-    public Builder shapeDistTraveled(float shapeDistTraveled) {
+    public Builder shapeDistTraveled(Float shapeDistTraveled) {
       this.shapeDistTraveled = shapeDistTraveled;
       return this;
     }

@@ -1,58 +1,34 @@
 package co.fastestpath.api.schedule;
 
-import co.fastestpath.api.gtfs.GtfsStopTime;
+import co.fastestpath.api.ImmutableCollectors;
+import co.fastestpath.api.gtfs.GtfsTrip;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Set;
 
-class TripFactory {
+// TODO: test
+public class TripFactory {
 
-  public static List<Trip> createTrips(List<GtfsStopTime> stopTimes, List<Station> stations) {
-    populateStopTimeStations(stopTimes, stations);
-    List<Trip> trips = createTripsGroupedByTripId(stopTimes);
-    return createSubTrips(trips);
-  }
+  private TripFactory() {}
 
-  private static List<Trip> createSubTrips(List<Trip> trips) {
+  public static Set<Trip> create(List<GtfsTrip> trips) {
     return trips.stream()
-        .map(TripPartitioner::createSubTrips)
-        .flatMap(List::stream)
-        .collect(Collectors.toList());
+        .map(TripFactory::createTrip)
+        .collect(ImmutableCollectors.toSet());
   }
 
-  private static void populateStopTimeStations(List<GtfsStopTime> stopTimes, List<Station> stations) {
-    Map<String, Station> stationMap = createStationMap(stations);
-    stopTimes.forEach((stopTime) -> {
-      Station station = stationMap.get(stopTime.getStopId());
-      stopTime.setStation(station);
-    });
-  }
-
-  private static Map<String,Station> createStationMap(List<Station> stations) {
-    Map<String, Station> stationMap = new HashMap<>();
-    stations.forEach((station) -> {
-      Set<String> stopIds = station.getStopIdMap().keySet();
-      stopIds.forEach((stopId) -> stationMap.put(stopId, station));
-    });
-    return stationMap;
-  }
-
-  private static List<Trip> createTripsGroupedByTripId(List<GtfsStopTime> stopTimes) {
-    Map<String, List<GtfsStopTime>> tripIdMap = stopTimes.stream()
-        .collect(Collectors.groupingBy(GtfsStopTime::getTripId));
-
-    Set<String> tripIds = tripIdMap.keySet();
-
-    List<Trip> trips = new ArrayList<>(stopTimes.size());
-    tripIds.forEach((tripId) -> {
-      List<GtfsStopTime> tripTimes = tripIdMap.get(tripId);
-      Trip trip = new Trip(tripTimes);
-      trips.add(trip);
-    });
-
-    return trips;
-  }
-
-  private TripFactory() {
+  private static Trip createTrip(GtfsTrip trip) {
+    return Trip.builder()
+        .id(new TripId(trip.getId()))
+        .routeId(new RouteId(trip.getRouteId()))
+        .serviceId(new ServiceId(trip.getServiceId()))
+        .headsign(trip.getHeadSign())
+        .shortName(trip.getShortName())
+        .directionId(trip.getDirectionId())
+        .blockId(trip.getBlockId())
+        .shapeId(new ShapeId(trip.getShapeId()))
+        .wheelchairAccessible(trip.getWheelchairAccessible())
+        .bikesAllowed(trip.getBikesAllowed())
+        .build();
   }
 }

@@ -19,6 +19,14 @@ public class CalendarDate {
     return new CalendarDate(FORMAT.parse(dateString).toInstant());
   }
 
+  public boolean isBefore(CalendarDate other) {
+    return date.isBefore(other.date);
+  }
+
+  public boolean isAfter(CalendarDate other) {
+    return date.isAfter(other.date);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

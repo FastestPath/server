@@ -1,7 +1,6 @@
 package co.fastestpath.api.gtfs;
 
 import co.fastestpath.api.gtfs.GtfsStopTime.Builder;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
@@ -17,18 +16,15 @@ public class GtfsStopTime implements GtfsEntity {
 
   private final String stopId;
 
-  private final String stopSequence;
+  private final int stopSequence;
 
-  @JsonIgnore
   private final String stopHeadSign;
 
-  @JsonIgnore
-  private final String pickupType;
+  private final Integer pickupType;
 
-  @JsonIgnore
-  private final String dropOffType;
+  private final Integer dropOffType;
 
-  private final String shapeDistTraveled;
+  private final Float shapeDistTraveled;
   
   private final GtfsTimePoint timePoint;
 
@@ -65,7 +61,7 @@ public class GtfsStopTime implements GtfsEntity {
     return stopId;
   }
 
-  public String getStopSequence() {
+  public int getStopSequence() {
     return stopSequence;
   }
 
@@ -73,15 +69,15 @@ public class GtfsStopTime implements GtfsEntity {
     return stopHeadSign;
   }
 
-  public String getPickupType() {
+  public Integer getPickupType() {
     return pickupType;
   }
 
-  public String getDropOffType() {
+  public Integer getDropOffType() {
     return dropOffType;
   }
 
-  public String getShapeDistTraveled() {
+  public Float getShapeDistTraveled() {
     return shapeDistTraveled;
   }
 
@@ -105,19 +101,19 @@ public class GtfsStopTime implements GtfsEntity {
     private String stopId;
 
     @JsonProperty("stop_sequence")
-    private String stopSequence;
+    private int stopSequence;
 
     @JsonProperty("stop_headsign")
     private String stopHeadSign;
 
     @JsonProperty("pickup_type")
-    private String pickupType;
+    private Integer pickupType;
 
     @JsonProperty("drop_off_type")
-    private String dropOffType;
+    private Integer dropOffType;
 
     @JsonProperty("shape_dist_traveled")
-    private String shapeDistTraveled;
+    private Float shapeDistTraveled;
 
     @JsonProperty("timepoint")
     private GtfsTimePoint timePoint;
@@ -125,53 +121,53 @@ public class GtfsStopTime implements GtfsEntity {
     public Builder() {
     }
 
-    public Builder tripId(String val) {
-      tripId = val;
+    public Builder tripId(String tripId) {
+      this.tripId = tripId;
       return this;
     }
 
-    public Builder arrivalTime(String val) {
-      arrivalTime = val;
+    public Builder arrivalTime(String arrivalTime) {
+      this.arrivalTime = arrivalTime;
       return this;
     }
 
-    public Builder departureTime(String val) {
-      departureTime = val;
+    public Builder departureTime(String departureTime) {
+      this.departureTime = departureTime;
       return this;
     }
 
-    public Builder stopId(String val) {
-      stopId = val;
+    public Builder stopId(String stopId) {
+      this.stopId = stopId;
       return this;
     }
 
-    public Builder stopSequence(String val) {
-      stopSequence = val;
+    public Builder stopSequence(int stopSequence) {
+      this.stopSequence = stopSequence;
       return this;
     }
 
-    public Builder stopHeadSign(String val) {
-      stopHeadSign = val;
+    public Builder stopHeadSign(String stopHeadSign) {
+      this.stopHeadSign = stopHeadSign;
       return this;
     }
 
-    public Builder pickupType(String val) {
-      pickupType = val;
+    public Builder pickupType(Integer pickupType) {
+      this.pickupType = pickupType;
       return this;
     }
 
-    public Builder dropOffType(String val) {
-      dropOffType = val;
+    public Builder dropOffType(Integer dropOffType) {
+      this.dropOffType = dropOffType;
       return this;
     }
 
-    public Builder shapeDistTraveled(String val) {
-      shapeDistTraveled = val;
+    public Builder shapeDistTraveled(Float shapeDistTraveled) {
+      this.shapeDistTraveled = shapeDistTraveled;
       return this;
     }
 
-    public Builder timePoint(GtfsTimePoint val) {
-      timePoint = val;
+    public Builder timePoint(GtfsTimePoint timePoint) {
+      this.timePoint = timePoint;
       return this;
     }
 

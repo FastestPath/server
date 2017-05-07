@@ -19,8 +19,11 @@ public class ScheduleFactory {
 
     StopMap stopMap = StopMap.fromStops(stops);
 
-    List<StopTime> stopTimeEntities = (List<StopTime>) entityMap.get(GtfsEntityType.STOP_TIMES);
+    List<GtfsStopTime> stopTimeEntities = (List<GtfsStopTime>) entityMap.get(GtfsEntityType.STOP_TIMES);
     Set<StopTime> stopTimes = StopTimeFactory.create(stopTimeEntities);
+
+    List<GtfsTrip> tripEntities = (List<GtfsTrip>) entityMap.get(GtfsEntityType.TRIPS);
+    Set<Trip> trips = TripFactory.create(tripEntities);
 
     List<GtfsCalendar> calendars = (List<GtfsCalendar>) entityMap.get(GtfsEntityType.CALENDAR);
     List<GtfsCalendarDate> calendarDates = (List<GtfsCalendarDate>) entityMap.get(GtfsEntityType.CALENDAR_DATES);

@@ -12,11 +12,15 @@ public class Trip {
 
   private final String shortName;
 
-  private final String directionId;
+  private final Integer directionId;
 
   private final String blockId;
 
   private final ShapeId shapeId;
+
+  private final Integer wheelchairAccessible;
+
+  private final Integer bikesAllowed;
 
   private Trip(Builder builder) {
     id = builder.id;
@@ -27,6 +31,8 @@ public class Trip {
     directionId = builder.directionId;
     blockId = builder.blockId;
     shapeId = builder.shapeId;
+    wheelchairAccessible = builder.wheelchairAccessible;
+    bikesAllowed = builder.bikesAllowed;
   }
 
   public static Builder builder() {
@@ -53,7 +59,7 @@ public class Trip {
     return shortName;
   }
 
-  public String getDirectionId() {
+  public Integer getDirectionId() {
     return directionId;
   }
 
@@ -65,18 +71,27 @@ public class Trip {
     return shapeId;
   }
 
+  public Integer getWheelchairAccessible() {
+    return wheelchairAccessible;
+  }
+
+  public Integer getBikesAllowed() {
+    return bikesAllowed;
+  }
+
   public static final class Builder {
     private TripId id;
     private RouteId routeId;
     private ServiceId serviceId;
     private String headsign;
     private String shortName;
-    private String directionId;
+    private Integer directionId;
     private String blockId;
     private ShapeId shapeId;
+    private Integer wheelchairAccessible;
+    private Integer bikesAllowed;
 
-    private Builder() {
-    }
+    private Builder() {}
 
     public Builder id(TripId id) {
       this.id = id;
@@ -103,7 +118,7 @@ public class Trip {
       return this;
     }
 
-    public Builder directionId(String directionId) {
+    public Builder directionId(Integer directionId) {
       this.directionId = directionId;
       return this;
     }
@@ -115,6 +130,16 @@ public class Trip {
 
     public Builder shapeId(ShapeId shapeId) {
       this.shapeId = shapeId;
+      return this;
+    }
+
+    public Builder wheelchairAccessible(Integer wheelchairAccessible) {
+      this.wheelchairAccessible = wheelchairAccessible;
+      return this;
+    }
+
+    public Builder bikesAllowed(Integer bikesAllowed) {
+      this.bikesAllowed = bikesAllowed;
       return this;
     }
 
