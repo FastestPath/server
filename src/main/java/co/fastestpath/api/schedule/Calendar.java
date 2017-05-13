@@ -15,8 +15,6 @@ public class Calendar {
 
   private final ServiceId serviceId;
 
-  // TODO: filter using start and end dates
-
   private final CalendarDate startDate;
 
   private final CalendarDate endDate;
@@ -45,9 +43,15 @@ public class Calendar {
 
 
   public Optional<CalendarDate> getCalendarDate(CalendarDate date) {
+    if (!isDateInRange(date)) {
+      return Optional.empty();
+    }
+
+    DayOfWeek dayOfWeek = date.getDayOfTheWeek(date.getTimeZone());
     return calendarDateMap.get(dayOfWeek);
   }
 
+  // TODO: test
   private boolean isDateInRange(CalendarDate date) {
     return !(date.isBefore(startDate) || date.isAfter(endDate));
   }

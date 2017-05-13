@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 public class GtfsEntityType<T extends GtfsEntity> {
 
+  public static GtfsEntityType<GtfsAgency> AGENCY = new GtfsEntityType("agency.txt", GtfsAgency.class);
   public static GtfsEntityType<GtfsStop> STOPS = new GtfsEntityType("stops.txt", GtfsStop.class);
   public static GtfsEntityType<GtfsRoute> ROUTES = new GtfsEntityType("routes.txt", GtfsRoute.class);
   public static GtfsEntityType<GtfsTrip> TRIPS = new GtfsEntityType("trips.txt", GtfsTrip.class);
@@ -16,6 +17,7 @@ public class GtfsEntityType<T extends GtfsEntity> {
   public static GtfsEntityType<GtfsCalendarDate> CALENDAR_DATES = new GtfsEntityType("calendar_dates.txt", GtfsCalendarDate.class);
 
   private static final List<GtfsEntityType> AS_LIST = List.of(
+      AGENCY,
       STOPS,
       ROUTES,
       TRIPS,

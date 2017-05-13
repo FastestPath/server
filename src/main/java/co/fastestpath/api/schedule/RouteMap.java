@@ -1,39 +1,31 @@
 package co.fastestpath.api.schedule;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableBiMap;
+import com.google.common.collect.ImmutableSet;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
 
 public class RouteMap {
 
-  private final Map<RouteId, Route> map;
+  private final BiMap<RouteId, Route> map;
 
-  private RouteMap(Builder builder) {
-    map = ImmutableMap.copyOf(builder.map);
+  public static RouteMap fromRoutes(Set<Route> routes) {
+    BiMap<RouteId, Route> map = HashBiMap.create(routes.size());
+    routes.forEach((route) -> map.put(route.getId(), route));
+    return new RouteMap(map);
   }
 
-  public static Builder builder() {
-    return new Builder();
+  private RouteMap(BiMap<RouteId, Route> map) {
+    this.map = ImmutableBiMap.copyOf(map);
   }
 
   public Route get(RouteId routeId) {
     return map.get(routeId);
   }
 
-  public static final class Builder {
-
-    private Map<RouteId, Route> map = new HashMap<>();
-
-    private Builder() {}
-
-    public Builder put(RouteId routeId, Route route) {
-      this.map.put(routeId, route);
-      return this;
-    }
-
-    public RouteMap build() {
-      return new RouteMap(this);
-    }
+  public Set<Route> getAll() {
+    return ImmutableSet.copyOf(map.values());
   }
 }

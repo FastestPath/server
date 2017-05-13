@@ -14,6 +14,16 @@ public class ScheduleFactory {
 
   public static Schedule create(GtfsEntityMap entityMap) {
 
+    List<GtfsAgency> agencyEntities = (List<GtfsAgency>) entityMap.get(GtfsEntityType.AGENCY);
+    Set<Agency> agencies = AgencyFactory.create(agencyEntities);
+
+    AgencyMap agencyMap = AgencyMap.fromAgencies(agencies);
+
+    List<GtfsRoute> routeEntities = (List<GtfsRoute>) entityMap.get(GtfsEntityType.ROUTES);
+    Set<Route> routes = RouteFactory.create(routeEntities);
+
+    RouteMap routeMap = RouteMap.fromRoutes(routes);
+
     List<GtfsStop> stopEntities = (List<GtfsStop>) entityMap.get(GtfsEntityType.STOPS);
     Set<Stop> stops = StopFactory.create(stopEntities);
 
@@ -21,6 +31,8 @@ public class ScheduleFactory {
 
     List<GtfsStopTime> stopTimeEntities = (List<GtfsStopTime>) entityMap.get(GtfsEntityType.STOP_TIMES);
     Set<StopTime> stopTimes = StopTimeFactory.create(stopTimeEntities);
+
+    StopTimeMap stopTimeMap = StopTimeMap.builder()
 
     List<GtfsTrip> tripEntities = (List<GtfsTrip>) entityMap.get(GtfsEntityType.TRIPS);
     Set<Trip> trips = TripFactory.create(tripEntities);

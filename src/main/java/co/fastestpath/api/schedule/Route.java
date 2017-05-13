@@ -4,7 +4,7 @@ public class Route {
 
   private final RouteId id;
 
-  private final String agencyId;
+  private final AgencyId agencyId;
 
   private final String shortName;
 
@@ -40,7 +40,7 @@ public class Route {
     return id;
   }
 
-  public String getAgencyId() {
+  public AgencyId getAgencyId() {
     return agencyId;
   }
 
@@ -74,7 +74,7 @@ public class Route {
 
   public static final class Builder {
     private RouteId id;
-    private String agencyId;
+    private AgencyId agencyId;
     private String shortName;
     private String longName;
     private String description;
@@ -83,15 +83,14 @@ public class Route {
     private String color;
     private String textColor;
 
-    private Builder() {
-    }
+    private Builder() {}
 
     public Builder id(RouteId id) {
       this.id = id;
       return this;
     }
 
-    public Builder agencyId(String agencyId) {
+    public Builder agencyId(AgencyId agencyId) {
       this.agencyId = agencyId;
       return this;
     }

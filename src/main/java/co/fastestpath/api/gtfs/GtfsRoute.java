@@ -7,101 +7,110 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = GtfsStop.Builder.class)
 public class GtfsRoute implements GtfsEntity {
 
-  private final String routeId;
+  private final String id;
 
   private final String agencyId;
 
-  private final String routeShortName;
+  private final String shortName;
 
-  private final String routeLongName;
+  private final String longName;
 
-  private final String routeDesc;
+  private final String description;
 
-  private final String routeType;
+  private final String type;
 
-  private final String routeUrl;
+  private final String url;
 
-  private final String routeColor;
+  private final String color;
 
-  private final String routeTextColor;
+  private final String textColor;
 
   private GtfsRoute(Builder builder) {
-    routeId = builder.routeId;
+    id = builder.id;
     agencyId = builder.agencyId;
-    routeShortName = builder.routeShortName;
-    routeLongName = builder.routeLongName;
-    routeDesc = builder.routeDesc;
-    routeType = builder.routeType;
-    routeUrl = builder.routeUrl;
-    routeColor = builder.routeColor;
-    routeTextColor = builder.routeTextColor;
+    shortName = builder.shortName;
+    longName = builder.longName;
+    description = builder.description;
+    type = builder.type;
+    url = builder.url;
+    color = builder.color;
+    textColor = builder.textColor;
   }
 
   public static Builder builder() {
     return new Builder();
   }
 
-  public String getRouteId() {
-    return routeId;
+  public String getId() {
+    return id;
   }
 
   public String getAgencyId() {
     return agencyId;
   }
 
-  public String getRouteShortName() {
-    return routeShortName;
+  public String getShortName() {
+    return shortName;
   }
 
-  public String getRouteLongName() {
-    return routeLongName;
+  public String getLongName() {
+    return longName;
   }
 
-  public String getRouteDesc() {
-    return routeDesc;
+  public String getDescription() {
+    return description;
   }
 
-  public String getRouteType() {
-    return routeType;
+  public String getType() {
+    return type;
   }
 
-  public String getRouteUrl() {
-    return routeUrl;
+  public String getUrl() {
+    return url;
   }
 
-  public String getRouteColor() {
-    return routeColor;
+  public String getColor() {
+    return color;
   }
 
-  public String getRouteTextColor() {
-    return routeTextColor;
+  public String getTextColor() {
+    return textColor;
   }
 
   @JsonPOJOBuilder(withPrefix = "")
   public static final class Builder {
+
     @JsonProperty("route_id")
-    private String routeId;
+    private String id;
+
     @JsonProperty("agency_id")
     private String agencyId;
+
     @JsonProperty("route_short_name")
-    private String routeShortName;
+    private String shortName;
+
     @JsonProperty("route_long_name")
-    private String routeLongName;
+    private String longName;
+
     @JsonProperty("route_desc")
-    private String routeDesc;
+    private String description;
+
     @JsonProperty("route_type")
-    private String routeType;
+    private String type;
+
     @JsonProperty("route_url")
-    private String routeUrl;
+    private String url;
+
     @JsonProperty("route_color")
-    private String routeColor;
+    private String color;
+
     @JsonProperty("route_test_color")
-    private String routeTextColor;
+    private String textColor;
 
     private Builder() {}
 
-    public Builder routeId(String routeId) {
-      this.routeId = routeId;
+    public Builder id(String id) {
+      this.id = id;
       return this;
     }
 
@@ -110,38 +119,38 @@ public class GtfsRoute implements GtfsEntity {
       return this;
     }
 
-    public Builder routeShortName(String routeShortName) {
-      this.routeShortName = routeShortName;
+    public Builder shortName(String shortName) {
+      this.shortName = shortName;
       return this;
     }
 
-    public Builder routeLongName(String routeLongName) {
-      this.routeLongName = routeLongName;
+    public Builder longName(String longName) {
+      this.longName = longName;
       return this;
     }
 
-    public Builder routeDesc(String routeDesc) {
-      this.routeDesc = routeDesc;
+    public Builder description(String description) {
+      this.description = description;
       return this;
     }
 
-    public Builder routeType(String routeType) {
-      this.routeType = routeType;
+    public Builder type(String type) {
+      this.type = type;
       return this;
     }
 
-    public Builder routeUrl(String routeUrl) {
-      this.routeUrl = routeUrl;
+    public Builder url(String url) {
+      this.url = url;
       return this;
     }
 
-    public Builder routeColor(String routeColor) {
-      this.routeColor = routeColor;
+    public Builder color(String color) {
+      this.color = color;
       return this;
     }
 
-    public Builder routeTextColor(String routeTextColor) {
-      this.routeTextColor = routeTextColor;
+    public Builder textColor(String textColor) {
+      this.textColor = textColor;
       return this;
     }
 

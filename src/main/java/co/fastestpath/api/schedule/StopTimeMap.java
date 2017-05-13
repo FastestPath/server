@@ -1,5 +1,6 @@
 package co.fastestpath.api.schedule;
 
+import com.google.common.collect.Multimaps;
 import com.google.common.collect.SortedSetMultimap;
 import com.google.common.collect.TreeMultimap;
 
@@ -19,8 +20,8 @@ public class StopTimeMap {
   private final SortedSetMultimap<TripId, StopTime> departures;
 
   private StopTimeMap(Builder builder) {
-    this.arrivals = builder.arrivals;
-    this.departures = builder.departures;
+    this.arrivals = Multimaps.unmodifiableSortedSetMultimap(builder.arrivals);
+    this.departures = Multimaps.unmodifiableSortedSetMultimap(builder.departures);
   }
 
   public static Builder builder() {

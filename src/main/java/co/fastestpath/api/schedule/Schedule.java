@@ -31,8 +31,7 @@ public class Schedule {
     private StopTimeMap stopTimes;
     private RouteMap routes;
 
-    private Builder() {
-    }
+    private Builder() {}
 
     public Builder calendar(Calendar calendar) {
       this.calendar = calendar;
