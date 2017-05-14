@@ -25,6 +25,10 @@ public class CalendarDate {
     return new CalendarDate(FORMAT.parse(dateString).toInstant(), timeZone);
   }
 
+  public ZoneId getTimeZone() {
+    return timeZone;
+  }
+
   public boolean isBefore(CalendarDate other) {
     return date.isBefore(other.date);
   }

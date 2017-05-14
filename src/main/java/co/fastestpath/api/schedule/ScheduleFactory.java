@@ -32,7 +32,7 @@ public class ScheduleFactory {
     List<GtfsStopTime> stopTimeEntities = (List<GtfsStopTime>) entityMap.get(GtfsEntityType.STOP_TIMES);
     Set<StopTime> stopTimes = StopTimeFactory.create(stopTimeEntities);
 
-    StopTimeMap stopTimeMap = StopTimeMap.builder()
+    StopTimeMap stopTimeMap = StopTimeMap.create(stopTimes);
 
     List<GtfsTrip> tripEntities = (List<GtfsTrip>) entityMap.get(GtfsEntityType.TRIPS);
     Set<Trip> trips = TripFactory.create(tripEntities);

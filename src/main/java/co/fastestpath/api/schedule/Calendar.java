@@ -48,7 +48,7 @@ public class Calendar {
     }
 
     DayOfWeek dayOfWeek = date.getDayOfTheWeek(date.getTimeZone());
-    return calendarDateMap.get(dayOfWeek);
+    return Optional.of(calendarDateMap.get(dayOfWeek));
   }
 
   // TODO: test

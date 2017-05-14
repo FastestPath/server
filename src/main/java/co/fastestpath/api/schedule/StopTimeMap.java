@@ -24,6 +24,12 @@ public class StopTimeMap {
     this.departures = Multimaps.unmodifiableSortedSetMultimap(builder.departures);
   }
 
+  public static StopTimeMap create(Set<StopTime> stopTimes) {
+    Builder builder = builder();
+    stopTimes.forEach((stopTime) -> builder.put(stopTime.getTripId(), stopTime));
+    return builder.build();
+  }
+
   public static Builder builder() {
     return new Builder();
   }
