@@ -2,7 +2,7 @@ package co.fastestpath.api.schedule;
 
 public class Schedule {
 
-  private final Calendar calendar;
+  private final AgencyMap agencies;
 
   private final TripMap trips;
 
@@ -12,8 +12,11 @@ public class Schedule {
 
   private final RouteMap routes;
 
+  private final CalendarMap calendars;
+
   private Schedule(Builder builder) {
-    calendar = builder.calendar;
+    agencies = builder.agencies;
+    calendars = builder.calendars;
     trips = builder.trips;
     stops = builder.stops;
     stopTimes = builder.stopTimes;
@@ -25,16 +28,17 @@ public class Schedule {
   }
 
   public static final class Builder {
-    private Calendar calendar;
+    private AgencyMap agencies;
     private TripMap trips;
     private StopMap stops;
     private StopTimeMap stopTimes;
     private RouteMap routes;
+    private CalendarMap calendars;
 
     private Builder() {}
 
-    public Builder calendar(Calendar calendar) {
-      this.calendar = calendar;
+    public Builder agencies(AgencyMap agencies) {
+      this.agencies = agencies;
       return this;
     }
 
@@ -55,6 +59,11 @@ public class Schedule {
 
     public Builder routes(RouteMap routes) {
       this.routes = routes;
+      return this;
+    }
+
+    public Builder calendar(CalendarMap calendars) {
+      this.calendars = calendars;
       return this;
     }
 

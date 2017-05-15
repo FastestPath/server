@@ -21,8 +21,4 @@ public class StopMap {
   public Stop get(StopId stopId) {
     return map.get(stopId);
   }
-
-  public Set<Stop> getAll() {
-    return ImmutableSet.copyOf(map.values());
-  }
 }

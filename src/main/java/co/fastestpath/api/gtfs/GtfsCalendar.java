@@ -11,7 +11,7 @@ public class GtfsCalendar implements GtfsEntity {
 
   private final String serviceId;
 
-  private final Map<DayOfWeek, Boolean> validDays;
+  private final Map<DayOfWeek, Boolean> daysOfWeek;
 
   private final Instant startDate;
 
@@ -19,25 +19,41 @@ public class GtfsCalendar implements GtfsEntity {
 
   private GtfsCalendar(Builder builder) {
     serviceId = builder.serviceId;
-    validDays = createValidDaysMap(builder);
+    daysOfWeek = createValidDaysMap(builder);
     startDate = builder.startDate;
     endDate = builder.endDate;
   }
 
   private static Map<DayOfWeek, Boolean> createValidDaysMap(Builder builder) {
-    Map<DayOfWeek, Boolean> validDaysMap = new HashMap<>(7);
-    validDaysMap.put(DayOfWeek.MONDAY, builder.monday == 1);
-    validDaysMap.put(DayOfWeek.TUESDAY, builder.tuesday == 1);
-    validDaysMap.put(DayOfWeek.WEDNESDAY, builder.wednesday == 1);
-    validDaysMap.put(DayOfWeek.THURSDAY, builder.thursday == 1);
-    validDaysMap.put(DayOfWeek.FRIDAY, builder.friday == 1);
-    validDaysMap.put(DayOfWeek.SATURDAY, builder.saturday == 1);
-    validDaysMap.put(DayOfWeek.SUNDAY, builder.sunday == 1);
-    return validDaysMap;
+    Map<DayOfWeek, Boolean> daysOfWeekMap = new HashMap<>(7);
+    daysOfWeekMap.put(DayOfWeek.MONDAY, builder.monday == 1);
+    daysOfWeekMap.put(DayOfWeek.TUESDAY, builder.tuesday == 1);
+    daysOfWeekMap.put(DayOfWeek.WEDNESDAY, builder.wednesday == 1);
+    daysOfWeekMap.put(DayOfWeek.THURSDAY, builder.thursday == 1);
+    daysOfWeekMap.put(DayOfWeek.FRIDAY, builder.friday == 1);
+    daysOfWeekMap.put(DayOfWeek.SATURDAY, builder.saturday == 1);
+    daysOfWeekMap.put(DayOfWeek.SUNDAY, builder.sunday == 1);
+    return daysOfWeekMap;
   }
 
   public static Builder builder() {
     return new Builder();
+  }
+
+  public String getServiceId() {
+    return serviceId;
+  }
+
+  public Map<DayOfWeek, Boolean> getDaysOfWeek() {
+    return daysOfWeek;
+  }
+
+  public Instant getStartDate() {
+    return startDate;
+  }
+
+  public Instant getEndDate() {
+    return endDate;
   }
 
   public static final class Builder {

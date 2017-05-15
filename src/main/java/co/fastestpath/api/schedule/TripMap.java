@@ -1,6 +1,7 @@
 package co.fastestpath.api.schedule;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.SetMultimap;
 
 import java.util.Set;
@@ -9,31 +10,17 @@ public class TripMap {
 
   private final SetMultimap<ServiceId, Trip> map;
 
-  private TripMap(Builder builder) {
-    map = builder.map;
+  private TripMap(SetMultimap<ServiceId, Trip> map) {
+    this.map = ImmutableSetMultimap.copyOf(map);
   }
 
-  public static Builder builder() {
-    return new Builder();
+  public static TripMap fromTrips(Set<Trip> trips) {
+    SetMultimap<ServiceId, Trip> map = HashMultimap.create();
+    trips.forEach((trip) -> map.put(trip.getServiceId(), trip));
+    return new TripMap(map);
   }
 
-  public Set<Trip> getAll(ServiceId serviceId) {
+  public Set<Trip> getTrips(ServiceId serviceId) {
     return map.get(serviceId);
-  }
-
-  public static final class Builder {
-
-    private SetMultimap<ServiceId, Trip> map = HashMultimap.create();
-
-    private Builder() {}
-
-    public Builder put(ServiceId serviceId, Trip trip) {
-      this.map.put(serviceId, trip);
-      return this;
-    }
-
-    public TripMap build() {
-      return new TripMap(this);
-    }
   }
 }

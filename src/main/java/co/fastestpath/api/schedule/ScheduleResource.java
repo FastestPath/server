@@ -1,6 +1,6 @@
 package co.fastestpath.api.schedule;
 
-import co.fastestpath.api.gtfs.GtfsArchiveManager;
+import co.fastestpath.api.gtfs.GtfsEntityFetcher;
 import org.apache.http.HttpStatus;
 
 import javax.inject.Inject;
@@ -17,10 +17,10 @@ import java.util.Optional;
 @Produces(MediaType.APPLICATION_JSON)
 public class ScheduleResource {
 
-  private final GtfsArchiveManager scheduleManager;
+  private final GtfsEntityFetcher scheduleManager;
 
   @Inject
-  public ScheduleResource(GtfsArchiveManager scheduleManager) {
+  public ScheduleResource(GtfsEntityFetcher scheduleManager) {
     this.scheduleManager = scheduleManager;
   }
 

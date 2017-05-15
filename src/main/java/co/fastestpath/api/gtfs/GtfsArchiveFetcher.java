@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Singleton
-public class GtfsArchiveFetcher {
+class GtfsArchiveFetcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(GtfsArchiveFetcher.class);
 
@@ -35,11 +35,6 @@ public class GtfsArchiveFetcher {
   }
 
   public synchronized GtfsArchive fetch() throws GtfsArchiveFetchingException {
-
-//    List<GtfsStop> stops = csvParser.parseCsv(stopIdsCsvPath, GtfsStop.class);
-//    List<GtfsStopTime> stopTimes = csvParser.parseCsv(stopTimesCsvPath, GtfsStopTime.class);
-//
-//    Schedule schedule = ScheduleFactory.create(stops, stopTimes, modifiedOn);
 
     LOG.info("Creating empty resources directory at {}...", resourcesPath);
     createEmptyDirectory(resourcesPath);

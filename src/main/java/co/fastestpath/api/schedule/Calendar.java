@@ -21,7 +21,7 @@ public class Calendar {
 
   private final Map<CalendarDate, CalendarExceptionDate> exceptionDateMap;
 
-  private final Map<DayOfWeek, CalendarDate> calendarDateMap;
+  private final Map<DayOfWeek, Boolean> calendarDateMap;
 
   private Calendar(Builder builder) {
     serviceId = builder.serviceId;
@@ -33,6 +33,10 @@ public class Calendar {
 
   public static Builder builder() {
     return new Builder();
+  }
+
+  public ServiceId getServiceId() {
+    return serviceId;
   }
 
   public Optional<CalendarExceptionDate> getExceptionDate(CalendarDate date) {
@@ -65,7 +69,7 @@ public class Calendar {
 
     private Map<CalendarDate, CalendarExceptionDate> exceptionDateMap = new HashMap<>();
 
-    private Map<DayOfWeek, CalendarDate> calendarDateMap = new HashMap<>();
+    private Map<DayOfWeek, Boolean> calendarDateMap = new HashMap<>();
 
     private Builder() {}
 
@@ -89,8 +93,8 @@ public class Calendar {
       return this;
     }
 
-    public Builder putCalendarDate(DayOfWeek dayOfWeek, CalendarDate calendarDate) {
-      this.calendarDateMap.put(dayOfWeek, calendarDate);
+    public Builder putCalendarDate(DayOfWeek dayOfWeek, Boolean isSupported) {
+      this.calendarDateMap.put(dayOfWeek, isSupported);
       return this;
     }
 

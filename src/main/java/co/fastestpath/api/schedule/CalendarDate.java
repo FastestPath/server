@@ -16,7 +16,7 @@ public class CalendarDate {
 
   private final Instant date;
 
-  private CalendarDate(Instant date, ZoneId timeZone) {
+  public CalendarDate(Instant date, ZoneId timeZone) {
     this.timeZone = timeZone;
     this.date = date;
   }

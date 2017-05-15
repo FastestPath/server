@@ -14,7 +14,7 @@ public class GtfsArchiveFetchJob implements Job {
 
   private final GtfsArchiveFetcher archiveFetcher;
 
-  private final GtfsArchiveFetchCallback callback;
+  private final GtfsEntityFetchCallback callback;
 
   private final JobDetail jobDetail;
 
@@ -62,7 +62,7 @@ public class GtfsArchiveFetchJob implements Job {
 
   public static final class Builder {
     private GtfsArchiveFetcher archiveFetcher;
-    private GtfsArchiveFetchCallback callback;
+    private GtfsEntityFetchCallback callback;
     private JobDetail jobDetail;
     private Trigger trigger;
 
@@ -74,7 +74,7 @@ public class GtfsArchiveFetchJob implements Job {
       return this;
     }
 
-    public Builder callback(GtfsArchiveFetchCallback callback) {
+    public Builder callback(GtfsEntityFetchCallback callback) {
       this.callback = callback;
       return this;
     }

@@ -33,8 +33,7 @@ public class GtfsArchiveFetchJobFactory {
         .build();
   }
 
-  public GtfsArchiveFetchJob createJob(int repeatIntervalHours, Instant startAt, Instant modifiedAfter,
-      GtfsArchiveFetchCallback callback) {
+  public GtfsArchiveFetchJob createJob(int repeatIntervalHours, Instant startAt, GtfsArchiveFetchCallback callback) {
     return GtfsArchiveFetchJob.builder()
         .archiveFetcher(archiveFetcher)
         .callback(callback)
