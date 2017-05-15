@@ -48,7 +48,7 @@ idea {
     module {
         name = 'fastestpath'
 
-        jdkName = '9-ea'
+        jdkName = '1.8'
 
         sourceDirs += file('src/main/java')
 
