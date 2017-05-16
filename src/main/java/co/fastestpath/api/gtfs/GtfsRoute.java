@@ -1,10 +1,11 @@
 package co.fastestpath.api.gtfs;
 
+import co.fastestpath.api.gtfs.GtfsRoute.Builder;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-@JsonDeserialize(builder = GtfsStop.Builder.class)
+@JsonDeserialize(builder = Builder.class)
 public class GtfsRoute implements GtfsEntity {
 
   private final String id;
@@ -25,6 +26,10 @@ public class GtfsRoute implements GtfsEntity {
 
   private final String textColor;
 
+  private final String sortOrder;
+
+  private final Integer minHeadwayMinutes;
+
   private GtfsRoute(Builder builder) {
     id = builder.id;
     agencyId = builder.agencyId;
@@ -35,6 +40,8 @@ public class GtfsRoute implements GtfsEntity {
     url = builder.url;
     color = builder.color;
     textColor = builder.textColor;
+    sortOrder = builder.sortOrder;
+    minHeadwayMinutes = builder.minHeadwayMinutes;
   }
 
   public static Builder builder() {
@@ -77,6 +84,14 @@ public class GtfsRoute implements GtfsEntity {
     return textColor;
   }
 
+  public String getsortOrder() {
+    return sortOrder;
+  }
+
+  public Integer getMinHeadwayMinutes() {
+    return minHeadwayMinutes;
+  }
+
   @JsonPOJOBuilder(withPrefix = "")
   public static final class Builder {
 
@@ -104,8 +119,14 @@ public class GtfsRoute implements GtfsEntity {
     @JsonProperty("route_color")
     private String color;
 
-    @JsonProperty("route_test_color")
+    @JsonProperty("route_text_color")
     private String textColor;
+
+    @JsonProperty("route_sort_order")
+    private String sortOrder;
+
+    @JsonProperty("min_headway_minutes")
+    private Integer minHeadwayMinutes;
 
     private Builder() {}
 
@@ -151,6 +172,16 @@ public class GtfsRoute implements GtfsEntity {
 
     public Builder textColor(String textColor) {
       this.textColor = textColor;
+      return this;
+    }
+    
+    public Builder sortOrder(String sortOrder) {
+      this.sortOrder = sortOrder;
+      return this;
+    }
+
+    public Builder minHeadwayMinutes(Integer minHeadwayMinutes) {
+      this.minHeadwayMinutes = minHeadwayMinutes;
       return this;
     }
 

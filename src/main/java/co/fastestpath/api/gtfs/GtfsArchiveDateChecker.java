@@ -16,7 +16,7 @@ class GtfsArchiveDateChecker {
     try {
       currentModifiedOn = GtfsArchiveDateFetcher.fetchModifiedOn();
     } catch (GtfsArchiveDateFetchingException e) {
-      LOG.error("Failed to fetch archive modification date.");
+      LOG.error("Failed to fetch archive modification date.", e);
       return false;
     }
 

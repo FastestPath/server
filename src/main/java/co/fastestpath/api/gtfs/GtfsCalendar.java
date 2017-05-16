@@ -1,15 +1,21 @@
 package co.fastestpath.api.gtfs;
 
+import co.fastestpath.api.gtfs.GtfsCalendar.Builder;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+@JsonDeserialize(builder = Builder.class)
 public class GtfsCalendar implements GtfsEntity {
 
   private final String serviceId;
+
+  private final String serviceName;
 
   private final Map<DayOfWeek, Boolean> daysOfWeek;
 
@@ -19,6 +25,7 @@ public class GtfsCalendar implements GtfsEntity {
 
   private GtfsCalendar(Builder builder) {
     serviceId = builder.serviceId;
+    serviceName = builder.serviceName;
     daysOfWeek = createValidDaysMap(builder);
     startDate = builder.startDate;
     endDate = builder.endDate;
@@ -44,6 +51,10 @@ public class GtfsCalendar implements GtfsEntity {
     return serviceId;
   }
 
+  public String getServiceName() {
+    return serviceName;
+  }
+
   public Map<DayOfWeek, Boolean> getDaysOfWeek() {
     return daysOfWeek;
   }
@@ -56,9 +67,14 @@ public class GtfsCalendar implements GtfsEntity {
     return endDate;
   }
 
+  @JsonPOJOBuilder(withPrefix = "")
   public static final class Builder {
+
     @JsonProperty("service_id")
     private String serviceId;
+
+    @JsonProperty("service_name")
+    private String serviceName;
 
     private int monday;
     private int tuesday;
@@ -70,14 +86,19 @@ public class GtfsCalendar implements GtfsEntity {
 
     @JsonProperty("start_date")
     private Instant startDate;
+
     @JsonProperty("end_date")
     private Instant endDate;
 
-    private Builder() {
-    }
+    private Builder() {}
 
     public Builder serviceId(String serviceId) {
       this.serviceId = serviceId;
+      return this;
+    }
+
+    public Builder serviceName(String serviceName) {
+      this.serviceName = serviceName;
       return this;
     }
 

@@ -1,8 +1,11 @@
 package co.fastestpath.api.gtfs;
 
+import co.fastestpath.api.schedule.ScheduleManager;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
 
 public class GtfsArchiveFetchJob implements Job {
 
@@ -14,21 +17,12 @@ public class GtfsArchiveFetchJob implements Job {
 
   private final GtfsArchiveFetcher archiveFetcher;
 
-  private final GtfsArchiveFetchCallback callback;
+  private final ScheduleManager scheduleManager;
 
-  private final JobDetail jobDetail;
-
-  private final Trigger trigger;
-
-  private GtfsArchiveFetchJob(Builder builder) {
-    archiveFetcher = builder.archiveFetcher;
-    callback = builder.callback;
-    jobDetail = builder.jobDetail;
-    trigger = builder.trigger;
-  }
-
-  public static Builder builder() {
-    return new Builder();
+  @Inject
+  public GtfsArchiveFetchJob(GtfsArchiveFetcher archiveFetcher, ScheduleManager scheduleManager) {
+    this.archiveFetcher = archiveFetcher;
+    this.scheduleManager = scheduleManager;
   }
 
   @Override
@@ -49,48 +43,6 @@ public class GtfsArchiveFetchJob implements Job {
     }
 
     LOG.info("Successfully fetched archive.");
-    callback.onFetch(archive);
-  }
-
-  public JobDetail getJobDetail() {
-    return jobDetail;
-  }
-
-  public Trigger getTrigger() {
-    return trigger;
-  }
-
-  public static final class Builder {
-    private GtfsArchiveFetcher archiveFetcher;
-    private GtfsArchiveFetchCallback callback;
-    private JobDetail jobDetail;
-    private Trigger trigger;
-
-    private Builder() {
-    }
-
-    public Builder archiveFetcher(GtfsArchiveFetcher archiveFetcher) {
-      this.archiveFetcher = archiveFetcher;
-      return this;
-    }
-
-    public Builder callback(GtfsArchiveFetchCallback callback) {
-      this.callback = callback;
-      return this;
-    }
-
-    public Builder jobDetail(JobDetail jobDetail) {
-      this.jobDetail = jobDetail;
-      return this;
-    }
-
-    public Builder trigger(Trigger trigger) {
-      this.trigger = trigger;
-      return this;
-    }
-
-    public GtfsArchiveFetchJob build() {
-      return new GtfsArchiveFetchJob(this);
-    }
+    scheduleManager.onFetch(archive);
   }
 }

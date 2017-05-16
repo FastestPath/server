@@ -50,10 +50,9 @@ class GtfsArchiveFetcher {
     LOG.info("Extracted all files.");
 
     GtfsArchive.Builder builder = GtfsArchive.builder();
-
     GtfsEntityType.stream()
-        .filter((entityType) -> Files.exists(entityType.getPath()))
-        .forEach((entityType) -> builder.add(entityType, FileUtils.getFile(entityType.getFilename())));
+        .filter((entityType) -> Files.exists(entityType.getPath(resourcesPath)))
+        .forEach((entityType) -> builder.add(entityType, entityType.getPath(resourcesPath).toFile()));
 
     return builder.build();
   }
@@ -96,6 +95,7 @@ class GtfsArchiveFetcher {
       } catch (IOException e) {
         throw new GtfsArchiveFetchingException("Failed to empty resource directory.", e);
       }
+      return;
     }
 
     try {

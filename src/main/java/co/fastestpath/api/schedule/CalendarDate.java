@@ -12,17 +12,26 @@ public class CalendarDate {
 
   public static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyyMMdd");
 
-  private final ZoneId timeZone;
+  private final String holidayName;
 
   private final Instant date;
 
-  public CalendarDate(Instant date, ZoneId timeZone) {
-    this.timeZone = timeZone;
-    this.date = date;
+  private final ZoneId timeZone;
+
+  private CalendarDate(Builder builder) {
+    timeZone = builder.timeZone;
+    holidayName = builder.holidayName;
+    date = builder.date;
   }
 
-  public static CalendarDate fromString(String dateString, ZoneId timeZone) throws ParseException {
-    return new CalendarDate(FORMAT.parse(dateString).toInstant(), timeZone);
+  public CalendarDate(Instant date, ZoneId timeZone) {
+    this.holidayName = null;
+    this.date = date;
+    this.timeZone = timeZone;
+  }
+
+  public static Builder builder() {
+    return new Builder();
   }
 
   public ZoneId getTimeZone() {
@@ -56,5 +65,37 @@ public class CalendarDate {
   @Override
   public int hashCode() {
     return date != null ? date.hashCode() : 0;
+  }
+
+  public static final class Builder {
+    private ZoneId timeZone;
+    private String holidayName;
+    private Instant date;
+
+    private Builder() {}
+
+    public Builder timeZone(ZoneId timeZone) {
+      this.timeZone = timeZone;
+      return this;
+    }
+
+    public Builder holidayName(String holidayName) {
+      this.holidayName = holidayName;
+      return this;
+    }
+
+    public Builder date(String date) throws ParseException {
+      this.date = FORMAT.parse(date).toInstant();
+      return this;
+    }
+
+    public Builder date(Instant date) {
+      this.date = date;
+      return this;
+    }
+
+    public CalendarDate build() {
+      return new CalendarDate(this);
+    }
   }
 }

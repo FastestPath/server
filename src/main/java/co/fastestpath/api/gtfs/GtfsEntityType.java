@@ -1,5 +1,7 @@
 package co.fastestpath.api.gtfs;
 
+import com.google.common.collect.ImmutableList;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -16,7 +18,7 @@ public class GtfsEntityType<T extends GtfsEntity> {
   public static GtfsEntityType<GtfsCalendar> CALENDAR = new GtfsEntityType("calendar.txt", GtfsCalendar.class);
   public static GtfsEntityType<GtfsCalendarDate> CALENDAR_DATES = new GtfsEntityType("calendar_dates.txt", GtfsCalendarDate.class);
 
-  private static final List<GtfsEntityType> AS_LIST = List.of(
+  private static final List<GtfsEntityType> AS_LIST = ImmutableList.of(
       AGENCY,
       STOPS,
       ROUTES,
@@ -38,20 +40,13 @@ public class GtfsEntityType<T extends GtfsEntity> {
 
   private final Class<T> clazz;
 
-  private final Path path;
-
   private GtfsEntityType(String filename, Class<T> clazz) {
     this.filename = filename;
     this.clazz = clazz;
-    this.path = Paths.get(filename);
   }
 
-  public Path getPath() {
-    return path;
-  }
-
-  public String getFilename() {
-    return filename;
+  public Path getPath(Path directory) {
+    return Paths.get(directory + "/" + filename);
   }
 
   public Class<T> getClazz() {

@@ -1,11 +1,12 @@
 package co.fastestpath.api.managed;
 
+import co.fastestpath.api.FastestPathApplication;
+import co.fastestpath.api.ImmutableCollectors;
 import com.google.inject.Injector;
 import io.dropwizard.lifecycle.Managed;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Set;
 
@@ -15,14 +16,11 @@ public class FastestPathManager implements Managed {
   private static final Comparator<FastestPathManaged> COMPARATOR =
       Comparator.comparingInt(FastestPathManaged::getPriority);
 
-  private final Injector injector;
-
   private final Set<FastestPathManaged> managedClasses;
 
   @Inject
   public FastestPathManager(Injector injector) {
-    this.injector = injector;
-    this.managedClasses = createManagedClassInstances(FastestPath.class);
+    this.managedClasses = createManagedClassInstances(injector, FastestPathApplication.class);
   }
 
   @Override
@@ -39,10 +37,10 @@ public class FastestPathManager implements Managed {
     }
   }
 
-  private static Set<FastestPathManaged> createManagedClassInstances(Class entryPoint) {
+  private static Set<FastestPathManaged> createManagedClassInstances(Injector injector, Class<?> entryPoint) {
     return ManagedClassScanner.scanForClasses(entryPoint).stream()
         .map(injector::getInstance)
         .sorted(COMPARATOR)
-        .collect(Collections.unmodifiableList());
+        .collect(ImmutableCollectors.toSet());
   }
 }

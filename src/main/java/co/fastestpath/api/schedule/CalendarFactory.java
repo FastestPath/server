@@ -33,7 +33,11 @@ public class CalendarFactory {
   private static CalendarExceptionDate createCalendarExceptionDate(ServiceId serviceId,
       GtfsCalendarDate calendarDateEntity, ZoneId timezone) {
 
-    CalendarDate date = new CalendarDate(calendarDateEntity.getDate(), timezone);
+    CalendarDate date = CalendarDate.builder()
+        .holidayName(calendarDateEntity.getHolidayName())
+        .date(calendarDateEntity.getDate())
+        .timeZone(timezone)
+        .build();
 
     return CalendarExceptionDate.builder()
         .serviceId(serviceId)

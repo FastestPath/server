@@ -1,6 +1,7 @@
 package co.fastestpath.api.gtfs;
 
 import co.fastestpath.api.gtfs.GtfsCalendarDate.Builder;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
@@ -14,11 +15,14 @@ public class GtfsCalendarDate implements GtfsEntity {
 
   private final Instant date;
 
+  private final String holidayName;
+
   private final GtfsCalendarDateExceptionType exceptionType;
 
   private GtfsCalendarDate(Builder builder) {
     serviceId = builder.serviceId;
     date = builder.date;
+    holidayName = builder.holidayName;
     exceptionType = builder.exceptionType;
   }
 
@@ -34,11 +38,16 @@ public class GtfsCalendarDate implements GtfsEntity {
     return date;
   }
 
+  public String getHolidayName() {
+    return holidayName;
+  }
+
   public GtfsCalendarDateExceptionType getExceptionType() {
     return exceptionType;
   }
 
   @JsonPOJOBuilder(withPrefix = "")
+  @JsonIgnoreProperties(ignoreUnknown = true)
   public static final class Builder {
 
     @JsonProperty("service_id")
@@ -46,6 +55,9 @@ public class GtfsCalendarDate implements GtfsEntity {
 
     @JsonProperty("date")
     private Instant date;
+
+    @JsonProperty("holiday_name")
+    private String holidayName;
 
     @JsonProperty("exception_type")
     private GtfsCalendarDateExceptionType exceptionType;
@@ -59,6 +71,11 @@ public class GtfsCalendarDate implements GtfsEntity {
 
     public Builder date(Instant date) {
       this.date = date;
+      return this;
+    }
+
+    public Builder holidayName(String holidayName) {
+      this.holidayName = holidayName;
       return this;
     }
 

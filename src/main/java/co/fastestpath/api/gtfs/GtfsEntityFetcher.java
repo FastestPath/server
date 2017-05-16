@@ -1,7 +1,9 @@
 package co.fastestpath.api.gtfs;
 
+import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.quartz.Trigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.time.Duration;
+import java.time.Instant;
 
 import static co.fastestpath.api.FastestPathModule.FETCH_INTERVAL;
 
@@ -19,29 +22,20 @@ public class GtfsEntityFetcher {
 
 	private final Duration fetchInterval;
 
-	private final GtfsArchiveFetchJobFactory fetchJobFactory;
-
-	private final GtfsEntityMapper entityMapper;
-
 	private final Scheduler scheduler;
 
 	@Inject
-  public GtfsEntityFetcher(@Named(FETCH_INTERVAL) Duration fetchInterval, GtfsArchiveFetchJobFactory fetchJobFactory,
-      GtfsEntityMapper entityMapper, Scheduler scheduler) {
+  public GtfsEntityFetcher(@Named(FETCH_INTERVAL) Duration fetchInterval, Scheduler scheduler) {
 	  this.fetchInterval = fetchInterval;
-    this.fetchJobFactory = fetchJobFactory;
-    this.entityMapper = entityMapper;
     this.scheduler = scheduler;
   }
 
-  public void fetch(GtfsEntityFetchCallback callback) {
-    GtfsArchiveFetchJob fetchJob = fetchJobFactory.createJob((int) fetchInterval.toHours(), (archive) -> {
-      GtfsEntityMap entities = entityMapper.map(archive.getFiles());
-      callback.onFetch(entities);
-    });
+  public void fetch() {
+    JobDetail detail = GtfsArchiveFetchJobFactory.createDetail();
+    Trigger trigger = GtfsArchiveFetchJobFactory.createTrigger((int) fetchInterval.toHours(), Instant.now());
 
     try {
-      scheduler.scheduleJob(fetchJob.getJobDetail(), fetchJob.getTrigger());
+      scheduler.scheduleJob(detail, trigger);
     } catch (SchedulerException e) {
       LOG.error("Failed to fetch GTFS entities.", e);
     }

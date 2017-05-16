@@ -15,6 +15,8 @@ public class Calendar {
 
   private final ServiceId serviceId;
 
+  private final String serviceName;
+
   private final CalendarDate startDate;
 
   private final CalendarDate endDate;
@@ -25,6 +27,7 @@ public class Calendar {
 
   private Calendar(Builder builder) {
     serviceId = builder.serviceId;
+    serviceName = builder.serviceName;
     startDate = builder.startDate;
     endDate = builder.endDate;
     exceptionDateMap = ImmutableMap.copyOf(builder.exceptionDateMap);
@@ -39,21 +42,25 @@ public class Calendar {
     return serviceId;
   }
 
+  public String getServiceName() {
+    return serviceName;
+  }
+
   public Optional<CalendarExceptionDate> getExceptionDate(CalendarDate date) {
     return isDateInRange(date)
         ? Optional.ofNullable(exceptionDateMap.get(date))
         : Optional.empty();
   }
 
-
-  public Optional<CalendarDate> getCalendarDate(CalendarDate date) {
-    if (!isDateInRange(date)) {
-      return Optional.empty();
-    }
-
-    DayOfWeek dayOfWeek = date.getDayOfTheWeek(date.getTimeZone());
-    return Optional.of(calendarDateMap.get(dayOfWeek));
-  }
+//
+//  public Optional<CalendarDate> getCalendarDate(CalendarDate date) {
+//    if (!isDateInRange(date)) {
+//      return Optional.empty();
+//    }
+//
+//    DayOfWeek dayOfWeek = date.getDayOfTheWeek(date.getTimeZone());
+//    return Optional.of(calendarDateMap.get(dayOfWeek));
+//  }
 
   // TODO: test
   private boolean isDateInRange(CalendarDate date) {
@@ -63,6 +70,7 @@ public class Calendar {
   public static final class Builder {
 
     private ServiceId serviceId;
+    private String serviceName;
 
     private CalendarDate startDate;
     private CalendarDate endDate;
@@ -75,6 +83,11 @@ public class Calendar {
 
     public Builder serviceId(ServiceId serviceId) {
       this.serviceId = serviceId;
+      return this;
+    }
+
+    public Builder serviceName(String serviceName) {
+      this.serviceName = serviceName;
       return this;
     }
 

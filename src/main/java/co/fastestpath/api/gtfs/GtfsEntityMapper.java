@@ -32,9 +32,9 @@ public class GtfsEntityMapper {
   private <T extends GtfsEntity> List<T> createEntity(File entityFile, Class<T> entityClass)
       throws GtfsEntityMappingException {
     try {
-      return (List<T>) mapper.readerFor(entityClass)
+      return mapper.readerFor(entityClass)
           .with(GtfsArchive.SCHEMA)
-          .readValues(entityFile)
+          .<T>readValues(entityFile)
           .readAll();
     } catch (IOException e) {
       throw new GtfsEntityMappingException("Unable to map csv to class.", e);
