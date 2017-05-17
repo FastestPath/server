@@ -25,6 +25,16 @@ public class ScheduleManager implements FastestPathManaged {
     this.entityMapper = entityMapper;
   }
 
+  public void onFetch(GtfsArchive archive) {
+    GtfsEntityMap entities = entityMapper.map(archive.getFiles());
+    this.schedule = ScheduleFactory.create(entities);
+    int a = 5;
+  }
+
+  public Schedule getSchedule() {
+    return schedule;
+  }
+
   @Override
   public void start() throws Exception {
     entityFetcher.fetch();
@@ -36,11 +46,5 @@ public class ScheduleManager implements FastestPathManaged {
   @Override
   public int getPriority() {
     return FastestPathManagedPriority.LOW;
-  }
-
-  public void onFetch(GtfsArchive archive) {
-    GtfsEntityMap entities = entityMapper.map(archive.getFiles());
-    this.schedule = ScheduleFactory.create(entities);
-    int a = 5;
   }
 }

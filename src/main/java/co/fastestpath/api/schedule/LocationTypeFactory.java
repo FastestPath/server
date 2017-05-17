@@ -3,6 +3,7 @@ package co.fastestpath.api.schedule;
 import co.fastestpath.api.gtfs.GtfsLocationType;
 import co.fastestpath.api.gtfs.GtfsStop;
 import com.google.common.collect.BiMap;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Determines if a stop is:
@@ -27,7 +28,14 @@ public class LocationTypeFactory {
    * A stop belongs to a station only if its parent stop is marked as a station.
    */
   private static boolean isStationStop(GtfsStop stop, BiMap<StopId, GtfsStop> stops) {
-    GtfsStop parent = stops.get(stop.getParentStation());
-    return parent == null || parent.getLocationType() != GtfsLocationType.STATION;
+    String parentStation = stop.getParentStation();
+    if (StringUtils.isBlank(parentStation)) {
+      return false;
+    }
+
+    StopId parentId = new StopId(parentStation);
+    GtfsStop parent = stops.get(parentId);
+
+    return parent != null && parent.getLocationType() == GtfsLocationType.STATION;
   }
 }

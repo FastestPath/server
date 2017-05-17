@@ -27,6 +27,30 @@ public class Schedule {
     return new Builder();
   }
 
+  public AgencyMap getAgencies() {
+    return agencies;
+  }
+
+  public TripMap getTrips() {
+    return trips;
+  }
+
+  public StopMap getStops() {
+    return stops;
+  }
+
+  public StopTimeMap getStopTimes() {
+    return stopTimes;
+  }
+
+  public RouteMap getRoutes() {
+    return routes;
+  }
+
+  public CalendarMap getCalendars() {
+    return calendars;
+  }
+
   public static final class Builder {
     private AgencyMap agencies;
     private TripMap trips;

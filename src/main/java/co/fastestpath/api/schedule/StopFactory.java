@@ -26,6 +26,8 @@ public class StopFactory {
 
     LocationType locationType = LocationTypeFactory.fromStop(stop, stopIdMap);
 
+    StopId parentId = locationType.hasParent() ? new StopId(stop.getParentStation()) : null;
+
     Coordinates coordinates = Coordinates.builder()
         .latitude(stop.getLat())
         .longitude(stop.getLon())
@@ -33,7 +35,7 @@ public class StopFactory {
 
     return Stop.builder()
         .id(new StopId(stop.getId()))
-        .parentId(new StopId(stop.getParentStation()))
+        .parentId(parentId)
         .code(stop.getCode())
         .name(stop.getName())
         .description(stop.getDesc())
