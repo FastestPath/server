@@ -1,5 +1,7 @@
 package co.fastestpath.api.schedule;
 
+import co.fastestpath.api.ImmutableCollectors;
+
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,11 +25,18 @@ public class ScheduleResource {
   @Path("/stops")
   public Response getStops() {
     Schedule schedule = scheduleManager.getSchedule();
-    Set<StopId> parentStopIds = schedule.getStops()
-        .getParentStopIds();
+    StopMap stops = schedule.getStops();
+
+    Set<String> parentStops = stops
+        .getParentIdMap()
+        .keySet()
+        .stream()
+        .map(stops::get)
+        .map(Stop::getName)
+        .collect(ImmutableCollectors.toSet());
 
     return Response.ok()
-        .entity(parentStopIds)
+        .entity(parentStops)
         .build();
   }
 }

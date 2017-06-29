@@ -1,63 +1,49 @@
 package co.fastestpath.api.schedule;
 
-import com.google.common.collect.Multimaps;
-import com.google.common.collect.SortedSetMultimap;
-import com.google.common.collect.TreeMultimap;
+import com.google.common.collect.*;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Set;
+import java.util.SortedSet;
 
 public class StopTimeMap {
 
-  public static final Comparator<TripId> TRIP_ID_COMPARATOR = Comparator.comparing(TripId::toString);
+  private static final Comparator<TripId> TRIP_ID_COMPARATOR = Comparator.comparing(TripId::toString);
 
-  public static final Comparator<StopTime> ARRIVAL_COMPARATOR = Comparator.comparing(StopTime::getArrivalTime);
+  private static final Comparator<StopTime> SEQUENCE_COMPARATOR = Comparator.comparing(StopTime::getSequence);
 
-  public static final Comparator<StopTime> DEPARTURE_COMPARATOR = Comparator.comparing(StopTime::getDepartureTime);
+  private final SortedSetMultimap<TripId, StopTime> trips;
 
-  private final SortedSetMultimap<TripId, StopTime> arrivals;
+  private final SetMultimap<StopId, TripId> tripsContainingStops;
 
-  private final SortedSetMultimap<TripId, StopTime> departures;
-
-  private StopTimeMap(Builder builder) {
-    this.arrivals = Multimaps.unmodifiableSortedSetMultimap(builder.arrivals);
-    this.departures = Multimaps.unmodifiableSortedSetMultimap(builder.departures);
+  private StopTimeMap(TreeMultimap<TripId, StopTime> trips, SetMultimap<StopId, TripId> tripsContainingStops) {
+    this.trips = Multimaps.unmodifiableSortedSetMultimap(trips);
+    this.tripsContainingStops = Multimaps.unmodifiableSetMultimap(tripsContainingStops);
   }
 
   public static StopTimeMap create(Set<StopTime> stopTimes) {
-    Builder builder = builder();
-    stopTimes.forEach((stopTime) -> builder.put(stopTime.getTripId(), stopTime));
-    return builder.build();
+    TreeMultimap<TripId, StopTime> trips = TreeMultimap.create(TRIP_ID_COMPARATOR, SEQUENCE_COMPARATOR);
+    SetMultimap<StopId, TripId> tripsContainingStops = TreeMultimap.create();
+
+    stopTimes.forEach((stopTime) -> {
+      TripId tripId = stopTime.getTripId();
+      trips.put(tripId, stopTime);
+      tripsContainingStops.put(stopTime.getStopId(), tripId);
+
+    });
+
+    return new StopTimeMap(trips, tripsContainingStops);
   }
 
-  public static Builder builder() {
-    return new Builder();
+  public Set<TripId> getTripsContainingStop(StopId stopId) {
+    Set<TripId> tripsContainingStop = tripsContainingStops.get(stopId);
+    return tripsContainingStop == null ? Collections.emptySet() : tripsContainingStop;
   }
 
-  public Set<StopTime> getAllArrivalTimes(TripId tripId) {
-    return arrivals.get(tripId);
-  }
-
-  public Set<StopTime> getAllDepartureTimes(TripId tripId) {
-    return departures.get(tripId);
-  }
-
-  public static final class Builder {
-
-    private SortedSetMultimap<TripId, StopTime> departures = TreeMultimap.create(TRIP_ID_COMPARATOR, ARRIVAL_COMPARATOR);
-
-    private SortedSetMultimap<TripId, StopTime> arrivals = TreeMultimap.create(TRIP_ID_COMPARATOR, DEPARTURE_COMPARATOR);
-
-    private Builder() {}
-
-    public Builder put(TripId tripId, StopTime stopTime) {
-      this.arrivals.put(tripId, stopTime);
-      this.departures.put(tripId, stopTime);
-      return this;
-    }
-
-    public StopTimeMap build() {
-      return new StopTimeMap(this);
-    }
+  // TODO: test that this is sorted
+  public SortedSet<StopTime> getStopTimes(TripId tripId) {
+    SortedSet<StopTime> stopTimes = trips.get(tripId);
+    return stopTimes == null ? Collections.emptySet() : stopTimes;
   }
 }

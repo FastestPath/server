@@ -22,6 +22,7 @@ public class StopTimeFactory {
         .tripId(new TripId(stopTime.getTripId()))
         .arrivalTime(HhMmSs.create(stopTime.getArrivalTime()))
         .departureTime(HhMmSs.create(stopTime.getDepartureTime()))
+        .stopId(new StopId(stopTime.getStopId()))
         .sequence(stopTime.getStopSequence())
         .headsign(stopTime.getStopHeadSign())
         .pickupType(stopTime.getPickupType())

@@ -1,14 +1,14 @@
 package co.fastestpath.api.schedule;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.ImmutableBiMap;
+import co.fastestpath.api.ImmutableCollectors;
+import com.google.common.collect.*;
 
+import java.time.DayOfWeek;
 import java.util.Set;
 
 public class CalendarMap {
 
-  private final BiMap<ServiceId, Calendar> map;
+  private final BiMap<ServiceId, Calendar> serviceIdMap;
 
   public static CalendarMap create(Set<Calendar> calendars) {
     BiMap<ServiceId, Calendar> map = HashBiMap.create(calendars.size());
@@ -16,11 +16,17 @@ public class CalendarMap {
     return new CalendarMap(map);
   }
 
-  private CalendarMap(BiMap<ServiceId, Calendar> map) {
-    this.map = ImmutableBiMap.copyOf(map);
+  private CalendarMap(BiMap<ServiceId, Calendar> serviceIdMap) {
+    this.serviceIdMap = ImmutableBiMap.copyOf(serviceIdMap);
+  }
+
+  public Set<Calendar> forDate(CalendarDate calendarDate) {
+    serviceIdMap.values().stream()
+        .filter((calendar) -> calendar.isServiceAvailable(calendarDate))
+        .collect(ImmutableCollectors.toSet());
   }
 
   public Calendar get(ServiceId serviceId) {
-    return map.get(serviceId);
+    return serviceIdMap.get(serviceId);
   }
 }

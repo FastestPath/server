@@ -28,7 +28,6 @@ public class ScheduleManager implements FastestPathManaged {
   public void onFetch(GtfsArchive archive) {
     GtfsEntityMap entities = entityMapper.map(archive.getFiles());
     this.schedule = ScheduleFactory.create(entities);
-    int a = 5;
   }
 
   public Schedule getSchedule() {

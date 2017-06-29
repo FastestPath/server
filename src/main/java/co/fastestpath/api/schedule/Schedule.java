@@ -1,6 +1,10 @@
 package co.fastestpath.api.schedule;
 
+import java.time.ZoneId;
+
 public class Schedule {
+
+  private final ZoneId timeZone;
 
   private final AgencyMap agencies;
 
@@ -10,11 +14,14 @@ public class Schedule {
 
   private final StopTimeMap stopTimes;
 
+  private final StopTripMap stopTripMap;
+
   private final RouteMap routes;
 
   private final CalendarMap calendars;
 
   private Schedule(Builder builder) {
+    timeZone = builder.timeZone;
     agencies = builder.agencies;
     calendars = builder.calendars;
     trips = builder.trips;
@@ -25,6 +32,10 @@ public class Schedule {
 
   public static Builder builder() {
     return new Builder();
+  }
+
+  public ZoneId getTimeZone() {
+    return timeZone;
   }
 
   public AgencyMap getAgencies() {
@@ -43,6 +54,10 @@ public class Schedule {
     return stopTimes;
   }
 
+  public StopTripMap getStopTrips() {
+    return stopTripMap;
+  }
+
   public RouteMap getRoutes() {
     return routes;
   }
@@ -52,6 +67,7 @@ public class Schedule {
   }
 
   public static final class Builder {
+    private ZoneId timeZone;
     private AgencyMap agencies;
     private TripMap trips;
     private StopMap stops;
@@ -60,6 +76,11 @@ public class Schedule {
     private CalendarMap calendars;
 
     private Builder() {}
+
+    public Builder timeZone(ZoneId timeZone) {
+      this.timeZone = timeZone;
+      return this;
+    }
 
     public Builder agencies(AgencyMap agencies) {
       this.agencies = agencies;

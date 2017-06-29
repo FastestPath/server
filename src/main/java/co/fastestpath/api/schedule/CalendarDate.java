@@ -47,9 +47,13 @@ public class CalendarDate {
   }
 
   // TODO: test
-  public DayOfWeek getDayOfTheWeek(ZoneId timeZone) {
+  public DayOfWeek getDayOfTheWeekAtZone(ZoneId timeZone) {
     ZonedDateTime zonedDateTime = date.atZone(timeZone);
     return DayOfWeek.from(zonedDateTime);
+  }
+
+  public DayOfWeek getDayOfTheWeek() {
+    return getDayOfTheWeekAtZone(timeZone);
   }
 
   @Override

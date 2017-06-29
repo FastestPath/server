@@ -3,6 +3,7 @@ package co.fastestpath.api.schedule;
 import com.google.common.collect.ImmutableMap;
 
 import java.time.DayOfWeek;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -17,6 +18,8 @@ public class Calendar {
 
   private final String serviceName;
 
+  private final ZoneId timeZone;
+
   private final CalendarDate startDate;
 
   private final CalendarDate endDate;
@@ -28,6 +31,7 @@ public class Calendar {
   private Calendar(Builder builder) {
     serviceId = builder.serviceId;
     serviceName = builder.serviceName;
+    timeZone = builder.timeZone;
     startDate = builder.startDate;
     endDate = builder.endDate;
     exceptionDateMap = ImmutableMap.copyOf(builder.exceptionDateMap);
@@ -46,21 +50,28 @@ public class Calendar {
     return serviceName;
   }
 
+  public ZoneId getTimeZone() {
+    return timeZone;
+  }
+
   public Optional<CalendarExceptionDate> getExceptionDate(CalendarDate date) {
     return isDateInRange(date)
         ? Optional.ofNullable(exceptionDateMap.get(date))
         : Optional.empty();
   }
 
-//
-//  public Optional<CalendarDate> getCalendarDate(CalendarDate date) {
-//    if (!isDateInRange(date)) {
-//      return Optional.empty();
-//    }
-//
-//    DayOfWeek dayOfWeek = date.getDayOfTheWeek(date.getTimeZone());
-//    return Optional.of(calendarDateMap.get(dayOfWeek));
-//  }
+  public boolean isServiceAvailable(CalendarDate calendarDate) {
+    if (!isDateInRange(calendarDate)) {
+      return false;
+    }
+
+    if (exceptionDateMap.get(calendarDate) != null) {
+      return false;
+    }
+
+    DayOfWeek dayOfTheWeekAtZone = calendarDate.getDayOfTheWeekAtZone(timeZone);
+    return calendarDateMap.get(dayOfTheWeekAtZone) != null;
+  }
 
   // TODO: test
   private boolean isDateInRange(CalendarDate date) {
@@ -70,6 +81,7 @@ public class Calendar {
   public static final class Builder {
 
     private ServiceId serviceId;
+    private ZoneId timeZone;
     private String serviceName;
 
     private CalendarDate startDate;
@@ -83,6 +95,11 @@ public class Calendar {
 
     public Builder serviceId(ServiceId serviceId) {
       this.serviceId = serviceId;
+      return this;
+    }
+
+    public Builder timeZone(ZoneId timeZone) {
+      this.timeZone = timeZone;
       return this;
     }
 

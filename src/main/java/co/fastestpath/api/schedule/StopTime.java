@@ -8,6 +8,8 @@ public class StopTime {
 
   private final HhMmSs departureTime;
 
+  private final StopId stopId;
+
   private final Integer sequence;
 
   private final String headsign;
@@ -24,6 +26,7 @@ public class StopTime {
     tripId = builder.tripId;
     arrivalTime = builder.arrivalTime;
     departureTime = builder.departureTime;
+    stopId = builder.stopId;
     sequence = builder.sequence;
     headsign = builder.headsign;
     pickupType = builder.pickupType;
@@ -46,6 +49,10 @@ public class StopTime {
 
   public HhMmSs getDepartureTime() {
     return departureTime;
+  }
+
+  public StopId getStopId() {
+    return stopId;
   }
 
   public Integer getSequence() {
@@ -76,6 +83,7 @@ public class StopTime {
     private TripId tripId;
     private HhMmSs arrivalTime;
     private HhMmSs departureTime;
+    private StopId stopId;
     private Integer sequence;
     private String headsign;
     private Integer pickupType;
@@ -98,6 +106,11 @@ public class StopTime {
 
     public Builder departureTime(HhMmSs departureTime) {
       this.departureTime = departureTime;
+      return this;
+    }
+
+    public Builder stopId(StopId stopId) {
+      this.stopId = stopId;
       return this;
     }
 

@@ -27,6 +27,7 @@ public class ScheduleFactory {
     CalendarMap calendarMap = CalendarMapFactory.create(calendars, calendarDates, agencyMap.getFeedTimeZone());
 
     return Schedule.builder()
+        .timeZone(agencyMap.getFeedTimeZone())
         .agencies(agencyMap)
         .trips(tripMap)
         .routes(routeMap)

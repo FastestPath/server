@@ -15,6 +15,7 @@ public class CalendarFactory {
 
     Calendar.Builder builder = Calendar.builder()
         .serviceId(serviceId)
+        .timeZone(timeZone)
         .startDate(new CalendarDate(calendarEntity.getStartDate(), timeZone))
         .endDate(new CalendarDate(calendarEntity.getEndDate(), timeZone));
 

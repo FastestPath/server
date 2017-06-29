@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.SetMultimap;
 
+import java.util.Collections;
 import java.util.Set;
 
 public class TripMap {
@@ -21,6 +22,7 @@ public class TripMap {
   }
 
   public Set<Trip> getTrips(ServiceId serviceId) {
-    return map.get(serviceId);
+    Set<Trip> trips = map.get(serviceId);
+    return trips == null ? Collections.emptySet() : trips;
   }
 }
