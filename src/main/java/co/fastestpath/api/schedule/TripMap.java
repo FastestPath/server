@@ -33,9 +33,11 @@ public class TripMap {
         .collect(ImmutableCollectors.toSet());
   }
 
-  public Set<Trip> getTrips(ServiceId serviceId) {
+  public Set<TripId> getTripsforService(ServiceId serviceId) {
     Set<Trip> trips = map.get(serviceId);
-    return trips == null ? Collections.emptySet() : trips;
+    return trips == null ? Collections.emptySet() : trips.stream()
+        .map(Trip::getId)
+        .collect(ImmutableCollectors.toSet());
   }
 
   public Set<TripId> getAllTrips() {

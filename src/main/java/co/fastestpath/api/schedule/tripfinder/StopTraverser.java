@@ -27,7 +27,7 @@ public class StopTraverser {
     return new Traversal(origin, destination, supportedTrips).traverse();
   }
 
-  class Traversal {
+  private class Traversal {
 
     private final StopId destination;
 

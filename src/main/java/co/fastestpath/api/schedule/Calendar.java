@@ -60,7 +60,7 @@ public class Calendar {
         : Optional.empty();
   }
 
-  public boolean isServiceAvailable(CalendarDate calendarDate) {
+  public boolean isAvailable(CalendarDate calendarDate) {
     if (!isDateInRange(calendarDate)) {
       return false;
     }

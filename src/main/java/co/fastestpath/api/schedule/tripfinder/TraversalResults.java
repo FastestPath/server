@@ -1,15 +1,14 @@
 package co.fastestpath.api.schedule.tripfinder;
 
+import co.fastestpath.api.ImmutableCollectors;
 import co.fastestpath.api.schedule.StopId;
-import co.fastestpath.api.schedule.StopTime;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.SortedSet;
 
-public class TraversalResults {
+class TraversalResults {
 
-  public static TraversalResults FAIL = new TraversalResults();
+  public static TraversalResults EMPTY = new TraversalResults();
 
   private final Set<Node<StopId>> leaves;
 
@@ -21,8 +20,9 @@ public class TraversalResults {
     leaves.add(leaf);
   }
 
-  public SortedSet<StopTime> getStops() {
-    // TODO: traverse leaves, are reverse order
-    return stops;
+  public Set<Path> getPaths() {
+    return leaves.stream()
+        .map(Path::create)
+        .collect(ImmutableCollectors.toSet());
   }
 }

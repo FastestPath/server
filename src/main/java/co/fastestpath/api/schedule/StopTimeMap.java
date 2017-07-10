@@ -24,7 +24,7 @@ public class StopTimeMap {
 
   public static StopTimeMap create(Set<StopTime> stopTimes) {
     TreeMultimap<TripId, StopTime> trips = TreeMultimap.create(TRIP_ID_COMPARATOR, SEQUENCE_COMPARATOR);
-    SetMultimap<StopId, TripId> tripsContainingStops = TreeMultimap.create();
+    SetMultimap<StopId, TripId> tripsContainingStops = HashMultimap.create();
 
     stopTimes.forEach((stopTime) -> {
       TripId tripId = stopTime.getTripId();
@@ -44,6 +44,6 @@ public class StopTimeMap {
   // TODO: test that this is sorted
   public SortedSet<StopTime> getStopTimes(TripId tripId) {
     SortedSet<StopTime> stopTimes = trips.get(tripId);
-    return stopTimes == null ? Collections.emptySet() : stopTimes;
+    return stopTimes == null ? Collections.emptySortedSet() : stopTimes;
   }
 }

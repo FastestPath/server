@@ -5,43 +5,34 @@ import co.fastestpath.api.schedule.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Optional;
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 import java.util.Set;
 
+@Singleton
 public class TripFinder {
 
   private static final Logger LOG = LoggerFactory.getLogger(TripFinder.class);
 
-  private final CalendarMap calendarMap;
+  private final Provider<CalendarMap> calendarMap;
+  private final Provider<TripMap> tripMap;
+  private final Provider<StopTraverser> stopTraverser;
 
-  private final TripMap tripMap;
-
-  private final StopMap stopMap;
-
-  private final StopTimeMap stopTimeMap;
-
-  private final OriginTripFinder originTripFinder;
-
-  private final TripShifter tripShifter;
-
-  private final StopTraverser stopTraverser;
-
-  public TripFinder(Schedule schedule) {
-    this.calendarMap = schedule.getCalendars();
-    this.tripMap = schedule.getTrips();
-    this.stopMap = schedule.getStops();
-    this.stopTimeMap = schedule.getStopTimes();
-    this.originTripFinder = new OriginTripFinder(schedule.getStopTrips(), tripMap);
-    this.tripShifter = new TripShifter(stopTimeMap);
-    this.stopTraverser = new StopTraverser()
+  @Inject
+  public TripFinder(Provider<CalendarMap> calendarMap, Provider<TripMap> tripMap,
+      Provider<StopTraverser> stopTraverser) {
+    this.calendarMap = calendarMap;
+    this.tripMap = tripMap;
+    this.stopTraverser = stopTraverser;
   }
 
-  public Optional<Trip> find(StopId origin, StopId destination, DepartAtArriveByType type, CalendarDate date) {
+  public TraversalResults find(StopId origin, StopId destination, DepartAtArriveByType type, CalendarDate date) {
 
     Set<ServiceId> availableServices = findAvailableServices(date);
     if (availableServices.isEmpty()) {
       LOG.info("Unable to services on date {}.", date);
-      return Optional.empty();
+      return TraversalResults.EMPTY;
     }
 
     Set<TripId> supportedTrips = availableServices.stream()
@@ -50,29 +41,28 @@ public class TripFinder {
         .collect(ImmutableCollectors.toSet());
 
     if (supportedTrips.isEmpty()) {
-      throw new TripFinderException("No trips found for the available services.");
+      LOG.info("No trips are supported by the available services.");
+      return TraversalResults.EMPTY;
     }
 
-    Set<TraversalResults> traversalResults = stopTraverser.traverseSequences(origin, destination, supportedTrips);
-
+    StopTraverser stopTraverser = this.stopTraverser.get();
+    return stopTraverser.traverseTrips(origin, destination, supportedTrips);
   }
 
   /**
    * Find the services available for this date.
    */
   private Set<ServiceId> findAvailableServices(CalendarDate date) {
-    Set<Calendar> calendars = calendarMap.forDate(date);
-    return calendars.stream()
-        .map(Calendar::getServiceId)
-        .collect(ImmutableCollectors.toSet());
+    CalendarMap calendarMap = this.calendarMap.get();
+    return calendarMap.findAvailableServices(date);
   }
 
   /**
    * Get the trips associated with this service.
    */
   public Set<TripId> findTripsSupportingService(ServiceId serviceId) {
-    return tripMap.getTrips(serviceId).stream()
-        .map(Trip::getId)
+    TripMap tripMap = this.tripMap.get();
+    return tripMap.getTripsforService(serviceId).stream()
         .collect(ImmutableCollectors.toSet());
   }
 }

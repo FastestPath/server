@@ -1,14 +1,11 @@
 package co.fastestpath.api.schedule;
 
-import co.fastestpath.api.ImmutableCollectors;
-
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Set;
 
 @Path("/schedule")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,17 +23,17 @@ public class ScheduleResource {
   public Response getStops() {
     Schedule schedule = scheduleManager.getSchedule();
     StopMap stops = schedule.getStops();
-
-    Set<String> parentStops = stops
-        .getParentIdMap()
-        .keySet()
-        .stream()
-        .map(stops::get)
-        .map(Stop::getName)
-        .collect(ImmutableCollectors.toSet());
+//
+//    Set<String> parentStops = stops
+//        .getParentIdMap()
+//        .keySet()
+//        .stream()
+//        .map(stops::get)
+//        .map(Stop::getName)
+//        .collect(ImmutableCollectors.toSet());
 
     return Response.ok()
-        .entity(parentStops)
+//        .entity(parentStops)
         .build();
   }
 }

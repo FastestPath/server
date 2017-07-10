@@ -17,7 +17,7 @@ public class Schedule {
     return instance;
   }
 
-  public ScheduleInstance.Builder clear() {
+  public static ScheduleInstance.Builder clear() {
     instance = null;
     return new ScheduleInstance.Builder();
   }

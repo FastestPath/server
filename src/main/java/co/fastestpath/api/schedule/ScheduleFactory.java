@@ -26,7 +26,7 @@ public class ScheduleFactory {
 
     CalendarMap calendarMap = CalendarMapFactory.create(calendars, calendarDates, agencyMap.getFeedTimeZone());
 
-    return Schedule.builder()
+    Schedule.clear()
         .timeZone(agencyMap.getFeedTimeZone())
         .agencies(agencyMap)
         .trips(tripMap)
@@ -34,7 +34,7 @@ public class ScheduleFactory {
         .stops(stopMap)
         .stopTimes(stopTimeMap)
         .calendar(calendarMap)
-        .build();
+        .set();
   }
 
   private static AgencyMap createAgencyMap(GtfsEntityMap entityMap) {
