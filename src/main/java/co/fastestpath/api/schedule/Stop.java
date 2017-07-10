@@ -36,6 +36,10 @@ public class Stop {
     return new Builder();
   }
 
+  public boolean hasParent() {
+    return locationType.hasParent();
+  }
+
   public StopId getId() {
     return id;
   }

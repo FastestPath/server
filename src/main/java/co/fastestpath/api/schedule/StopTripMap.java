@@ -1,44 +1,72 @@
 package co.fastestpath.api.schedule;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
-import com.google.common.collect.SortedSetMultimap;
-import com.google.common.collect.TreeMultimap;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Set;
-import java.util.SortedSet;
 
+@Singleton
 public class StopTripMap {
 
-  private final SetMultimap<StopId, TripId> stopTripMap;
+  private final Provider<StopMap> stopMap;
+  private final Provider<StopTimeMap> stopTimeMap;
+  private final Provider<TripMap> tripMap;
 
-  private StopTripMap(SetMultimap<StopId, TripId> tripsContainingStops) {
-    this.stopTripMap = Multimaps.unmodifiableSetMultimap(tripsContainingStops);
+  private SetMultimap<StopId, TripId> map;
+
+  @Inject
+  public StopTripMap(Provider<StopMap> stopMap, Provider<StopTimeMap> stopTimeMap, Provider<TripMap> tripMap) {
+    this.stopMap = stopMap;
+    this.stopTimeMap = stopTimeMap;
+    this.tripMap = tripMap;
+    this.map = null;
   }
 
-  // TODO: clean this up
-  // continue from here
-  public static StopTripMap create(StopMap stopMap, StopTimeMap stopTimeMap, Set<TripId> trips) {
-    SetMultimap<StopId, TripId> stopTripMap = TreeMultimap.create();
-    trips.forEach((tripId) -> {
-      Set<StopTime> stopTimes = stopTimeMap.getStopTimes(tripId);
-      stopTimes.forEach((stopTime) -> {
-
-        stopTripMap.put(stopTime.getStopId(), tripId);
-
-        Stop stop = stopMap.get(stopTime.getStopId());
-        if (stop.getLocationType().hasParent()) {
-          stopTripMap.put(stop.getParentId(), tripId);
-        }
-
-      });
-    });
-  }
-
-  public Set<TripId> getTripsContainingStop(StopId stopId) {
-    Set<TripId> tripsContainingStop = stopTripMap.get(stopId);
+  public Set<TripId> findTripsContainingStop(StopId stopId) {
+    populateMap();
+    Set<TripId> tripsContainingStop = map.get(stopId);
     return tripsContainingStop == null ? Collections.emptySet() : tripsContainingStop;
+  }
+
+  public Set<TripId> findTripsContainingStop(StopId trips, Set<TripId> candidateTrips) {
+    Set<TripId> tripsContainingStop = findTripsContainingStop(trips);
+    tripsContainingStop.retainAll(candidateTrips);
+    return tripsContainingStop;
+  }
+
+  private synchronized void populateMap() {
+    if (this.map != null) {
+      return;
+    }
+
+    SetMultimap<StopId, TripId> map = HashMultimap.create();
+
+    TripMap tripMap = this.tripMap.get();
+    Set<TripId> trips = tripMap.getAllTrips();
+    trips.forEach(this::addTripStops);
+
+    this.map = Multimaps.unmodifiableSetMultimap(map);
+  }
+
+  private void addTripStops(TripId tripId) {
+    StopTimeMap stopTimeMap = this.stopTimeMap.get();
+    Set<StopTime> stopTimes = stopTimeMap.getStopTimes(tripId);
+    stopTimes.forEach((stopTime) -> {
+
+      StopMap stopMap = this.stopMap.get();
+      Stop stop = stopMap.get(stopTime.getStopId());
+
+      if (stop.hasParent()) {
+        map.put(stop.getParentId(), tripId);
+      }
+
+      map.put(stopTime.getStopId(), tripId);
+
+    });
   }
 }

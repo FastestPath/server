@@ -22,12 +22,18 @@ public class TripFinder {
 
   private final OriginTripFinder originTripFinder;
 
+  private final TripShifter tripShifter;
+
+  private final StopTraverser stopTraverser;
+
   public TripFinder(Schedule schedule) {
     this.calendarMap = schedule.getCalendars();
     this.tripMap = schedule.getTrips();
     this.stopMap = schedule.getStops();
     this.stopTimeMap = schedule.getStopTimes();
     this.originTripFinder = new OriginTripFinder(schedule.getStopTrips(), tripMap);
+    this.tripShifter = new TripShifter(stopTimeMap);
+    this.stopTraverser = new StopTraverser()
   }
 
   public Optional<Trip> find(StopId origin, StopId destination, DepartAtArriveByType type, CalendarDate date) {
@@ -38,18 +44,16 @@ public class TripFinder {
       return Optional.empty();
     }
 
-    Set<TripId> tripsSupportingServices = availableServices.stream()
+    Set<TripId> supportedTrips = availableServices.stream()
         .map(this::findTripsSupportingService)
         .flatMap(Set::stream)
         .collect(ImmutableCollectors.toSet());
 
-    if (tripsSupportingServices.isEmpty()) {
-      throw new TripFinderException("No trips supporting services were found");
+    if (supportedTrips.isEmpty()) {
+      throw new TripFinderException("No trips found for the available services.");
     }
 
-    Set<TripId> tripsContainingOrigin = originTripFinder.findTripsContainingOrigin(origin, tripsSupportingServices);
-
-
+    Set<TraversalResults> traversalResults = stopTraverser.traverseSequences(origin, destination, supportedTrips);
 
   }
 
@@ -70,51 +74,5 @@ public class TripFinder {
     return tripMap.getTrips(serviceId).stream()
         .map(Trip::getId)
         .collect(ImmutableCollectors.toSet());
-  }
-
-
-
-  // need an accumulator
-
-
-
-    // next, determine which trips contain both the origin and destination
-
-    // find all legs for this date
-    // find leg that contains stop (initially origin)
-    // move to origin stop on that leg
-    // go to next stop
-    // is Stop destination?
-    //  - Yes -> done
-    //  - No -> does Stop have a Transfer?
-    //    - No -> done
-    //    - Yes -> repeat from beginning
-    // make sure time window of trip is still in range of service (start-end times)
-
-    Set<Trip> trips = calendars.stream()
-        .map(Calendar::getServiceId)
-        .map(tripMap::getTrips)
-        .flatMap(Set::stream)
-        .filter((trip) -> doesTripContainStop(trip, origin))
-        .filter((trip) -> doesTripContainStop(trip, destination))
-        .filter((trip) -> originIsBeforeDestination(trip, origin, destination))
-        .sort(sortByTripTime)
-        .collect(ImmutableCollectors.toSet());
-  }
-
-  // TODO need to check transfers
-  private boolean doesTripContainStop(Trip trip, StopId originId) {
-    TripId tripId = trip.getId();
-    return stopTimeMap.getAllArrivalTimes(tripId).stream()
-        .map(StopTime::getStopId)
-        .map(stopMap::get)
-        .map(Stop::getId)
-        .filter((stopId) -> stopId.equals(originId))
-        .findAny()
-        .isPresent();
-  }
-
-  private boolean isOriginBeforeDestination(Trip trip, StopId originId, StopId destinationId) {
-
   }
 }
