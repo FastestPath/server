@@ -13,21 +13,22 @@ import javax.inject.Singleton;
 @Singleton
 public class ScheduleManager implements FastestPathManaged {
 
+  private final Schedule schedule;
+
   private final GtfsEntityFetcher entityFetcher;
 
   private final GtfsEntityMapper entityMapper;
 
-  private Schedule schedule;
-
   @Inject
-  public ScheduleManager(GtfsEntityFetcher entityFetcher, GtfsEntityMapper entityMapper) {
+  public ScheduleManager(Schedule schedule, GtfsEntityFetcher entityFetcher, GtfsEntityMapper entityMapper) {
+    this.schedule = schedule;
     this.entityFetcher = entityFetcher;
     this.entityMapper = entityMapper;
   }
 
   public void onFetch(GtfsArchive archive) {
     GtfsEntityMap entities = entityMapper.map(archive.getFiles());
-    this.schedule = ScheduleFactory.create(entities);
+    schedule.setInstance(ScheduleFactory.create(entities));
   }
 
   public Schedule getSchedule() {

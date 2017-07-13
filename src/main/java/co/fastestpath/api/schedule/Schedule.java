@@ -22,6 +22,10 @@ public class Schedule {
     return new ScheduleInstance.Builder();
   }
 
+  public static void setInstance(ScheduleInstance instance) {
+    Schedule.instance = instance;
+  }
+
   @Provides
   public ZoneId getTimeZone() {
     return getInstance("time zone").timeZone;
@@ -143,8 +147,8 @@ public class Schedule {
         return this;
       }
 
-      public void set() {
-        instance = new ScheduleInstance(this);
+      public ScheduleInstance build() {
+        return new ScheduleInstance(this);
       }
     }
   }

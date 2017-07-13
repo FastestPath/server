@@ -1,6 +1,7 @@
 package co.fastestpath.api.schedule;
 
-public class StopTime {
+// TODO: test comparable
+public class StopTime implements Comparable<StopTime> {
 
   private final TripId tripId;
 
@@ -77,6 +78,11 @@ public class StopTime {
 
   public TimePoint getTimePoint() {
     return timePoint;
+  }
+
+  @Override
+  public int compareTo(StopTime o) {
+    return sequence.compareTo(o.sequence);
   }
 
   public static final class Builder {

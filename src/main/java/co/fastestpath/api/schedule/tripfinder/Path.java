@@ -1,16 +1,15 @@
 package co.fastestpath.api.schedule.tripfinder;
 
-import com.google.common.collect.ImmutableSortedSet;
-
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Path<T> {
 
-  private final SortedSet<T> nodes;
+  private final List<T> nodes;
 
   static <T> Path create(Node<T> leaf) {
-    TreeSet<T> nodes = new TreeSet<>();
+    List<T> nodes = new LinkedList<>();
 
     // traverse from leaf to root
     while (leaf.getParent() != null) {
@@ -18,15 +17,20 @@ public class Path<T> {
       leaf = leaf.getParent();
     }
 
+    // add root node
+    nodes.add(leaf.getValue());
+
     // reverse order, root to leaf
-    return new Path(nodes.descendingSet());
+    Collections.reverse(nodes);
+
+    return new Path(nodes);
   }
 
-  private Path(SortedSet<T> nodes) {
-    this.nodes = ImmutableSortedSet.copyOf(nodes);
+  private Path(List<T> nodes) {
+    this.nodes = Collections.unmodifiableList(nodes);
   }
 
-  public SortedSet<T> getNodes() {
+  public List<T> getNodes() {
     return nodes;
   }
 

@@ -5,6 +5,7 @@ import co.fastestpath.api.schedule.TripId;
 
 import java.util.Collections;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 class ShiftedTrip {
 
@@ -16,7 +17,7 @@ class ShiftedTrip {
 
   private ShiftedTrip(TripId tripId, SortedSet<StopTime> sequence) {
     this.tripId = tripId;
-    this.sequence = Collections.unmodifiableSortedSet(sequence);
+    this.sequence = new TreeSet<>(sequence);
   }
 
   public static ShiftedTrip create(TripId tripId, SortedSet<StopTime> sequence) {

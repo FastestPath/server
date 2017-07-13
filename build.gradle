@@ -32,6 +32,7 @@ dependencies {
 
     testCompile 'io.dropwizard:dropwizard-testing:' + dropwizardVersion
     testCompile 'com.google.maps:google-maps-services:0.1.17'
+    testCompile 'org.mockito:mockito-all:2.0.2-beta'
     testCompile 'org.testng:testng:6.10'
 }
 

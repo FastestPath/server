@@ -7,9 +7,7 @@ import java.util.Set;
 
 public class ScheduleFactory {
 
-  private ScheduleFactory() {}
-
-  public static Schedule create(GtfsEntityMap entityMap) {
+  public static Schedule.ScheduleInstance create(GtfsEntityMap entityMap) {
 
     AgencyMap agencyMap = createAgencyMap(entityMap);
 
@@ -26,7 +24,7 @@ public class ScheduleFactory {
 
     CalendarMap calendarMap = CalendarMapFactory.create(calendars, calendarDates, agencyMap.getFeedTimeZone());
 
-    Schedule.clear()
+    return Schedule.clear()
         .timeZone(agencyMap.getFeedTimeZone())
         .agencies(agencyMap)
         .trips(tripMap)
@@ -34,7 +32,7 @@ public class ScheduleFactory {
         .stops(stopMap)
         .stopTimes(stopTimeMap)
         .calendar(calendarMap)
-        .set();
+        .build();
   }
 
   private static AgencyMap createAgencyMap(GtfsEntityMap entityMap) {

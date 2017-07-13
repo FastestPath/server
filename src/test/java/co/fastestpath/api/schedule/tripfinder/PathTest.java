@@ -2,6 +2,8 @@ package co.fastestpath.api.schedule.tripfinder;
 
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 import static org.testng.Assert.assertEquals;
 
 public class PathTest {
@@ -14,6 +16,11 @@ public class PathTest {
   @Test
   public void testPathCreation() {
     Path path = Path.create(NODE_C);
+
     assertEquals(path.size(), 4);
+
+    List<String> nodes = path.getNodes();
+    assertEquals(nodes.get(0), NODE_ROOT.getValue());
+    assertEquals(nodes.get(3), NODE_C.getValue());
   }
 }
