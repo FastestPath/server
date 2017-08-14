@@ -1,6 +1,17 @@
 package co.fastestpath.api.schedule;
 
 import co.fastestpath.api.gtfs.*;
+import co.fastestpath.api.schedule.agency.Agency;
+import co.fastestpath.api.schedule.agency.AgencyFactory;
+import co.fastestpath.api.schedule.agency.AgencyMap;
+import co.fastestpath.api.schedule.calendar.CalendarMap;
+import co.fastestpath.api.schedule.calendar.CalendarMapFactory;
+import co.fastestpath.api.schedule.route.Route;
+import co.fastestpath.api.schedule.route.RouteFactory;
+import co.fastestpath.api.schedule.route.RouteMap;
+import co.fastestpath.api.schedule.trip.Trip;
+import co.fastestpath.api.schedule.trip.TripFactory;
+import co.fastestpath.api.schedule.trip.TripMap;
 
 import java.util.List;
 import java.util.Set;

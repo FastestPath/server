@@ -2,6 +2,10 @@ package co.fastestpath.api.schedule.tripfinder;
 
 import co.fastestpath.api.ImmutableCollectors;
 import co.fastestpath.api.schedule.*;
+import co.fastestpath.api.schedule.calendar.CalendarDate;
+import co.fastestpath.api.schedule.calendar.CalendarMap;
+import co.fastestpath.api.schedule.trip.TripId;
+import co.fastestpath.api.schedule.trip.TripMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

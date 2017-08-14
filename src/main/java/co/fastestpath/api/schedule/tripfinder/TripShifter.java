@@ -4,7 +4,7 @@ import co.fastestpath.api.ImmutableCollectors;
 import co.fastestpath.api.schedule.StopId;
 import co.fastestpath.api.schedule.StopTime;
 import co.fastestpath.api.schedule.StopTimeMap;
-import co.fastestpath.api.schedule.TripId;
+import co.fastestpath.api.schedule.trip.TripId;
 
 import javax.inject.Inject;
 import javax.inject.Provider;

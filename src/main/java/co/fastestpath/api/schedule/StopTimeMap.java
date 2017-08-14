@@ -1,5 +1,6 @@
 package co.fastestpath.api.schedule;
 
+import co.fastestpath.api.schedule.trip.TripId;
 import com.google.common.collect.*;
 
 import java.util.Collections;

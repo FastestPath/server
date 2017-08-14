@@ -1,7 +1,7 @@
 package co.fastestpath.api.schedule.tripfinder;
 
 import co.fastestpath.api.schedule.StopTime;
-import co.fastestpath.api.schedule.TripId;
+import co.fastestpath.api.schedule.trip.TripId;
 
 import java.util.Collections;
 import java.util.SortedSet;

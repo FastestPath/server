@@ -1,5 +1,7 @@
 package co.fastestpath.api.schedule;
 
+import co.fastestpath.api.schedule.trip.TripId;
+
 // TODO: test comparable
 public class StopTime implements Comparable<StopTime> {
 

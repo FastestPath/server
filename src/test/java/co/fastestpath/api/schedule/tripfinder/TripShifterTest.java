@@ -2,6 +2,9 @@ package co.fastestpath.api.schedule.tripfinder;
 
 import co.fastestpath.api.schedule.StopTime;
 import co.fastestpath.api.schedule.StopTimeMap;
+import co.fastestpath.api.schedule.mocks.MockStopTimes;
+import co.fastestpath.api.schedule.mocks.MockStops;
+import co.fastestpath.api.schedule.mocks.MockTrips;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -18,7 +21,7 @@ public class TripShifterTest {
 
   @BeforeMethod
   public void setup() {
-    Set<StopTime> stopTimes = Mocks.STOP_TIMES_RANDOMIZED;
+    Set<StopTime> stopTimes = MockStopTimes.STOP_TIMES_RANDOMIZED;
     StopTimeMap stopTimeMap = StopTimeMap.create(stopTimes);
 
     Provider<StopTimeMap> stopTimeMapProvider = mock(Provider.class);
@@ -29,8 +32,8 @@ public class TripShifterTest {
 
   @Test
   public void testShiftToOrigin() {
-    ShiftedTrip trip = tripShifter.shiftToOrigin(Mocks.STOP_C, Mocks.TRIP_A);
-    assertEquals(trip.next().getStopId(), Mocks.STOP_C);
+    ShiftedTrip trip = tripShifter.shiftToOrigin(MockStops.STOP_C, MockTrips.TRIP_B);
+    assertEquals(trip.next().getStopId(), MockStops.STOP_C);
   }
 
 }

@@ -1,5 +1,7 @@
 package co.fastestpath.api.schedule;
 
+import co.fastestpath.api.schedule.trip.TripId;
+import co.fastestpath.api.schedule.trip.TripMap;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;

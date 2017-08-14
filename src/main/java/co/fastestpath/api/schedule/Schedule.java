@@ -1,5 +1,9 @@
 package co.fastestpath.api.schedule;
 
+import co.fastestpath.api.schedule.agency.AgencyMap;
+import co.fastestpath.api.schedule.calendar.CalendarMap;
+import co.fastestpath.api.schedule.route.RouteMap;
+import co.fastestpath.api.schedule.trip.TripMap;
 import com.google.inject.Provides;
 
 import javax.inject.Singleton;

@@ -1,6 +1,7 @@
 package co.fastestpath.api.schedule.tripfinder;
 
 import co.fastestpath.api.schedule.*;
+import co.fastestpath.api.schedule.trip.TripId;
 
 import javax.inject.Inject;
 import javax.inject.Provider;

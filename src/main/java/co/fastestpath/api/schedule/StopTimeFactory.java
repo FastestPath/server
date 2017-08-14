@@ -2,6 +2,7 @@ package co.fastestpath.api.schedule;
 
 import co.fastestpath.api.ImmutableCollectors;
 import co.fastestpath.api.gtfs.GtfsStopTime;
+import co.fastestpath.api.schedule.trip.TripId;
 
 import java.util.List;
 import java.util.Set;
