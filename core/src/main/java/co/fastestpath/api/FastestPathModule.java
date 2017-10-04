@@ -1,15 +1,16 @@
 package co.fastestpath.api;
 
-import co.fastestpath.api.utils.firebase.FirebaseConnection;
 import co.fastestpath.api.bootstrap.SchedulerProvider;
+import co.fastestpath.api.utils.Environment;
+import co.fastestpath.api.utils.firebase.FirebaseConnection;
+import co.fastestpath.gtfs.GtfsArchiveFetchingException;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerFactory;
+import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import javax.inject.Named;
@@ -73,4 +74,5 @@ public class FastestPathModule extends AbstractModule {
     CSV_MAPPER.enable(Feature.WRAP_AS_ARRAY);
     bind(CsvMapper.class).toInstance(CSV_MAPPER);
   }
+
 }

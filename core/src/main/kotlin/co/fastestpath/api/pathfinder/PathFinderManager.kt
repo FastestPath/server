@@ -1,8 +1,21 @@
-package co.fastestpath.api.bootstrap
+package co.fastestpath.api.pathfinder
 
-object PathFinderManager {
+import javax.inject.Singleton
 
-  var pathFinder: PathFinder? = null
+/**
+ * Path Finder Manager
+ *
+ * This should be injected into api resources to get schedule information.
+ */
+
+@Singleton
+class PathFinderManager {
+
+  private var pathFinder: PathFinder? = null
+
+  fun updatePathFinder(pathFinder: PathFinder) {
+    this.pathFinder = pathFinder
+  }
 
 }
 

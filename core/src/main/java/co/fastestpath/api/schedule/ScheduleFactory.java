@@ -1,8 +1,6 @@
 package co.fastestpath.api.schedule;
 
 import co.fastestpath.api.gtfs.*;
-import co.fastestpath.api.schedule.agency.Agency;
-import co.fastestpath.api.schedule.agency.AgencyFactory;
 import co.fastestpath.api.schedule.agency.AgencyMap;
 import co.fastestpath.api.schedule.calendar.CalendarMap;
 import co.fastestpath.api.schedule.calendar.CalendarMapFactory;

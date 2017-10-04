@@ -1,7 +1,6 @@
 package co.fastestpath.api.schedule.tripfinder;
 
 import co.fastestpath.api.utils.ImmutableCollectors;
-import co.fastestpath.api.schedule.StopId;
 import co.fastestpath.api.schedule.StopTime;
 import co.fastestpath.api.schedule.StopTimeMap;
 import co.fastestpath.api.schedule.trip.TripId;

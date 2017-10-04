@@ -1,7 +1,5 @@
 package co.fastestpath.api.schedule.mocks;
 
-import co.fastestpath.api.schedule.StopId;
-
 public class MockStops {
 
   public static final StopId STOP_A = new StopId("stop-a");

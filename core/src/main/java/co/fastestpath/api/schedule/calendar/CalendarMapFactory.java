@@ -1,7 +1,7 @@
 package co.fastestpath.api.schedule.calendar;
 
-import co.fastestpath.api.gtfs.GtfsCalendar;
-import co.fastestpath.api.gtfs.GtfsCalendarDate;
+import co.fastestpath.gtfs.GtfsCalendar;
+import co.fastestpath.gtfs.GtfsCalendarDate;
 import co.fastestpath.api.schedule.ServiceId;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;

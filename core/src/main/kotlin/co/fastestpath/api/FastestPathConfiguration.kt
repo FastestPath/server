@@ -1,40 +1,30 @@
-package co.fastestpath.api;
+package co.fastestpath.api
 
-import co.fastestpath.api.utils.firebase.FirebaseConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.annotations.VisibleForTesting;
-import io.dropwizard.Configuration;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.quartz.JobDetail;
-import org.quartz.ScheduleBuilder;
-import org.quartz.SimpleTrigger;
-import org.quartz.Trigger;
+import co.fastestpath.api.utils.firebase.FirebaseConfiguration
+import com.fasterxml.jackson.annotation.JsonProperty
+import io.dropwizard.Configuration
+import org.hibernate.validator.constraints.NotEmpty
 
-import javax.validation.constraints.NotNull;
-import java.time.Instant;
-import java.util.Date;
-
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
-import static org.quartz.TriggerBuilder.newTrigger;
-
-@VisibleForTesting
-public class FastestPathConfiguration extends Configuration {
+class FastestPathConfiguration(
 
   @NotEmpty
   @JsonProperty("environment")
-  String environment;
+  val environment: String,
 
-  @NotNull
+  @NotEmpty
+  @JsonProperty("archiveUrl")
+  val archiveUrl: String,
+
+  @NotEmpty
   @JsonProperty("fetchIntervalHours")
-  Integer fetchIntervalHours;
+  val fetchIntervalHours: Integer,
 
   @NotEmpty
   @JsonProperty("resourceDirectory")
-  String resourceDirectory;
+  val resourceDirectory: String,
 
-  @NotNull
+  @NotEmpty
   @JsonProperty("firebase")
-  FirebaseConfiguration firebase;
+  val firebase: FirebaseConfiguration
 
-}
+) : Configuration()

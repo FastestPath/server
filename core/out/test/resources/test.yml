@@ -1,0 +1,17 @@
+environment: development
+server:
+  type: simple
+  rootPath: /*
+  applicationContextPath: /
+  adminContextPath: /admin
+  connector:
+    type: http
+    port: 9000
+logging:
+  level: DEBUG
+resourceDirectory: src/scheduler/resources
+firebase:
+  keyPath: keys/firebase.json
+  databaseUrl: "https://fastestpath-148019.firebaseio.com/"
+  uid: local
+fetchIntervalHours: 6

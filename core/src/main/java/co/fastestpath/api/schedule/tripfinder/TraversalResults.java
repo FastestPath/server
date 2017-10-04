@@ -1,6 +1,5 @@
 package co.fastestpath.api.schedule.tripfinder;
 
-import co.fastestpath.api.schedule.StopId;
 import co.fastestpath.api.utils.ImmutableCollectors;
 
 import java.util.HashSet;

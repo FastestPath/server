@@ -1,4 +1,4 @@
-package co.fastestpath.api;
+package co.fastestpath.api.utils;
 
 public enum Environment {
   DEVELOPMENT,

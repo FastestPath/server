@@ -1,7 +1,10 @@
 package co.fastestpath.api.schedule;
 
+import co.fastestpath.api.bootstrap.schedule.Coordinates;
+import co.fastestpath.api.bootstrap.schedule.LocationType;
+import co.fastestpath.api.bootstrap.schedule.StopId;
 import co.fastestpath.api.utils.ImmutableCollectors;
-import co.fastestpath.api.gtfs.GtfsStop;
+import co.fastestpath.gtfs.GtfsStop;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableBiMap;

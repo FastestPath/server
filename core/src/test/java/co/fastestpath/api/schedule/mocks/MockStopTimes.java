@@ -1,7 +1,6 @@
 package co.fastestpath.api.schedule.mocks;
 
 import co.fastestpath.api.schedule.trip.TripId;
-import co.fastestpath.api.schedule.StopId;
 import co.fastestpath.api.schedule.StopTime;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;

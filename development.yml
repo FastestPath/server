@@ -9,9 +9,10 @@ server:
     port: 9000
 logging:
   level: DEBUG
-resourceDirectory: src/main/resources/gtfs-archive
+resourceDirectory: src/scheduler/resources/gtfs-archive
 firebase:
   keyPath: keys/firebase.json
   databaseUrl: "https://fastestpath-148019.firebaseio.com/"
   uid: local
 fetchIntervalHours: 6
+archiveUrl: "http://data.trilliumtransit.com/gtfs/path-nj-us/path-nj-us.zip"

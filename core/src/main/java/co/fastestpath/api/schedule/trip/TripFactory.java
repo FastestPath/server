@@ -1,7 +1,7 @@
 package co.fastestpath.api.schedule.trip;
 
 import co.fastestpath.api.utils.ImmutableCollectors;
-import co.fastestpath.api.gtfs.GtfsTrip;
+import co.fastestpath.gtfs.GtfsTrip;
 import co.fastestpath.api.schedule.ServiceId;
 import co.fastestpath.api.schedule.ShapeId;
 import co.fastestpath.api.schedule.route.RouteId;

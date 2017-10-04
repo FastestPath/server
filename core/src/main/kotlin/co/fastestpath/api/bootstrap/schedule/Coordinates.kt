@@ -1,3 +1,3 @@
-package co.fastestpath.api.bootstrap.schedule;
+package co.fastestpath.api.bootstrap.schedule
 
-data class Coordinates(val latitude: String, val longitude: String)
+data class Coordinates(val latitude: Float, val longitude: Float)

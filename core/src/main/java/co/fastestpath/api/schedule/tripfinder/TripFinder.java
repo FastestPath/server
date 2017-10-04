@@ -2,7 +2,6 @@ package co.fastestpath.api.schedule.tripfinder;
 
 import co.fastestpath.api.schedule.DepartAtArriveByType;
 import co.fastestpath.api.schedule.ServiceId;
-import co.fastestpath.api.schedule.StopId;
 import co.fastestpath.api.schedule.trip.TripId;
 import co.fastestpath.api.utils.ImmutableCollectors;
 import co.fastestpath.api.scheduler.schedule.*;

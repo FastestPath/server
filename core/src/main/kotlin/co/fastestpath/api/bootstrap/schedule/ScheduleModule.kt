@@ -1,6 +1,5 @@
-package co.fastestpath.api.bootstrap
+package co.fastestpath.api.bootstrap.schedule
 
-import co.fastestpath.api.schedule.Schedule
 import com.google.inject.AbstractModule
 
 class ScheduleModule : AbstractModule() {

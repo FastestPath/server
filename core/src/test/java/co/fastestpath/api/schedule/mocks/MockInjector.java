@@ -1,6 +1,5 @@
 package co.fastestpath.api.schedule.mocks;
 
-import co.fastestpath.api.schedule.Schedule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 

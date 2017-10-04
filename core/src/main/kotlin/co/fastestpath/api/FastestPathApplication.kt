@@ -1,42 +1,36 @@
-package co.fastestpath.api;
+package co.fastestpath.api
 
-import com.fasterxml.jackson.core.Version;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.hubspot.dropwizard.guice.GuiceBundle;
-import io.dropwizard.Application;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
+import co.fastestpath.api.bootstrap.Bootstrapper
+import co.fastestpath.api.utils.serialization.configureMapper
+import com.fasterxml.jackson.core.Version
+import com.fasterxml.jackson.databind.module.SimpleModule
+import com.hubspot.dropwizard.guice.GuiceBundle
+import io.dropwizard.Application
+import io.dropwizard.setup.Bootstrap
+import io.dropwizard.setup.Environment
 
-import static co.fastestpath.api.utils.SerializationSettings.SerializationSettingsKt.configureMapper;
+class FastestPathApplication : Application<FastestPathConfiguration>() {
 
-public class FastestPathApplication extends Application<FastestPathConfiguration> {
-
-  private static final Version MODULE_VERSION = new Version(1, 0, 0, null, null, null);
-  private static final SimpleModule MODULE = new SimpleModule("FastestPathModule", MODULE_VERSION);
-
-  public static void main(String[] args) throws Exception {
-    new FastestPathApplication().run(args);
+  companion object {
+    private val MODULE_VERSION = Version(1, 0, 0, null, null, null)
+    private val MODULE = SimpleModule("FastestPathModule", MODULE_VERSION)
   }
 
-  @Override
-  public void initialize(Bootstrap<FastestPathConfiguration> bootstrap) {
-    GuiceBundle<FastestPathConfiguration> guiceBundle = GuiceBundle.<FastestPathConfiguration>newBuilder()
-        .setConfigClass(FastestPathConfiguration.class)
-        .addModule(new FastestPathModule())
-        .enableAutoConfig(getClass().getPackage().getName())
-        .build();
+  private var bundle : GuiceBundle<FastestPathConfiguration>? = null
 
-//    bootstrap.addBundle(new MultiPartBundle());
-    bootstrap.addBundle(guiceBundle);
+  override fun initialize(bootstrap: Bootstrap<FastestPathConfiguration>) {
+    bundle = GuiceBundle.newBuilder<FastestPathConfiguration>()
+      .setConfigClass(FastestPathConfiguration::class.java)
+      .addModule(FastestPathModule())
+      .enableAutoConfig(this.javaClass.`package`.name)
+      .build()
+
+    bootstrap.addBundle(bundle)
   }
 
-  @Override
-  public void run(FastestPathConfiguration configuration, Environment environment) throws Exception {
-    ObjectMapper mapper = environment.getObjectMapper();
-
-    configureMapper(mapper);
-
-    mapper.registerModule(MODULE);
+  override fun run(configuration: FastestPathConfiguration, environment: Environment) {
+    configureMapper(environment.objectMapper, MODULE)
+    val bootstrapper = bundle?.injector?.getInstance(Bootstrapper::class.java)
+    bootstrapper?.run()
   }
 }

@@ -1,5 +1,8 @@
 package co.fastestpath.api.scheduler
 
+interface ScheduleFetchCallback {
 
-interface SchedulerCallback {
+  fun onSuccess(archive: ScheduleArchive)
+  fun onFailure()
+
 }

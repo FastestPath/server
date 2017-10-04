@@ -1,8 +1,7 @@
 package co.fastestpath.api.schedule.route;
 
-import co.fastestpath.api.schedule.agency.AgencyId;
 import co.fastestpath.api.utils.ImmutableCollectors;
-import co.fastestpath.api.gtfs.GtfsRoute;
+import co.fastestpath.gtfs.GtfsRoute;
 
 import java.util.List;
 import java.util.Set;
