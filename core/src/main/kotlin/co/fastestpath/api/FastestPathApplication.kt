@@ -1,5 +1,6 @@
 package co.fastestpath.api
 
+import co.fastestpath.api.bootstrap.BootstrapModule
 import co.fastestpath.api.bootstrap.Bootstrapper
 import co.fastestpath.api.utils.serialization.configureMapper
 import com.fasterxml.jackson.core.Version
@@ -9,7 +10,7 @@ import io.dropwizard.Application
 import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
 
-class FastestPathApplication : Application<FastestPathConfiguration>() {
+open class FastestPathApplication : Application<FastestPathConfiguration>() {
 
   companion object {
     private val MODULE_VERSION = Version(1, 0, 0, null, null, null)
@@ -22,6 +23,7 @@ class FastestPathApplication : Application<FastestPathConfiguration>() {
     bundle = GuiceBundle.newBuilder<FastestPathConfiguration>()
       .setConfigClass(FastestPathConfiguration::class.java)
       .addModule(FastestPathModule())
+      .addModule(BootstrapModule())
       .enableAutoConfig(this.javaClass.`package`.name)
       .build()
 

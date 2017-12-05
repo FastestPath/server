@@ -1,5 +1,6 @@
 package co.fastestpath.api.schedule;
 
+import co.fastestpath.api.bootstrap.schedule.StopId;
 import co.fastestpath.api.schedule.trip.TripId;
 
 // TODO: test comparable

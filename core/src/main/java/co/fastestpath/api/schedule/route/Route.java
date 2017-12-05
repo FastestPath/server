@@ -1,5 +1,7 @@
 package co.fastestpath.api.schedule.route;
 
+import co.fastestpath.api.bootstrap.schedule.AgencyId;
+
 public class Route {
 
   private final RouteId id;

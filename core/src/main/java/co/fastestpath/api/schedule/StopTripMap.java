@@ -1,5 +1,7 @@
 package co.fastestpath.api.schedule;
 
+import co.fastestpath.api.bootstrap.schedule.Stop;
+import co.fastestpath.api.bootstrap.schedule.StopId;
 import co.fastestpath.api.schedule.trip.TripId;
 import co.fastestpath.api.schedule.trip.TripMap;
 import com.google.common.collect.HashMultimap;
@@ -15,14 +17,14 @@ import java.util.Set;
 @Singleton
 public class StopTripMap {
 
-  private final Provider<StopMap> stopMap;
+  private final Provider<StopTripMap> stopMap;
   private final Provider<StopTimeMap> stopTimeMap;
   private final Provider<TripMap> tripMap;
 
   private SetMultimap<StopId, TripId> map;
 
   @Inject
-  public StopTripMap(Provider<StopMap> stopMap, Provider<StopTimeMap> stopTimeMap, Provider<TripMap> tripMap) {
+  public StopTripMap(Provider<StopTripMap> stopMap, Provider<StopTimeMap> stopTimeMap, Provider<TripMap> tripMap) {
     this.stopMap = stopMap;
     this.stopTimeMap = stopTimeMap;
     this.tripMap = tripMap;
@@ -60,7 +62,7 @@ public class StopTripMap {
     Set<StopTime> stopTimes = stopTimeMap.getStopTimes(tripId);
     stopTimes.forEach((stopTime) -> {
 
-      StopMap stopMap = this.stopMap.get();
+      StopTripMap stopMap = this.stopMap.get();
       Stop stop = stopMap.get(stopTime.getStopId());
 
       if (stop.hasParent()) {

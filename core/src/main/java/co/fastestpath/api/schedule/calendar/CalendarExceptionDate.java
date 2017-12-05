@@ -1,7 +1,7 @@
 package co.fastestpath.api.schedule.calendar;
 
-import co.fastestpath.api.gtfs.GtfsCalendarDateExceptionType;
 import co.fastestpath.api.schedule.ServiceId;
+import co.fastestpath.gtfs.GtfsCalendarDateExceptionType;
 
 public class CalendarExceptionDate {
 

@@ -1,5 +1,6 @@
 package co.fastestpath.api.bootstrap
 
+import co.fastestpath.api.bootstrap.gtfs.archive.fetch.ArchiveFetcher
 import co.fastestpath.api.bootstrap.schedule.ScheduleModule
 import co.fastestpath.api.pathfinder.PathFinder
 import co.fastestpath.api.pathfinder.PathFinderManager
@@ -12,6 +13,7 @@ import javax.inject.Singleton
 class Bootstrapper @Inject constructor(
   private val injector: Injector,
   private val pathFinderManager: PathFinderManager
+  private val scheduler: Scheduler
 ) {
 
   private val scheduleModule = ScheduleModule()
@@ -25,10 +27,10 @@ class Bootstrapper @Inject constructor(
 
   fun onUpdate(entities: Entities) {
     TODO("Schedule factory to create schedule")
-    scheduleModule.update(schedule)
-
-    val pathFinder = injector.getInstance(PathFinder::class.java)
-    pathFinderManager.updatePathFinder(pathFinder)
+//    scheduleModule.update(entities)
+//
+//    val pathFinder = injector.getInstance(PathFinder::class.java)
+//    pathFinderManager.updatePathFinder(pathFinder)
   }
 
 }

@@ -1,7 +1,7 @@
 package co.fastestpath.api.schedule.tripfinder;
 
+import co.fastestpath.api.bootstrap.schedule.StopId;
 import co.fastestpath.api.schedule.*;
-import co.fastestpath.api.scheduler.schedule.*;
 import co.fastestpath.api.schedule.trip.TripId;
 
 import javax.inject.Inject;
@@ -14,12 +14,12 @@ import java.util.Set;
 public class StopTraverser {
 
   private final Provider<StopTripMap> stopTripMap;
-  private final Provider<StopMap> stopMap;
+  private final Provider<StopTimeMap> stopMap;
 
   private final TripShifter tripShifter;
 
   @Inject
-  public StopTraverser(Provider<StopTripMap> stopTripMap, Provider<StopMap> stopMap, TripShifter tripShifter) {
+  public StopTraverser(Provider<StopTripMap> stopTripMap, Provider<StopTimeMap> stopMap, TripShifter tripShifter) {
     this.stopTripMap = stopTripMap;
     this.stopMap = stopMap;
     this.tripShifter = tripShifter;

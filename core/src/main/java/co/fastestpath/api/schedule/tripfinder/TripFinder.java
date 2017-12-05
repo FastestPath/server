@@ -1,10 +1,10 @@
 package co.fastestpath.api.schedule.tripfinder;
 
+import co.fastestpath.api.bootstrap.schedule.StopId;
 import co.fastestpath.api.schedule.DepartAtArriveByType;
 import co.fastestpath.api.schedule.ServiceId;
 import co.fastestpath.api.schedule.trip.TripId;
 import co.fastestpath.api.utils.ImmutableCollectors;
-import co.fastestpath.api.scheduler.schedule.*;
 import co.fastestpath.api.schedule.calendar.CalendarDate;
 import co.fastestpath.api.schedule.calendar.CalendarMap;
 import co.fastestpath.api.schedule.trip.TripMap;
