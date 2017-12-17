@@ -17,7 +17,7 @@ class ArchiveDateFetcher @Inject constructor(
 ) {
 
   companion object {
-    private val LOG = LoggerFactory.getLogger(ArchiveDateFetcher.javaClass)
+    private val LOG = LoggerFactory.getLogger(ArchiveDateFetcher::class.java)
 
     private val MODIFIED_ON_DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd mm:ss")
     private val MODIFIED_ON_ELEMENT_SELECTOR = "tr > td:eq(2)"

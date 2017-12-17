@@ -1,62 +1,39 @@
 package co.fastestpath.api
 
 import com.hubspot.dropwizard.guice.GuiceBundle
-import io.dropwizard.testing.junit.DropwizardAppRule
-import io.dropwizard.Application
 import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
-import io.dropwizard.testing.ResourceHelpers.resourceFilePath
-import org.testng.Assert.assertNotNull
-import org.testng.Assert.fail
-import org.testng.annotations.Test
-import java.net.URL
-import java.nio.file.Path
-import java.time.Duration
-import javax.inject.Inject
+import io.dropwizard.testing.ResourceHelpers
+import io.dropwizard.testing.junit.DropwizardAppRule
+import junit.framework.Assert.assertNotNull
+import org.junit.ClassRule
+import org.junit.Test
 
-@Test
-class FastestPathModuleTest {
+class TestApplication : FastestPathApplication() {
 
-  init {
-    DropwizardAppRule(
+  companion object {
+    @ClassRule @JvmField
+    val APP_RULE: DropwizardAppRule<FastestPathConfiguration> = DropwizardAppRule(
         TestApplication::class.java,
-        resourceFilePath("test-configuration.yml")
+        ResourceHelpers.resourceFilePath("test-configuration.yml")
     )
   }
-}
-
-class TestApplication : Application<FastestPathConfiguration>() {
-
-  private var bundle: GuiceBundle<FastestPathConfiguration>? = null
 
   override fun initialize(bootstrap: Bootstrap<FastestPathConfiguration>) {
     bundle = GuiceBundle.newBuilder<FastestPathConfiguration>()
+        .setConfigClass(FastestPathConfiguration::class.java)
         .addModule(FastestPathModule())
-        .enableAutoConfig(this.javaClass.`package`.name)
         .build()
-
-    bootstrap.addBundle(bundle)
   }
 
-  @Throws(Exception::class)
-  override fun run(configuration: FastestPathConfiguration, environment: Environment) {
-    val testClass = bundle?.injector?.getInstance(TestClass::class.java)
+  override fun run(configuration: FastestPathConfiguration, environment: Environment) { }
 
-    if (testClass == null) {
-      fail("Failed to create instance of TestClass.")
-      return
-    }
-
-    assertNotNull(testClass.environment)
-    assertNotNull(testClass.archiveUrl)
-    assertNotNull(testClass.fetchInterval)
-    assertNotNull(testClass.resourceDir)
+  @Test
+  fun test() {
+    val configuration = APP_RULE.configuration
+    assertNotNull(configuration.archiveUrl)
+    assertNotNull(configuration.environment)
+    assertNotNull(configuration.fetchIntervalHours)
+    assertNotNull(configuration.resourceDirectory)
   }
 }
-
-class TestClass @Inject constructor(
-    val environment: Environment,
-    val archiveUrl: URL,
-    val fetchInterval: Duration,
-    val resourceDir: Path
-)

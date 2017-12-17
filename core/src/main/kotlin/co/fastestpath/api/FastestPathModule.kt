@@ -1,6 +1,5 @@
 package co.fastestpath.api
 
-import co.fastestpath.api.utils.Environment
 import com.google.inject.AbstractModule
 import com.google.inject.Provides
 import java.net.URL
@@ -24,12 +23,7 @@ class FastestPathModule : AbstractModule() {
 
   @Provides
   @Named(ENVIRONMENT)
-  fun getEnvironment(configuration: FastestPathConfiguration): Environment =
-      when (configuration.environment) {
-        "production" -> Environment.PRODUCTION
-        "test" -> Environment.TEST
-        else -> Environment.DEVELOPMENT
-      }
+  fun getEnvironment(configuration: FastestPathConfiguration): Environment = environmentOf(configuration.environment)
 
   @Provides
   @Named(FETCH_INTERVAL_HOURS)

@@ -22,7 +22,7 @@ import javax.net.ssl.HttpsURLConnection
 class ArchiveFetcher @Inject constructor(private val resourcesPath: Path) {
 
   companion object {
-    private val LOG = LoggerFactory.getLogger(ArchiveFetcher.javaClass)
+    private val LOG = LoggerFactory.getLogger(ArchiveFetcher::class.java)
   }
 
   @Throws(ArchiveFetchException::class)

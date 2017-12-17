@@ -1,10 +1,5 @@
 package co.fastestpath.api.bootstrap.schedule
 
-import co.fastestpath.api.schedule.StopTimeMap
-import co.fastestpath.api.schedule.StopTripMap
-import co.fastestpath.api.schedule.calendar.CalendarMap
-import co.fastestpath.api.schedule.route.RouteMap
-import co.fastestpath.api.schedule.trip.TripMap
 import co.fastestpath.gtfs.GtfsEntity
 import java.time.ZoneId
 
@@ -20,13 +15,14 @@ fun createSchedule(timeZone: ZoneId, entities: List<GtfsEntity>) {
 //    calendars = createCalendars(entities.get(CALENDAR) as List<GtfsCalendar>)
 //  )
 }
-
-class Schedule private constructor(
-  val timeZone: ZoneId,
-  val agencies: Agencies,
-  val trips: TripMap,
-  val stopTimes: StopTimeMap,
-  val stopTrips: StopTripMap,
-  val routes: RouteMap,
-  val calendars: CalendarMap
-)
+//
+class Schedule {}
+//class Schedule private constructor(
+//  val timeZone: ZoneId,
+//  val agencies: Agencies,
+//  val trips: TripMap,
+//  val stopTimes: StopTimeMap,
+//  val stopTrips: StopTripMap,
+//  val routes: RouteMap,
+//  val calendars: CalendarMap
+//)

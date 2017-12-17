@@ -1,6 +1,5 @@
 package co.fastestpath.api
 
-import co.fastestpath.api.utils.firebase.FirebaseConfiguration
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.dropwizard.Configuration
 import org.hibernate.validator.constraints.NotEmpty
@@ -17,14 +16,10 @@ class FastestPathConfiguration(
 
   @NotEmpty
   @JsonProperty("fetchIntervalHours")
-  val fetchIntervalHours: Integer,
+  val fetchIntervalHours: Int,
 
   @NotEmpty
   @JsonProperty("resourceDirectory")
-  val resourceDirectory: String,
-
-  @NotEmpty
-  @JsonProperty("firebase")
-  val firebase: FirebaseConfiguration
+  val resourceDirectory: String
 
 ) : Configuration()

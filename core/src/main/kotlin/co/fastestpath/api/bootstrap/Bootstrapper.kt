@@ -1,8 +1,6 @@
 package co.fastestpath.api.bootstrap
 
-import co.fastestpath.api.bootstrap.gtfs.archive.fetch.ArchiveFetcher
 import co.fastestpath.api.bootstrap.schedule.ScheduleModule
-import co.fastestpath.api.pathfinder.PathFinder
 import co.fastestpath.api.pathfinder.PathFinderManager
 import com.google.inject.Injector
 import org.jsoup.nodes.Entities
@@ -12,8 +10,8 @@ import javax.inject.Singleton
 @Singleton
 class Bootstrapper @Inject constructor(
   private val injector: Injector,
-  private val pathFinderManager: PathFinderManager
-  private val scheduler: Scheduler
+  private val pathFinderManager: PathFinderManager,
+  private val taskScheduler: TaskScheduler
 ) {
 
   private val scheduleModule = ScheduleModule()

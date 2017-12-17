@@ -17,7 +17,7 @@ open class FastestPathApplication : Application<FastestPathConfiguration>() {
     private val MODULE = SimpleModule("FastestPathModule", MODULE_VERSION)
   }
 
-  private var bundle : GuiceBundle<FastestPathConfiguration>? = null
+  protected var bundle : GuiceBundle<FastestPathConfiguration>? = null
 
   override fun initialize(bootstrap: Bootstrap<FastestPathConfiguration>) {
     bundle = GuiceBundle.newBuilder<FastestPathConfiguration>()
