@@ -11,8 +11,8 @@ allprojects {
 
   version = '1.0'
 
-  sourceCompatibility = 1.8
-  targetCompatibility = 1.8
+  sourceCompatibility = 1.9
+  targetCompatibility = 1.9
 
   repositories {
     mavenCentral()
@@ -23,7 +23,7 @@ idea {
   module {
     name = 'fastestpath'
 
-    jdkName = '1.8'
+    jdkName = '1.9'
 
     excludeDirs += file('.idea')
     excludeDirs += file('.gradle')
@@ -48,6 +48,7 @@ allprojects {
 
     compile 'com.hubspot.dropwizard:dropwizard-guice:' + dropwizardVersion
 
+    compile 'javax.xml.bind:jaxb-api:2.3.0'
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.8.1'
   }
 }
