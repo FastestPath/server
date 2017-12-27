@@ -36,16 +36,18 @@ sourceSets {
   }
 }
 
-buildscript {
+test {
+  useTestNG()
+}
 
-  ext.kotlin_version = '1.2.0'
+buildscript {
 
   repositories {
     jcenter()
   }
 
   dependencies {
-    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:' + kotlin_version
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$rootProject.ext.kotlinVersion"
     classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
   }
 }

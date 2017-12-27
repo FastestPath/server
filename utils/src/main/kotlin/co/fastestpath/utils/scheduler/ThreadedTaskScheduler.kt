@@ -1,21 +1,25 @@
-package co.fastestpath.api.utils
+package co.fastestpath.utils.scheduler
 
 import java.time.Duration
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
-class ThreadedTaskScheduler {
+class ThreadedTaskScheduler : TaskScheduler {
 
-  private val scheduledPool = Executors.newScheduledThreadPool(1)
+  companion object {
+    val THREAD_POOL_SIZE = 4
+  }
+
+  private val scheduledPool = Executors.newScheduledThreadPool(THREAD_POOL_SIZE)
 
   var task: ScheduledFuture<*>? = null
 
-  fun scheduleAtRate(runnable: Runnable, rate: Duration) {
+  override fun scheduleAtRate(runnable: Runnable, rate: Duration) {
     task = scheduledPool.scheduleAtFixedRate(runnable, 0, rate.toNanos(), TimeUnit.NANOSECONDS)
   }
 
-  fun cancel() {
+  override fun cancel() {
     task?.cancel(true)
   }
 }

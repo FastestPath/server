@@ -18,21 +18,18 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import javax.net.ssl.HttpsURLConnection
 
-@Singleton
-class ArchiveFetcher @Inject constructor(private val resourcesPath: Path) {
+class ArchiveFetcher {
 
   companion object {
     private val LOG = LoggerFactory.getLogger(ArchiveFetcher::class.java)
   }
 
   @Throws(ArchiveFetchException::class)
-  fun fetch(archiveUrl: URL, directory: String): Archive {
+  fun fetch(archiveUrl: URL, savePath: Path): Archive {
+    LOG.info("Creating empty directory at {}...", savePath)
+    createEmptyDirectory(savePath)
+    LOG.info("Created empty directory.")
 
-    LOG.info("Creating empty resources directory at {}...", resourcesPath)
-    createEmptyDirectory(resourcesPath)
-    LOG.info("Created empty resources directory.")
-
-    val savePath = Paths.get(resourcesPath.toString(), directory)
     LOG.info("Fetching schedule from {}...", archiveUrl)
     downloadArchive(archiveUrl, savePath)
     LOG.info("Fetched schedule.")
@@ -60,7 +57,6 @@ class ArchiveFetcher @Inject constructor(private val resourcesPath: Path) {
     } catch (e: ZipException) {
       throw ArchiveFetchException("Failed to unzip archive.", e)
     }
-
   }
 
   @Throws(ArchiveFetchException::class)
@@ -73,7 +69,6 @@ class ArchiveFetcher @Inject constructor(private val resourcesPath: Path) {
     } catch (e: IOException) {
       throw ArchiveFetchException("Failed to download archive from " + archiveUrl, e)
     }
-
   }
 
   @Throws(ArchiveFetchException::class)
@@ -88,7 +83,6 @@ class ArchiveFetcher @Inject constructor(private val resourcesPath: Path) {
     } catch (e: IOException) {
       throw ArchiveFetchException("Unable to open a connection to " + archiveUrl, e)
     }
-
   }
 
   @Throws(ArchiveFetchException::class)
@@ -97,7 +91,7 @@ class ArchiveFetcher @Inject constructor(private val resourcesPath: Path) {
       try {
         FileUtils.cleanDirectory(resourcesPath.toFile())
       } catch (e: IOException) {
-        throw ArchiveFetchException("Failed to empty resource directory.", e)
+        throw ArchiveFetchException("Failed to empty directory.", e)
       }
       return
     }
@@ -105,7 +99,7 @@ class ArchiveFetcher @Inject constructor(private val resourcesPath: Path) {
     try {
       Files.createDirectory(resourcesPath)
     } catch (e: IOException) {
-      throw ArchiveFetchException("Failed to create resources directory.", e)
+      throw ArchiveFetchException("Failed to create directory.", e)
     }
   }
 }

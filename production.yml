@@ -10,9 +10,5 @@ server:
 logging:
   level: INFO
 resourceDirectory: /tmp/data/gtfs-archive
-firebase:
-  keyPath: firebase.json
-  databaseUrl: "https://fastestpath-148019.firebaseio.com/"
-  uid: local
 fetchIntervalHours: 6
 archiveUrl: "http://data.trilliumtransit.com/gtfs/path-nj-us/path-nj-us.zip"

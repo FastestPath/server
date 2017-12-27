@@ -1,4 +1,4 @@
-package co.fastestpath.api.bootstrap
+package co.fastestpath.utils.scheduler
 
 import java.time.Duration
 

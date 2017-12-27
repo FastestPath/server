@@ -2,4 +2,4 @@ rootProject.name = 'fastestpath'
 
 include 'core'
 include 'gtfs'
-
+include 'utils'
