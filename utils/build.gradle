@@ -9,13 +9,14 @@ dependencies {
 
 sourceSets {
   main {
-    java.srcDirs += 'src/main/kotlin'
+    kotlin.srcDirs += 'src/main/kotlin'
   }
 
   test {
-    java.srcDirs += 'src/test/kotlin'
+    kotlin.srcDirs += 'src/test/kotlin'
   }
 }
+
 
 buildscript {
   repositories {

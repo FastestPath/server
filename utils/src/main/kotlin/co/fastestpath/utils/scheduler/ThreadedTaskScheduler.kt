@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 class ThreadedTaskScheduler : TaskScheduler {
 
   companion object {
-    val THREAD_POOL_SIZE = 4
+    val THREAD_POOL_SIZE = 1
   }
 
   private val scheduledPool = Executors.newScheduledThreadPool(THREAD_POOL_SIZE)
