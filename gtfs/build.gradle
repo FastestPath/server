@@ -1,12 +1,9 @@
 dependencies {
   compile 'net.lingala.zip4j:zip4j:1.2.9'
   compile 'org.jsoup:jsoup:1.9.1'
-
-  testCompile 'org.testng:testng:6.10'
 }
 
 sourceSets {
-
   main {
     java.srcDirs += 'src/main/java'
   }

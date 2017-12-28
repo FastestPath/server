@@ -1,10 +1,5 @@
-apply plugin: 'kotlin'
-
 dependencies {
   compile 'org.jsoup:jsoup:1.9.1'
-  compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + rootProject.kotlinVersion
-
-  testCompile 'org.testng:testng:6.10'
 }
 
 sourceSets {
@@ -16,15 +11,3 @@ sourceSets {
     kotlin.srcDirs += 'src/test/kotlin'
   }
 }
-
-
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:' + rootProject.kotlinVersion
-  }
-}
-

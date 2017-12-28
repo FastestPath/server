@@ -13,7 +13,7 @@ class ThreadedTaskScheduler : TaskScheduler {
 
   private val scheduledPool = Executors.newScheduledThreadPool(THREAD_POOL_SIZE)
 
-  var task: ScheduledFuture<*>? = null
+  private var task: ScheduledFuture<*>? = null
 
   override fun scheduleAtRate(runnable: Runnable, rate: Duration) {
     task = scheduledPool.scheduleAtFixedRate(runnable, 0, rate.toNanos(), TimeUnit.NANOSECONDS)

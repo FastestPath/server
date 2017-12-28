@@ -1,30 +1,9 @@
-apply plugin: 'application'
-apply plugin: 'kotlin'
-apply plugin: 'com.github.johnrengelman.shadow'
-
-mainClassName = 'co.fastestpath.api.FastestPathApplication'
-
 dependencies {
-
   compile project(':gtfs')
   testCompile project(':gtfs')
-
-  compile 'org.jetbrains.kotlin:kotlin-stdlib'
-  compile 'org.jetbrains.kotlin:kotlin-stdlib-jre8'
-
-  compile 'io.dropwizard:dropwizard-core:' + rootProject.dropwizardVersion
-  compile 'io.dropwizard:dropwizard-forms:' + rootProject.dropwizardVersion
-
-  compile 'com.google.firebase:firebase-admin:4.1.2'
-
-  testCompile 'io.dropwizard:dropwizard-testing:' + rootProject.dropwizardVersion
-  testCompile 'javax.xml.bind:jaxb-api:2.3.0'
-  testCompile 'org.mockito:mockito-core:2.8.47'
-  testCompile 'org.testng:testng:6.10'
 }
 
 sourceSets {
-
   main {
     java.srcDirs += 'src/main/java'
     kotlin.srcDirs += 'src/main/kotlin'
@@ -35,40 +14,3 @@ sourceSets {
     kotlin.srcDirs += 'src/test/kotlin'
   }
 }
-
-test {
-  useTestNG()
-}
-
-buildscript {
-
-  repositories {
-    jcenter()
-  }
-
-  dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$rootProject.ext.kotlinVersion"
-    classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
-  }
-}
-
-run {
-  args = ['server', 'development.yml']
-}
-
-shadowJar {
-  mergeServiceFiles()
-  exclude 'META-INF/*.SF'
-  exclude 'META-INF/*.DSA'
-  exclude 'META-INF/*.RSA'
-}
-
-jar {
-  manifest {
-    attributes 'Main-Class': mainClassName
-  }
-}
-
-// override jar task with shadowJar
-tasks.jar.enabled = false
-assemble.dependsOn(shadowJar)
