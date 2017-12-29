@@ -3,12 +3,6 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 mainClassName = 'co.fastestpath.api.FastestPathApplication'
 
-ext.dropwizardVersion = '1.0.0'
-
-task wrapper(type: Wrapper) {
-  gradleVersion = '4.3.1'
-}
-
 dependencies {
   compile project(':utils')
   compile project(':gtfs')
@@ -31,8 +25,10 @@ buildscript {
 
 allprojects {
   apply plugin: 'idea'
+}
+
+subprojects {
   apply plugin: 'java'
-  apply plugin: 'kotlin'
 
   version = '1.0'
 
@@ -50,13 +46,6 @@ allprojects {
     compile 'org.jetbrains.kotlin:kotlin-stdlib'
     compile 'org.jetbrains.kotlin:kotlin-stdlib-jre8'
 
-    compile 'io.dropwizard:dropwizard-core:' + dropwizardVersion
-    compile 'io.dropwizard:dropwizard-forms:' + dropwizardVersion
-    compile 'io.dropwizard:dropwizard-logging:' + dropwizardVersion
-    compile 'io.dropwizard:dropwizard-jackson:' + dropwizardVersion
-
-    compile 'com.hubspot.dropwizard:dropwizard-guice:' + dropwizardVersion
-
     compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + kotlinVersion
 
     compile 'javax.xml.bind:jaxb-api:2.3.0'
@@ -64,7 +53,6 @@ allprojects {
 
     testCompile 'org.testng:testng:6.10'
     testCompile 'org.mockito:mockito-core:2.8.47'
-    testCompile 'io.dropwizard:dropwizard-testing:' + dropwizardVersion
   }
 
   test {
@@ -89,10 +77,6 @@ jar {
   }
 }
 
-// override jar task with shadowJar
-tasks.jar.enabled = false
-assemble.dependsOn(shadowJar)
-
 idea {
   module {
     name = 'fastestpath'
@@ -105,3 +89,12 @@ idea {
     excludeDirs += file('out')
   }
 }
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '4.3.1'
+}
+
+// override jar task with shadowJar
+tasks.jar.enabled = false
+assemble.dependsOn(shadowJar)
+

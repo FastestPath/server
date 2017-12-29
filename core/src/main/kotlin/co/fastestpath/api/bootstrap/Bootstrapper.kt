@@ -1,17 +1,15 @@
 package co.fastestpath.api.bootstrap
 
-import co.fastestpath.api.FastestPathModule
-import co.fastestpath.api.bootstrap.gtfs.archive.fetch.ArchiveFetcher
+import co.fastestpath.api.GtfsConfiguration
+import co.fastestpath.api.bootstrap.archive.Archive
+import co.fastestpath.api.bootstrap.archive.fetch.ArchiveFetcher
+import co.fastestpath.api.bootstrap.schedule.ScheduleFactory
 import co.fastestpath.api.bootstrap.schedule.ScheduleModule
+import co.fastestpath.api.pathfinder.PathFinder
 import co.fastestpath.api.pathfinder.PathFinderManager
-import co.fastestpath.scheduler.TaskScheduler
+import co.fastestpath.utils.scheduler.TaskScheduler
 import com.google.inject.Injector
-import org.jsoup.nodes.Entities
-import java.net.URL
-import java.nio.file.Path
-import java.time.Duration
 import javax.inject.Inject
-import javax.inject.Named
 import javax.inject.Singleton
 
 /**
@@ -20,32 +18,33 @@ import javax.inject.Singleton
  */
 @Singleton
 class Bootstrapper @Inject constructor(
-  @Named(FastestPathModule.RESOURCES_DIR) private val resourcesDirectory: Path,
-  @Named(FastestPathModule.FETCH_INTERVAL_HOURS) private val fetchInterval: Duration,
-  @Named(FastestPathModule.ARCHIVE_URL) private val archiveUrl: URL,
   private val archiveFetcher: ArchiveFetcher,
+  private val scheduleFactory: ScheduleFactory,
   private val scheduleModule: ScheduleModule,
-  private val injector: Injector,
+  private val gtfsConfiguration: GtfsConfiguration,
   private val pathFinderManager: PathFinderManager,
-  private val taskScheduler: TaskScheduler
+  private val taskScheduler: TaskScheduler,
+  injector: Injector
 ) {
 
   private val scheduleInjector = injector.createChildInjector(scheduleModule)
 
   fun run() {
+    val archiveUrl = gtfsConfiguration.archiveUrl
+    val savePath = gtfsConfiguration.savePath
+    val fetchInterval = gtfsConfiguration.fetchInterval
+
     taskScheduler.scheduleAtRate(Runnable {
-      archiveFetcher.fetch(archiveUrl, resourcesDirectory)
+      val archive = archiveFetcher.fetch(archiveUrl, savePath)
+      update(archive)
     }, fetchInterval)
   }
 
-  fun onUpdate(entities: Entities) {
-    TODO("Schedule factory to create schedule")
-//    scheduleModule.update(entities)
-//
-//    val pathFinder = injector.getInstance(PathFinder::class.java)
-//    pathFinderManager.updatePathFinder(pathFinder)
-  }
+  private fun update(archive: Archive) {
+    val schedule = scheduleFactory.create(archive)
+    scheduleModule.update(schedule)
 
-  fun run(block: Int) {
+    val pathFinder = scheduleInjector.getInstance(PathFinder::class.java)
+    pathFinderManager.updatePathFinder(pathFinder)
   }
 }

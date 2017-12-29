@@ -9,9 +9,7 @@ server:
     port: 9000
 logging:
   level: DEBUG
-resourceDirectory: src/scheduler/resources
-firebase:
-  keyPath: keys/firebase.json
-  databaseUrl: "https://fastestpath-148019.firebaseio.com/"
-  uid: local
-fetchIntervalHours: 6
+gtfs:
+  fetchIntervalHours: 6
+  saveLocation: src/scheduler/resources/gtfs-archive
+  url: localhost

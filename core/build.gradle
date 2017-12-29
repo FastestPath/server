@@ -1,6 +1,22 @@
+apply plugin: 'kotlin'
+
+ext.dropwizardVersion = '1.0.0'
+
 dependencies {
   compile project(':gtfs')
+  compile project(':utils')
+
   testCompile project(':gtfs')
+  testCompile project(':utils')
+
+  compile 'io.dropwizard:dropwizard-core:' + dropwizardVersion
+  compile 'io.dropwizard:dropwizard-forms:' + dropwizardVersion
+  compile 'io.dropwizard:dropwizard-logging:' + dropwizardVersion
+  compile 'io.dropwizard:dropwizard-jackson:' + dropwizardVersion
+
+  compile 'com.hubspot.dropwizard:dropwizard-guice:' + dropwizardVersion
+
+  testCompile 'io.dropwizard:dropwizard-testing:' + dropwizardVersion
 }
 
 sourceSets {

@@ -9,6 +9,7 @@ server:
     port: 9000
 logging:
   level: INFO
-resourceDirectory: /tmp/data/gtfs-archive
-fetchIntervalHours: 6
-archiveUrl: "http://data.trilliumtransit.com/gtfs/path-nj-us/path-nj-us.zip"
+gtfs:
+  fetchIntervalHours: 6
+  saveLocation: src/scheduler/resources/gtfs-archive
+  url: "http://data.trilliumtransit.com/gtfs/path-nj-us/path-nj-us.zip"

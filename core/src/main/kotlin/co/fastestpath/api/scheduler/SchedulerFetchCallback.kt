@@ -1,6 +1,6 @@
 package co.fastestpath.api.scheduler
 
-import co.fastestpath.api.bootstrap.gtfs.archive.Archive
+import co.fastestpath.api.bootstrap.archive.Archive
 
 interface ScheduleFetchCallback {
 

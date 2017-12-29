@@ -13,30 +13,14 @@ class FastestPathModule : AbstractModule() {
 
   companion object {
     const val ENVIRONMENT = "environment"
-    const val RESOURCES_DIR = "resources"
-    const val ARCHIVE_URL = "archive-url"
-    const val FETCH_INTERVAL_HOURS = "fetch-interval-hours"
   }
 
-  override fun configure() {
-  }
+  override fun configure() {}
 
   @Provides
   @Named(ENVIRONMENT)
   fun getEnvironment(configuration: FastestPathConfiguration): Environment = environmentOf(configuration.environment)
 
   @Provides
-  @Named(FETCH_INTERVAL_HOURS)
-  fun getFetchInterval(configuration: FastestPathConfiguration): Duration =
-      Duration.ofHours(configuration.fetchIntervalHours.toLong())
-
-  @Provides
-  @Named(RESOURCES_DIR)
-  fun getResourcesDirectory(configuration: FastestPathConfiguration): Path =
-      Paths.get(configuration.resourceDirectory)
-
-  @Provides
-  @Named(ARCHIVE_URL)
-  fun getArchiveUrl(configuration: FastestPathConfiguration): URL =
-      URL(configuration.archiveUrl)
+  fun getGtfsConfiguration(configuration: FastestPathConfiguration): GtfsConfiguration = configuration.gtfsConfiguration
 }

@@ -31,9 +31,11 @@ class TestApplication : FastestPathApplication() {
   @Test
   fun test() {
     val configuration = APP_RULE.configuration
-    assertNotNull(configuration.archiveUrl)
     assertNotNull(configuration.environment)
-    assertNotNull(configuration.fetchIntervalHours)
-    assertNotNull(configuration.resourceDirectory)
+
+    val gtfsConfiguration = configuration.gtfsConfiguration
+    assertNotNull(gtfsConfiguration.archiveUrl)
+    assertNotNull(gtfsConfiguration.fetchInterval)
+    assertNotNull(gtfsConfiguration.savePath)
   }
 }

@@ -2,7 +2,7 @@ package co.fastestpath.api
 
 import co.fastestpath.api.bootstrap.BootstrapModule
 import co.fastestpath.api.bootstrap.Bootstrapper
-import co.fastestpath.api.utils.serialization.configureMapper
+import co.fastestpath.api.mappers.configureMapper
 import com.fasterxml.jackson.core.Version
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.hubspot.dropwizard.guice.GuiceBundle
