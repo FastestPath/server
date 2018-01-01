@@ -1,6 +1,6 @@
 package co.fastestpath.api.bootstrap.schedule
 
-data class AgencyId private constructor(val value: String) {
+data class AgencyId private constructor(private val value: String) {
   companion object {
     private val cache: MutableMap<String, AgencyId> = HashMap()
 
@@ -15,3 +15,4 @@ data class AgencyId private constructor(val value: String) {
     }
   }
 }
+

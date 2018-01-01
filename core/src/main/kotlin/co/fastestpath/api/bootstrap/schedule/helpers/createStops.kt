@@ -1,41 +1,38 @@
-package co.fastestpath.api.bootstrap.schedule
+package co.fastestpath.api.bootstrap.schedule.helpers
 
+import co.fastestpath.api.bootstrap.schedule.Coordinates
+import co.fastestpath.api.bootstrap.schedule.LocationType
+import co.fastestpath.api.bootstrap.schedule.Stop
+import co.fastestpath.api.bootstrap.schedule.StopId
 import co.fastestpath.gtfs.GtfsLocationType
 import co.fastestpath.gtfs.GtfsStop
 import org.apache.commons.lang3.StringUtils
 import java.time.ZoneId
 
-fun createStops(entities: List<GtfsStop>): Stops {
-
-  require(!entities.isEmpty()) { "At least one stop is required." }
+fun createStops(entities: List<GtfsStop>): Map<StopId, Stop> {
 
   val entityMap: Map<StopId, GtfsStop> = entities.associateBy({ StopId.of(it.id) }, { it })
 
-  val map = entities.associateBy({ StopId.of(it.id) }, {
+  return entities.associateBy({ StopId.of(it.id) }, {
 
     val locationType = determineLocationType(it, entityMap)
     val parentId = if (locationType.hasParent()) StopId.of(it.parentStation) else null
     val coordinates = Coordinates(it.lat, it.lon)
 
-    with(it) {
-      Stop(
-        id = StopId.of(id),
-        parentId = parentId,
-        code = code,
-        name = name,
-        description = desc,
-        coordinates = coordinates,
-        zoneId = zoneId,
-        url = url,
-        locationType = locationType,
-        timeZone = ZoneId.of(timeZone)
-      )
-    }
+    Stop(
+      id = StopId.of(it.id),
+      parentId = parentId,
+      code = it.code,
+      name = it.name,
+      description = it.desc,
+      coordinates = coordinates,
+      zoneId = it.zoneId,
+      url = it.url,
+      locationType = locationType,
+      timeZone = ZoneId.of(it.timeZone)
+    )
   })
-
-  return Stops(map)
 }
-
 
 /**
  * Determines if a stop is:
@@ -63,35 +60,3 @@ private fun isStationStop(stop: GtfsStop, entityMap: Map<StopId, GtfsStop>): Boo
   val parentEntity = entityMap[parentId]
   return parentEntity?.locationType == GtfsLocationType.STATION
 }
-
-data class StopId private constructor(val value: String) {
-  companion object {
-
-    private val cache: MutableMap<String, StopId> = HashMap()
-
-    fun of(value: String): StopId {
-      var stopId = cache[value]
-      if (stopId != null) {
-        return stopId
-      }
-      stopId = StopId(value)
-      cache[value] = stopId
-      return stopId
-    }
-  }
-}
-
-class Stop(
-  val id: StopId,
-  val parentId: StopId?,
-  val code: String,
-  val name: String,
-  val description: String,
-  val coordinates: Coordinates,
-  val zoneId: String,
-  val url: String,
-  val locationType: LocationType,
-  val timeZone: ZoneId
-)
-
-class Stops(val map: Map<StopId, Stop>)

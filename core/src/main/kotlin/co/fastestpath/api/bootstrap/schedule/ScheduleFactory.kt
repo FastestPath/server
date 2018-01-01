@@ -1,26 +1,45 @@
-package co.fastestpath.api.bootstrap.schedule;
+package co.fastestpath.api.bootstrap.schedule
 
 import co.fastestpath.api.bootstrap.archive.Archive
+import co.fastestpath.api.bootstrap.archive.ArchiveEntity
 import co.fastestpath.api.bootstrap.archive.parse.EntityMapper
+import co.fastestpath.api.bootstrap.schedule.helpers.createAgencies
+import co.fastestpath.api.bootstrap.schedule.helpers.createRoutes
+import co.fastestpath.api.bootstrap.schedule.helpers.createStops
+import co.fastestpath.gtfs.GtfsAgency
+import co.fastestpath.gtfs.GtfsRoute
+import co.fastestpath.gtfs.GtfsStop
+import co.fastestpath.gtfs.GtfsStopTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ScheduleFactory @Inject constructor(
-  private val entityMapper: EntityMapper
-) {
+class ScheduleFactory @Inject constructor(private val entityMapper: EntityMapper) {
 
   fun create(archive: Archive): Schedule {
     val entityMap = entityMapper.map(archive.files)
-    return Schedule()
+
+    val agencyEntities = entityMap[ArchiveEntity.AGENCY] as List<GtfsAgency>
+    val agencies = createAgencies(agencyEntities)
+
+    val routeEntities = entityMap[ArchiveEntity.ROUTES] as List<GtfsRoute>
+    val routes = createRoutes(routeEntities)
+
+    val stopEntities = entityMap[ArchiveEntity.STOPS] as List<GtfsStop>
+    val stops = createStops(stopEntities)
+
+    val stopTimeEntities = entityMap[ArchiveEntity.STOP_TIMES] as List<GtfsStopTime>
+    val stopTimes = createStopTimes(stopTimeEntities)
+
+    return Schedule(
+      agencies,
+      routes,
+      stops
+    )
   }
 }
 //
-//    val agencyEntities: List<GtfsAgency> = entityMap[ArchiveEntity.AGENCY] as List<GtfsAgency>
-//    val agencies = createAgencies(agencyEntities)
 //
-//    val routeEntities: List<GtfsRoute> = entityMap[ArchiveEntity.ROUTES] as List<GtfsRoute>
-//    val routeMap = createRouteMap(entityMap)
 //
 //    val stopMap = createStopMap(entityMap)
 //    val stopTimeMap = createStopTimeMap(entityMap)
