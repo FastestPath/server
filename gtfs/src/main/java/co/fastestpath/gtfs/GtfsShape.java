@@ -25,6 +25,26 @@ public class GtfsShape implements GtfsEntity {
     distanceTraveled = builder.distanceTraveled;
   }
 
+  public String getId() {
+    return id;
+  }
+
+  public String getLatitude() {
+    return latitude;
+  }
+
+  public String getLongitude() {
+    return longitude;
+  }
+
+  public String getSequence() {
+    return sequence;
+  }
+
+  public String getDistanceTraveled() {
+    return distanceTraveled;
+  }
+
   public static Builder builder() {
     return new Builder();
   }

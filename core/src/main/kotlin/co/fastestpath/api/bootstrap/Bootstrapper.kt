@@ -3,8 +3,8 @@ package co.fastestpath.api.bootstrap
 import co.fastestpath.api.GtfsConfiguration
 import co.fastestpath.api.bootstrap.archive.Archive
 import co.fastestpath.api.bootstrap.archive.fetch.ArchiveFetcher
-import co.fastestpath.api.bootstrap.schedule.ScheduleFactory
-import co.fastestpath.api.bootstrap.schedule.ScheduleModule
+import co.fastestpath.api.schedule.ScheduleFactory
+import co.fastestpath.api.schedule.ScheduleModule
 import co.fastestpath.api.pathfinder.PathFinder
 import co.fastestpath.api.pathfinder.PathFinderManager
 import co.fastestpath.utils.scheduler.TaskScheduler
